@@ -116,8 +116,8 @@
         var data = res.list[j].arr;
         var liTmpl = "";
         for (var i = 0, len = data.link.length; i < len; i++) {
-          var minSrc = 'https://github.com/LuckyJQ/luckyQ/min_photos/' + data.link[i];
-          var src = 'https://github.com/LuckyJQ/luckyQ/photos/' + data.link[i];
+          var minSrc = 'https://raw.githubusercontent.com/LuckyJQ/LuckyQ/master/min_photos/' + data.link[i];
+          var src = 'https://raw.githubusercontent.com/LuckyJQ/LuckyQ/master/photos/' + data.link[i];
           var type = data.type[i];
           var target = src + (type === 'video' ? '.mp4' : '.jpg');
           src += '';
