@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://luckyjq.github.io/"/>
-  <updated>2019-06-27T08:44:54.674Z</updated>
+  <updated>2019-06-24T09:39:40.311Z</updated>
   <id>https://luckyjq.github.io/</id>
   
   <author>
@@ -17,87 +17,9 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>使用nodejs原生http开发api接口</title>
-    <link href="https://luckyjq.github.io/2019/06/24/nodejs/"/>
-    <id>https://luckyjq.github.io/2019/06/24/nodejs/</id>
-    <published>2019-06-24T04:31:41.808Z</published>
-    <updated>2019-06-27T08:44:54.674Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="总体架构"><a href="#总体架构" class="headerlink" title="总体架构"></a>总体架构</h2><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://gitblog.luckyq.cn/11c864d28732342961f1effb6113e2a7.jpg" alt title>                </div>                <div class="image-caption"></div>            </figure><h2 id="开发环境搭建"><a href="#开发环境搭建" class="headerlink" title="开发环境搭建"></a>开发环境搭建</h2><p>使用webstorm进行开发，新建项目，发现没有nodejs智能提示<br>安装node智能提示</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://gitblog.luckyq.cn/2110eec1a1bf50a7b86bada07987d3bd.jpg" alt title>                </div>                <div class="image-caption"></div>            </figure><p>通过npm init新建项目<br>两个好用的插件：<br>全局安装nodemon，支持热重载<br>项目安装cross-env，兼容操作系统</p><p>配置package.json的script选项<br>配置中的NODE_ENV=dev，当以npm run dev启动时，process.env.NODE_ENV的值就为dev</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"dev"</span>: <span class="string">"cross-env NODE_ENV=dev nodemon ./bin/www.js"</span>,</span><br><span class="line"><span class="string">"prd"</span>: <span class="string">"cross-env NODE_ENV=production nodemon ./bin/www.js"</span></span><br></pre></td></tr></table></figure><h2 id="设计接口"><a href="#设计接口" class="headerlink" title="设计接口"></a>设计接口</h2><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://gitblog.luckyq.cn/69fbbfca44c776d80b9d9c62141f2919.jpg" alt title>                </div>                <div class="image-caption"></div>            </figure><h2 id="响应结构设计"><a href="#响应结构设计" class="headerlink" title="响应结构设计"></a>响应结构设计</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//成功</span></span><br><span class="line">&#123;</span><br><span class="line">    errno: <span class="number">0</span>,</span><br><span class="line">    data: &#123;&#125;,</span><br><span class="line">    message: <span class="string">''</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//失败</span></span><br><span class="line">&#123;</span><br><span class="line">    errno: <span class="number">-1</span>,</span><br><span class="line">    message: <span class="string">''</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>通过es6的class新建响应模型</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BaseModel</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(data, message) &#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">typeof</span> data === <span class="string">'string'</span>)&#123;</span><br><span class="line">            <span class="keyword">this</span>.message = data</span><br><span class="line">            data = <span class="literal">null</span></span><br><span class="line">            message = <span class="literal">null</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(data) &#123;</span><br><span class="line">            <span class="keyword">this</span>.data = data</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(message)&#123;</span><br><span class="line">            <span class="keyword">this</span>.message = message</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SuccessModel</span> <span class="keyword">extends</span> <span class="title">BaseModel</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(data, message)&#123;</span><br><span class="line">        <span class="keyword">super</span>(data, message)</span><br><span class="line">        <span class="keyword">this</span>.errno = <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ErrorModel</span> <span class="keyword">extends</span> <span class="title">BaseModel</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(data, message)&#123;</span><br><span class="line">        <span class="keyword">super</span>(data, message)</span><br><span class="line">        <span class="keyword">this</span>.errno = <span class="number">-1</span></span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    SuccessModel,</span><br><span class="line">    ErrorModel</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="项目结构拆分"><a href="#项目结构拆分" class="headerlink" title="项目结构拆分"></a>项目结构拆分</h2><p>将启动服务器封装成<a href="http://www.js，外部传入服务器响应函数" target="_blank" rel="noopener">www.js，外部传入服务器响应函数</a><br>响应函数在app.js中进行定义，函数中都可以引用req，res对象<br>对路由进行拆分，博客路由和用户路由，在app.js中进行引用<br>app.js中引用路由对所有请求拦截处理，有对应路由返回数据否则返回404<br>新建controller文件夹，主要用于操作数据，然后在router中引用对应controller中的方法<br>router中调用controller方法获得数据，封装成响应model并返回数据<br>新增配置文件，配置mysql和redis链接信息<br>封装mysql链接工具，封装执行sql函数</p><h2 id="对promise的一些疑惑"><a href="#对promise的一些疑惑" class="headerlink" title="对promise的一些疑惑"></a>对promise的一些疑惑</h2><h2 id="碰到的一些小bug"><a href="#碰到的一些小bug" class="headerlink" title="碰到的一些小bug"></a>碰到的一些小bug</h2><p>sql语句定义的不规范，${username}应该要加上引号</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sql = <span class="string">`select username, realname from user where username=<span class="subst">$&#123;username&#125;</span> and password=<span class="subst">$&#123;password&#125;</span>`</span></span><br></pre></td></tr></table></figure><h2 id="日志系统"><a href="#日志系统" class="headerlink" title="日志系统"></a>日志系统</h2><p>1.访问日志<br>2.自定义日志，包括自定义事件，错误记录等</p><p>通过流对象写日志<br>日志的拆分，按照天等（通常用linux的定时任务crontab）</p><h2 id="sql注入的d防范"><a href="#sql注入的d防范" class="headerlink" title="sql注入的d防范"></a>sql注入的d防范</h2><p>使用mysql的escape函数，所有的字段先用escape转义<br>然后<code>dadaw${xxx}</code>中的${xx}就不用加引号了</p><p>npm xss模块</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h2 id=&quot;总体架构&quot;&gt;&lt;a href=&quot;#总体架构&quot; class=&quot;headerlink&quot; title=&quot;总体架构&quot;&gt;&lt;/a&gt;总体架构&lt;/h2&gt;&lt;figure class=&quot;image-bubble&quot;&gt;
-                &lt;div class=&quot;img-lig
-      
-    
-    </summary>
-    
-      <category term="开发" scheme="https://luckyjq.github.io/categories/%E5%BC%80%E5%8F%91/"/>
-    
-    
-      <category term="nodejs" scheme="https://luckyjq.github.io/tags/nodejs/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>理解typeof和instanceof</title>
-    <link href="https://luckyjq.github.io/2019/06/24/%E7%90%86%E8%A7%A3typeof%E5%92%8Cinstanceof/"/>
-    <id>https://luckyjq.github.io/2019/06/24/理解typeof和instanceof/</id>
-    <published>2019-06-24T04:31:41.808Z</published>
-    <updated>2019-06-27T09:36:20.633Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="typeof判断类型存在的问题"><a href="#typeof判断类型存在的问题" class="headerlink" title="typeof判断类型存在的问题"></a>typeof判断类型存在的问题</h2><p>对于这两个js关键词，一直停留在很浅显的理解上。<br>直到最近开始刷个大公司的面试题，发现这一知识点出场之高，决心总结一下。</p><p>typeof判断类型，截图来自MDN。<br>问题出现了，当类型为Null和Array和Object时候，均返回“object”，如何区别？</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://gitblog.luckyq.cn/943056903a1e3c5bb07bc83a471fa457.jpg" alt title>                </div>                <div class="image-caption"></div>            </figure><p>一种常用的检测方法是使用：<br>Object.prototype.toString.call(obj)</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="number">12</span>,<span class="string">'aaa'</span>]</span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(arr)  <span class="comment">//"[object Array]"</span></span><br></pre></td></tr></table></figure><p>为什么要使用Object原型上的toString方法，而不是直接调用？<br>因为Array ，function等类型作为Object的实例，都重写了toString方法</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arr.toString()  <span class="comment">//"12,aaa"</span></span><br></pre></td></tr></table></figure><p>但是使用上面这种方法判断也存在局限性，对于任何对象，返回都是相同的。我们现在的需求是有不同构造函数比如Student，Dog等等，我们new一个实例的时候想判断这个实例是一个Dog还是一个Student，这时候就需要用到instanceof。</p><h2 id="instanceofd大法好"><a href="#instanceofd大法好" class="headerlink" title="instanceofd大法好"></a>instanceofd大法好</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Student = <span class="function"><span class="keyword">function</span> (<span class="params">name,age</span>) </span>&#123;</span><br><span class="line"><span class="keyword">this</span>.name = name</span><br><span class="line"><span class="keyword">this</span>.age = age</span><br><span class="line">&#125;</span><br><span class="line">Student.prototype.say = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">`i am <span class="subst">$&#123;name&#125;</span>,and i am <span class="subst">$&#123;age&#125;</span> years old!`</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> stu = <span class="keyword">new</span> Student(<span class="string">'Tom'</span>, <span class="number">20</span>)</span><br><span class="line">stu <span class="keyword">instanceof</span> Student   <span class="comment">//true</span></span><br></pre></td></tr></table></figure><p>要理解instanceof肯定逃不过原型链，祭出原型链大图<br>（如果还不理解原型链可以参考其他文章，要求能把下面图看懂）</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://gitblog.luckyq.cn/1f5e2ac23cb0ea276d64256d63949f07.jpg" alt title>                </div>                <div class="image-caption"></div>            </figure><p>关键点：<br>首先，js中一切都是对象，函数也是对象<br>所有的函数都有prototype和<strong>proto</strong>属性<br>所有的对象都有<strong>proto</strong>属性<br>Object.prototype是所有对象的根<br>Function.prototype是所有函数的根<br>Object和Function都是构造函数</p><p>instanceof的判断原理很简单，就是在实例的<strong>proto</strong>链条上寻找，如果有就返回true<br>通过上面的图也可以理解几个很奇怪的instanceof判断</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Function</span> <span class="keyword">instanceof</span> <span class="built_in">Function</span>  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">Object</span> <span class="keyword">instanceof</span> <span class="built_in">Function</span>  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">Object</span> <span class="keyword">instanceof</span> <span class="built_in">Object</span>  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">Function</span> <span class="keyword">instanceof</span> <span class="built_in">Object</span>  <span class="comment">//true</span></span><br></pre></td></tr></table></figure><h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><p>这两天看书，发现自己对instanceof的使用有个地方还是不清楚</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line">Person.prototype.dance = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Ninja</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line">Ninja.prototype = <span class="keyword">new</span> Person()</span><br><span class="line"><span class="keyword">const</span> ninja = <span class="keyword">new</span> Ninja()</span><br></pre></td></tr></table></figure><p>一般的js继承写法，一开始我想的是：<br>Ninja.prototype被改写成一个Person实例对象了<br>所以:<br>ninja instanceof Ninja返回false，<br>ninja instanceof Person 返回true</p><p>但是测试返回的是两个true</p><p>到底该如何理解instanceof?<br><strong>检查右边的函数原型是否存在于操作符左边的对象的原型链上</strong><br>Ninja.prototype 是否在ninja对象的<strong>proto</strong>链上</p><p>当你实例化时候，const ninja = new Ninja()<br>判断ninja instanceof Ninja时，就看Ninja.prototype是否在ninja实例的<strong>proto</strong>链条上<br>而Ninja.prototype是new Person，在ninja实例的<strong>proto</strong>链条上，所以就返回true<br>这样才是正确理解instanceof的方式</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h2 id=&quot;typeof判断类型存在的问题&quot;&gt;&lt;a href=&quot;#typeof判断类型存在的问题&quot; class=&quot;headerlink&quot; title=&quot;typeof判断类型存在的问题&quot;&gt;&lt;/a&gt;typeof判断类型存在的问题&lt;/h2&gt;&lt;p&gt;对于这两个js关键词，一直停留在很浅
-      
-    
-    </summary>
-    
-      <category term="js" scheme="https://luckyjq.github.io/categories/js/"/>
-    
-    
-      <category term="js" scheme="https://luckyjq.github.io/tags/js/"/>
-    
-      <category term="基础" scheme="https://luckyjq.github.io/tags/%E5%9F%BA%E7%A1%80/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>github博客绑定腾讯云二级域名</title>
-    <link href="https://luckyjq.github.io/2019/06/24/%E4%BA%8C%E7%BA%A7%E5%9F%9F%E5%90%8D/"/>
-    <id>https://luckyjq.github.io/2019/06/24/二级域名/</id>
-    <published>2019-06-24T04:31:41.808Z</published>
-    <updated>2019-06-25T12:42:33.600Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="绑定说明"><a href="#绑定说明" class="headerlink" title="绑定说明"></a>绑定说明</h2>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h2 id=&quot;绑定说明&quot;&gt;&lt;a href=&quot;#绑定说明&quot; class=&quot;headerlink&quot; title=&quot;绑定说明&quot;&gt;&lt;/a&gt;绑定说明&lt;/h2&gt;
-      
-    
-    </summary>
-    
-      <category term="建站" scheme="https://luckyjq.github.io/categories/%E5%BB%BA%E7%AB%99/"/>
-    
-    
-      <category term="建站" scheme="https://luckyjq.github.io/tags/%E5%BB%BA%E7%AB%99/"/>
-    
-  </entry>
-  
-  <entry>
     <title>使用七牛云一键上传博客图片（mac）</title>
-    <link href="https://luckyjq.github.io/2019/06/24/test1/"/>
-    <id>https://luckyjq.github.io/2019/06/24/test1/</id>
+    <link href="https://luckyjq.github.io/2019/06/24/%E4%BD%BF%E7%94%A8%E4%B8%83%E7%89%9B%E4%BA%91%E4%B8%80%E9%94%AE%E4%B8%8A%E4%BC%A0%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87%EF%BC%88mac)/"/>
+    <id>https://luckyjq.github.io/2019/06/24/使用七牛云一键上传博客图片（mac)/</id>
     <published>2019-06-24T04:31:41.808Z</published>
     <updated>2019-06-24T09:39:40.311Z</updated>
     
@@ -116,6 +38,33 @@
       <category term="工具" scheme="https://luckyjq.github.io/tags/%E5%B7%A5%E5%85%B7/"/>
     
       <category term="骚操作" scheme="https://luckyjq.github.io/tags/%E9%AA%9A%E6%93%8D%E4%BD%9C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>理解typeof和instanceof</title>
+    <link href="https://luckyjq.github.io/2019/04/17/%E7%90%86%E8%A7%A3typeof%E5%92%8Cinstanceof/"/>
+    <id>https://luckyjq.github.io/2019/04/17/理解typeof和instanceof/</id>
+    <published>2019-04-17T09:34:32.000Z</published>
+    <updated>2019-06-27T09:45:44.202Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="typeof判断类型存在的问题"><a href="#typeof判断类型存在的问题" class="headerlink" title="typeof判断类型存在的问题"></a>typeof判断类型存在的问题</h2><p>对于这两个js关键词，一直停留在很浅显的理解上。<br>直到最近开始刷个大公司的面试题，发现这一知识点出场之高，决心总结一下。</p><p>typeof判断类型，截图来自MDN。<br>问题出现了，当类型为Null和Array和Object时候，均返回“object”，如何区别？</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://gitblog.luckyq.cn/943056903a1e3c5bb07bc83a471fa457.jpg" alt title>                </div>                <div class="image-caption"></div>            </figure><p>一种常用的检测方法是使用：<br>Object.prototype.toString.call(obj)</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="number">12</span>,<span class="string">'aaa'</span>]</span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(arr)  <span class="comment">//"[object Array]"</span></span><br></pre></td></tr></table></figure><p>为什么要使用Object原型上的toString方法，而不是直接调用？<br>因为Array ，function等类型作为Object的实例，都重写了toString方法</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arr.toString()  <span class="comment">//"12,aaa"</span></span><br></pre></td></tr></table></figure><p>但是使用上面这种方法判断也存在局限性，对于任何对象，返回都是相同的。我们现在的需求是有不同构造函数比如Student，Dog等等，我们new一个实例的时候想判断这个实例是一个Dog还是一个Student，这时候就需要用到instanceof。</p><h2 id="instanceofd大法好"><a href="#instanceofd大法好" class="headerlink" title="instanceofd大法好"></a>instanceofd大法好</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Student = <span class="function"><span class="keyword">function</span> (<span class="params">name,age</span>) </span>&#123;</span><br><span class="line"><span class="keyword">this</span>.name = name</span><br><span class="line"><span class="keyword">this</span>.age = age</span><br><span class="line">&#125;</span><br><span class="line">Student.prototype.say = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">`i am <span class="subst">$&#123;name&#125;</span>,and i am <span class="subst">$&#123;age&#125;</span> years old!`</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> stu = <span class="keyword">new</span> Student(<span class="string">'Tom'</span>, <span class="number">20</span>)</span><br><span class="line">stu <span class="keyword">instanceof</span> Student   <span class="comment">//true</span></span><br></pre></td></tr></table></figure><p>要理解instanceof肯定逃不过原型链，祭出原型链大图<br>（如果还不理解原型链可以参考其他文章，要求能把下面图看懂）</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="http://gitblog.luckyq.cn/1f5e2ac23cb0ea276d64256d63949f07.jpg" alt title>                </div>                <div class="image-caption"></div>            </figure><p>关键点：<br>首先，js中一切都是对象，函数也是对象<br>所有的函数都有prototype和<strong>proto</strong>属性<br>所有的对象都有<strong>proto</strong>属性<br>Object.prototype是所有对象的根<br>Function.prototype是所有函数的根<br>Object和Function都是构造函数</p><p>instanceof的判断原理很简单，就是在实例的<strong>proto</strong>链条上寻找，如果有就返回true<br>通过上面的图也可以理解几个很奇怪的instanceof判断</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Function</span> <span class="keyword">instanceof</span> <span class="built_in">Function</span>  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">Object</span> <span class="keyword">instanceof</span> <span class="built_in">Function</span>  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">Object</span> <span class="keyword">instanceof</span> <span class="built_in">Object</span>  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">Function</span> <span class="keyword">instanceof</span> <span class="built_in">Object</span>  <span class="comment">//true</span></span><br></pre></td></tr></table></figure><h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><p>这两天看书，发现自己对instanceof的使用有个地方还是不清楚</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line">Person.prototype.dance = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Ninja</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line">Ninja.prototype = <span class="keyword">new</span> Person()</span><br><span class="line"><span class="keyword">const</span> ninja = <span class="keyword">new</span> Ninja()</span><br></pre></td></tr></table></figure><p>一般的js继承写法，一开始我想的是：<br>Ninja.prototype被改写成一个Person实例对象了<br>所以:<br>ninja instanceof Ninja返回false，<br>ninja instanceof Person 返回true</p><p>但是测试返回的是两个true</p><p>到底该如何理解instanceof?<br><strong>检查右边的函数原型是否存在于操作符左边的对象的原型链上</strong><br>Ninja.prototype 是否在ninja对象的<strong>proto</strong>链上</p><p>当你实例化时候，const ninja = new Ninja()<br>判断ninja instanceof Ninja时，就看Ninja.prototype是否在ninja实例的<strong>proto</strong>链条上<br>而Ninja.prototype是new Person，在ninja实例的<strong>proto</strong>链条上，所以就返回true<br>这样才是正确理解instanceof的方式</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;typeof判断类型存在的问题&quot;&gt;&lt;a href=&quot;#typeof判断类型存在的问题&quot; class=&quot;headerlink&quot; title=&quot;typeof判断类型存在的问题&quot;&gt;&lt;/a&gt;typeof判断类型存在的问题&lt;/h2&gt;&lt;p&gt;对于这两个js关键词，一直停留在很浅
+      
+    
+    </summary>
+    
+      <category term="js" scheme="https://luckyjq.github.io/categories/js/"/>
+    
+    
+      <category term="js" scheme="https://luckyjq.github.io/tags/js/"/>
+    
+      <category term="基础" scheme="https://luckyjq.github.io/tags/%E5%9F%BA%E7%A1%80/"/>
     
   </entry>
   

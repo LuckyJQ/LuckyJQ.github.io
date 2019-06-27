@@ -23,9 +23,9 @@
     <meta name="keywords" content="nodejs">
     <meta name="description" content="总体架构                                                                                                             开发环境搭建使用webstorm进行开发，新建项目，发现没有nodejs智能提示安装node智能提示">
 <meta name="keywords" content="nodejs">
-<meta property="og:type" content="article">
+<meta property="og:type" content="website">
 <meta property="og:title" content="使用nodejs原生http开发api接口">
-<meta property="og:url" content="https://luckyjq.github.io/2019/06/24/nodejs/index.html">
+<meta property="og:url" content="https://luckyjq.github.io/草稿/nodejs.html">
 <meta property="og:site_name" content="小七快跑">
 <meta property="og:description" content="总体架构                                                                                                             开发环境搭建使用webstorm进行开发，新建项目，发现没有nodejs智能提示安装node智能提示">
 <meta property="og:locale" content="zh-CN">
@@ -136,19 +136,11 @@
         
     </div>
 </header>
-<header class="content-header post-header">
+<header class="content-header page-header">
 
     <div class="container fade-scale">
         <h1 class="title">使用nodejs原生http开发api接口</h1>
         <h5 class="subtitle">
-            
-                <time datetime="2019-06-24T04:31:41.808Z" itemprop="datePublished" class="page-time">
-  2019-06-24
-</time>
-
-
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/开发/">开发</a></li></ul>
-
             
         </h5>
     </div>
@@ -160,36 +152,8 @@
 
 
 <div class="container body-wrap">
-    
-    <aside class="post-widget">
-        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
-            <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#总体架构"><span class="post-toc-number">1.</span> <span class="post-toc-text">总体架构</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#开发环境搭建"><span class="post-toc-number">2.</span> <span class="post-toc-text">开发环境搭建</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#设计接口"><span class="post-toc-number">3.</span> <span class="post-toc-text">设计接口</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#响应结构设计"><span class="post-toc-number">4.</span> <span class="post-toc-text">响应结构设计</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#项目结构拆分"><span class="post-toc-number">5.</span> <span class="post-toc-text">项目结构拆分</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#对promise的一些疑惑"><span class="post-toc-number">6.</span> <span class="post-toc-text">对promise的一些疑惑</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#碰到的一些小bug"><span class="post-toc-number">7.</span> <span class="post-toc-text">碰到的一些小bug</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#日志系统"><span class="post-toc-number">8.</span> <span class="post-toc-text">日志系统</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#sql注入的d防范"><span class="post-toc-number">9.</span> <span class="post-toc-text">sql注入的d防范</span></a></li></ol>
-        </nav>
-    </aside>
-
-
-<article id="post-nodejs"
-  class="post-article article-type-post fade" itemprop="blogPost">
-
-    <div class="post-card">
-        <h1 class="post-card-title">使用nodejs原生http开发api接口</h1>
-        <div class="post-meta">
-            <time class="post-time" title="2019-06-24 12:31:41" datetime="2019-06-24T04:31:41.808Z"  itemprop="datePublished">2019-06-24</time>
-
-            
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/开发/">开发</a></li></ul>
-
-
-
-            
-<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
-    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
-</span>
-
-
-        </div>
-        <div class="post-content" id="post-content" itemprop="postContent">
+    <article class="page-article fade" itemprop="blogPage">
+        <div class="post-content page-content" id="page-content" itemprop="pageContent">
             <h2 id="总体架构"><a href="#总体架构" class="headerlink" title="总体架构"></a>总体架构</h2><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
@@ -238,39 +202,14 @@
 
         </div>
 
-        <blockquote class="post-copyright">
-    
-    <div class="content">
         
-<span class="post-time">
-    最后更新时间：<time datetime="2019-06-27T08:44:54.674Z" itemprop="dateUpdated">2019-06-27 16:44:54</time>
-</span><br>
-
-
-        
-        <p style="font-size:16px;font-size:700"> 联系我:439286657(QQ),  17691203856(wechat)</P>
-        
-    </div>
-    
-    <footer>
-        <a href="https://luckyjq.github.io">
-            <img src="/img/avatar.jpg" alt="LuckyQ">
-            LuckyQ
-        </a>
-    </footer>
-</blockquote>
-
-        
-<div class="page-reward">
-    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
-</div>
-
-
-
-        <div class="post-footer">
-            
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li></ul>
-
+        <div class="card page-about-me flex-row">
+            <a href="/" class="avatar waves-effect waves-circle waves-light"><img src="/img/avatar.jpg"></a>
+            <div class="content flex-col">
+                <p><strong>LuckyQ</strong></p>
+                <p><em>沈小祺技术博客</em></p>
+                <p>用户页面中作者相关的描述性文字，如不需要设为 false</p>
+            </div>
 
             
 <div class="page-share-wrap">
@@ -279,7 +218,7 @@
 <div class="page-share" id="pageShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://luckyjq.github.io/2019/06/24/nodejs/&title=《使用nodejs原生http开发api接口》 — 小七快跑&pic=https://luckyjq.github.io/img/avatar.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://luckyjq.github.io/草稿/nodejs.html&title=《使用nodejs原生http开发api接口》 — 小七快跑&pic=https://luckyjq.github.io/img/avatar.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -289,22 +228,22 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://luckyjq.github.io/2019/06/24/nodejs/&title=《使用nodejs原生http开发api接口》 — 小七快跑&source=" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://luckyjq.github.io/草稿/nodejs.html&title=《使用nodejs原生http开发api接口》 — 小七快跑&source=" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://luckyjq.github.io/2019/06/24/nodejs/" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://luckyjq.github.io/草稿/nodejs.html" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《使用nodejs原生http开发api接口》 — 小七快跑&url=https://luckyjq.github.io/2019/06/24/nodejs/&via=https://luckyjq.github.io" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《使用nodejs原生http开发api接口》 — 小七快跑&url=https://luckyjq.github.io/草稿/nodejs.html&via=https://luckyjq.github.io" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://luckyjq.github.io/2019/06/24/nodejs/" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://luckyjq.github.io/草稿/nodejs.html" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -321,47 +260,38 @@
 
 
         </div>
-    </div>
+        
 
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </article>
     
-<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
-  
-
-  
-    <div class="waves-block waves-effect next">
-      <a href="/2019/06/24/理解typeof和instanceof/" id="post-next" class="post-nav-link">
-        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
-        <h4 class="title">理解typeof和instanceof</h4>
-      </a>
-    </div>
-  
-</nav>
-
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</article>
-
 <div id="reward" class="page-modal reward-lay">
     <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
     <h3 class="reward-title">
@@ -377,7 +307,6 @@
         
     </div>
 </div>
-
 
 
 </div>
@@ -421,7 +350,7 @@
 <div class="global-share" id="globalShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://luckyjq.github.io/2019/06/24/nodejs/&title=《使用nodejs原生http开发api接口》 — 小七快跑&pic=https://luckyjq.github.io/img/avatar.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://luckyjq.github.io/草稿/nodejs.html&title=《使用nodejs原生http开发api接口》 — 小七快跑&pic=https://luckyjq.github.io/img/avatar.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -431,22 +360,22 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://luckyjq.github.io/2019/06/24/nodejs/&title=《使用nodejs原生http开发api接口》 — 小七快跑&source=" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://luckyjq.github.io/草稿/nodejs.html&title=《使用nodejs原生http开发api接口》 — 小七快跑&source=" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://luckyjq.github.io/2019/06/24/nodejs/" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://luckyjq.github.io/草稿/nodejs.html" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《使用nodejs原生http开发api接口》 — 小七快跑&url=https://luckyjq.github.io/2019/06/24/nodejs/&via=https://luckyjq.github.io" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《使用nodejs原生http开发api接口》 — 小七快跑&url=https://luckyjq.github.io/草稿/nodejs.html&via=https://luckyjq.github.io" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://luckyjq.github.io/2019/06/24/nodejs/" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://luckyjq.github.io/草稿/nodejs.html" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -457,7 +386,7 @@
 <div class="page-modal wx-share" id="wxShare">
     <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACJklEQVR42u3aS27jMBAFQN//0p7NLALMWHiPLQcQWVoFhiSytOj0h69XfL1/XP/+8vP3T/e373x948LAwHgs4315Xd8z/xDXHyXZGwYGxjmMTwvnS14/1W493xsGBgZGu6EkZ0tCMwYGBsZvBtw21cPAwMCYFLHXL8pbbPPiGQMD4zRG3iz7/b+/Mt/AwMB4FONdXmuFbpIsru3n77MYGBhbM/IAl7+uTQ3b5PLjnRgYGAcw5mF3XnAmLbzFdhsGBsZjGcm28hZbngjOj278J8PFwMDYlJFvrl3yrrb+aBKLgYGxBSMJiJMttmF08QgIBgbG1ozJQa5kyUkrLRkk1I9hYGA8ljE/eLE2qkzSzXa0gIGBsR8jT93aZO6ub1Z0DTEwMDZlTLZVLBAE2Tzd/BiaMTAwtmZMytrk4EVe1k6KZAwMjL0Z14VosnAbptuit0gNMTAwtmO0Y4D897XyOE/+MDAwzmFMWl1toMwTyryIxcDAOJORt9LaZG6SINZHLjAwMLZjJLdOxpOT9xTBHQMD4wDGWr89KVnXwnQ9KMXAwDiG0QbQb5Sp7eoYGBh7M97llYTj/Nnb6m8MDIytGW2YS0rNNqC3xzXqESYGBsYWjLbUnLT72xBcfG8MDIwDGGsN/XbMOf8PENXiGBgYGIMEsd1usRYGBgbG4PjXXUF2cRKLgYGxEWOtEF07zrW2UQwMjJMZbek4L01z2M1DTQwMjOcx/gC2E9sZ9tyjhwAAAABJRU5ErkJggg==" alt="微信分享二维码">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACKElEQVR42u3aS27DMAxF0ex/0860Ezv3kUpQUVejInBknRQQ+Hu98Loe192TfM/0u8UlQ4aMbRnkiJzx93ly6Lv94/fKkCHjAMbzUfi1ePet9Oj8bDJkyJBBGLXL9DnGkyFDhow+4zl0I+B/ceHKkCFjKwbfulZc64SGi3NxGTJkbMiovf43f3+lvyFDhoytGFe4UIgWNimv9pIhQ8ZsBr/gajDSGFg1qCFDhoypDNKYJJ+sGvMqnkGGDBmjGTzIq2WOafszLfkFXQ4ZMmRsy0hHKDrBYq2sj56UIUPGaAb/Gr/+yKHTfVr/HxkyZIxjpOFarWDXbyTIkCHjHEatvMUTTj5a0UHKkCFjNoOHg8te1riOi51YGTJkbM7g6WWasvL2AB84CwbCZMiQMYjBk1iydVrW562IVu1QhgwZIxi1Uv6qoYq0GPchwpUhQ8Y4RueGrjUMatdr3HeVIUPGIEYazPF0d1XKWjyhDBkyxjHSkllakuPXdO0TGTJknMYgQVs6tsVHLtKG6G0uLkOGjNGMFJO2KnkZjqTHMmTIOI2RNi/TCzENK+PRMRkyZAxlXOGqjW11Ri7QPjJkyBjNSHuCpMSfJqtrk14ZMmRMZfBUkwRq6UAY+clQmChDhowDGPzS7A9YoJZkLZWVIUOGjEbIuOy4z6GhDBkyZOCj89ZmjbQgNJQhQ8aGDD4Skb6AH7rTOpUhQ8ZsBr/yfhMmfrGpKUOGjP0Yb9dXslCFymHMAAAAAElFTkSuQmCC" alt="微信分享二维码">
 </div>
 
 
