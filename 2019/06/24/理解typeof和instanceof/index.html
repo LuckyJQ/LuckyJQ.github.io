@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>理解typeof和instanceof | 小七快跑 | 沈小祺技术博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="js,基础">
+    <meta name="description" content="typeof判断类型存在的问题对于这两个js关键词，一直停留在很浅显的理解上。直到最近开始刷个大公司的面试题，发现这一知识点出场之高，决心总结一下。 typeof判断类型，截图来自MDN。问题出现了，当类型为Null和Array和Object时候，均返回“object”，如何区别？">
+<meta name="keywords" content="js,基础">
+<meta property="og:type" content="article">
+<meta property="og:title" content="理解typeof和instanceof">
+<meta property="og:url" content="https://luckyjq.github.io/2019/06/24/理解typeof和instanceof/index.html">
+<meta property="og:site_name" content="小七快跑">
+<meta property="og:description" content="typeof判断类型存在的问题对于这两个js关键词，一直停留在很浅显的理解上。直到最近开始刷个大公司的面试题，发现这一知识点出场之高，决心总结一下。 typeof判断类型，截图来自MDN。问题出现了，当类型为Null和Array和Object时候，均返回“object”，如何区别？">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://gitblog.luckyq.cn/943056903a1e3c5bb07bc83a471fa457.jpg">
+<meta property="og:image" content="http://gitblog.luckyq.cn/1f5e2ac23cb0ea276d64256d63949f07.jpg">
+<meta property="og:updated_time" content="2019-06-27T09:36:20.633Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="理解typeof和instanceof">
+<meta name="twitter:description" content="typeof判断类型存在的问题对于这两个js关键词，一直停留在很浅显的理解上。直到最近开始刷个大公司的面试题，发现这一知识点出场之高，决心总结一下。 typeof判断类型，截图来自MDN。问题出现了，当类型为Null和Array和Object时候，均返回“object”，如何区别？">
+<meta name="twitter:image" content="http://gitblog.luckyq.cn/943056903a1e3c5bb07bc83a471fa457.jpg">
+    
+        <link rel="alternate" type="application/atom+xml" title="小七快跑" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">LuckyQ</h5>
+          <a href="mailto:439286657@qq.com" title="439286657@qq.com" class="mail">439286657@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/luckyjq" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">理解typeof和instanceof</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">理解typeof和instanceof</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-06-24T04:31:41.808Z" itemprop="datePublished" class="page-time">
+  2019-06-24
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/js/">js</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#typeof判断类型存在的问题"><span class="post-toc-number">1.</span> <span class="post-toc-text">typeof判断类型存在的问题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#instanceofd大法好"><span class="post-toc-number">2.</span> <span class="post-toc-text">instanceofd大法好</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#补充"><span class="post-toc-number">3.</span> <span class="post-toc-text">补充</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-理解typeof和instanceof"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">理解typeof和instanceof</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-06-24 12:31:41" datetime="2019-06-24T04:31:41.808Z"  itemprop="datePublished">2019-06-24</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/js/">js</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="typeof判断类型存在的问题"><a href="#typeof判断类型存在的问题" class="headerlink" title="typeof判断类型存在的问题"></a>typeof判断类型存在的问题</h2><p>对于这两个js关键词，一直停留在很浅显的理解上。<br>直到最近开始刷个大公司的面试题，发现这一知识点出场之高，决心总结一下。</p>
+<p>typeof判断类型，截图来自MDN。<br>问题出现了，当类型为Null和Array和Object时候，均返回“object”，如何区别？</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://gitblog.luckyq.cn/943056903a1e3c5bb07bc83a471fa457.jpg" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+
+<p>一种常用的检测方法是使用：<br>Object.prototype.toString.call(obj)</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="number">12</span>,<span class="string">'aaa'</span>]</span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(arr)  <span class="comment">//"[object Array]"</span></span><br></pre></td></tr></table></figure>
+
+<p>为什么要使用Object原型上的toString方法，而不是直接调用？<br>因为Array ，function等类型作为Object的实例，都重写了toString方法</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arr.toString()  <span class="comment">//"12,aaa"</span></span><br></pre></td></tr></table></figure>
+
+<p>但是使用上面这种方法判断也存在局限性，对于任何对象，返回都是相同的。我们现在的需求是有不同构造函数比如Student，Dog等等，我们new一个实例的时候想判断这个实例是一个Dog还是一个Student，这时候就需要用到instanceof。</p>
+<h2 id="instanceofd大法好"><a href="#instanceofd大法好" class="headerlink" title="instanceofd大法好"></a>instanceofd大法好</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Student = <span class="function"><span class="keyword">function</span> (<span class="params">name,age</span>) </span>&#123;</span><br><span class="line"><span class="keyword">this</span>.name = name</span><br><span class="line"><span class="keyword">this</span>.age = age</span><br><span class="line">&#125;</span><br><span class="line">Student.prototype.say = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">`i am <span class="subst">$&#123;name&#125;</span>,and i am <span class="subst">$&#123;age&#125;</span> years old!`</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> stu = <span class="keyword">new</span> Student(<span class="string">'Tom'</span>, <span class="number">20</span>)</span><br><span class="line">stu <span class="keyword">instanceof</span> Student   <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+
+<p>要理解instanceof肯定逃不过原型链，祭出原型链大图<br>（如果还不理解原型链可以参考其他文章，要求能把下面图看懂）</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://gitblog.luckyq.cn/1f5e2ac23cb0ea276d64256d63949f07.jpg" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+
+
+<p>关键点：<br>首先，js中一切都是对象，函数也是对象<br>所有的函数都有prototype和<strong>proto</strong>属性<br>所有的对象都有<strong>proto</strong>属性<br>Object.prototype是所有对象的根<br>Function.prototype是所有函数的根<br>Object和Function都是构造函数</p>
+<p>instanceof的判断原理很简单，就是在实例的<strong>proto</strong>链条上寻找，如果有就返回true<br>通过上面的图也可以理解几个很奇怪的instanceof判断</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Function</span> <span class="keyword">instanceof</span> <span class="built_in">Function</span>  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">Object</span> <span class="keyword">instanceof</span> <span class="built_in">Function</span>  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">Object</span> <span class="keyword">instanceof</span> <span class="built_in">Object</span>  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">Function</span> <span class="keyword">instanceof</span> <span class="built_in">Object</span>  <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><p>这两天看书，发现自己对instanceof的使用有个地方还是不清楚</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line">Person.prototype.dance = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Ninja</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line">Ninja.prototype = <span class="keyword">new</span> Person()</span><br><span class="line"><span class="keyword">const</span> ninja = <span class="keyword">new</span> Ninja()</span><br></pre></td></tr></table></figure>
+
+<p>一般的js继承写法，一开始我想的是：<br>Ninja.prototype被改写成一个Person实例对象了<br>所以:<br>ninja instanceof Ninja返回false，<br>ninja instanceof Person 返回true</p>
+<p>但是测试返回的是两个true</p>
+<p>到底该如何理解instanceof?<br><strong>检查右边的函数原型是否存在于操作符左边的对象的原型链上</strong><br>Ninja.prototype 是否在ninja对象的<strong>proto</strong>链上</p>
+<p>当你实例化时候，const ninja = new Ninja()<br>判断ninja instanceof Ninja时，就看Ninja.prototype是否在ninja实例的<strong>proto</strong>链条上<br>而Ninja.prototype是new Person，在ninja实例的<strong>proto</strong>链条上，所以就返回true<br>这样才是正确理解instanceof的方式</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-06-27T09:36:20.633Z" itemprop="dateUpdated">2019-06-27 17:36:20</time>
+</span><br>
+
+
+        
+        <p style="font-size:16px;font-size:700"> 联系我:439286657(QQ),  17691203856(wechat)</P>
+        
+    </div>
+    
+    <footer>
+        <a href="https://luckyjq.github.io">
+            <img src="/img/avatar.jpg" alt="LuckyQ">
+            LuckyQ
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/基础/">基础</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://luckyjq.github.io/2019/06/24/理解typeof和instanceof/&title=《理解typeof和instanceof》 — 小七快跑&pic=https://luckyjq.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://luckyjq.github.io/2019/06/24/理解typeof和instanceof/&title=《理解typeof和instanceof》 — 小七快跑&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://luckyjq.github.io/2019/06/24/理解typeof和instanceof/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《理解typeof和instanceof》 — 小七快跑&url=https://luckyjq.github.io/2019/06/24/理解typeof和instanceof/&via=https://luckyjq.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://luckyjq.github.io/2019/06/24/理解typeof和instanceof/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2019/06/24/nodejs/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">使用nodejs原生http开发api接口</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2019/06/24/二级域名/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">github博客绑定腾讯云二级域名</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>LuckyQ &copy; 2018 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://luckyjq.github.io/2019/06/24/理解typeof和instanceof/&title=《理解typeof和instanceof》 — 小七快跑&pic=https://luckyjq.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://luckyjq.github.io/2019/06/24/理解typeof和instanceof/&title=《理解typeof和instanceof》 — 小七快跑&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://luckyjq.github.io/2019/06/24/理解typeof和instanceof/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《理解typeof和instanceof》 — 小七快跑&url=https://luckyjq.github.io/2019/06/24/理解typeof和instanceof/&via=https://luckyjq.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://luckyjq.github.io/2019/06/24/理解typeof和instanceof/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACu0lEQVR42u3aQU4DMQwF0N7/0kViC535tuMWpJdV1UKaN0ixsf14xOv5vfJ3fn46/93rPUcLDw8Pr3X0V+vnz0zA10dPVn5mPDw8vG3e9UV8vUWCT4JElRcFDzw8PLyP8q4v9OvwkASJPNXGw8PD+1+85NLPU95TDxEPDw/v/bw8hU1KA0kB4voMySM+XGvBw8PDi3m9ksFnXy/29/Dw8PAGiW+vGZZf00nZYnRaPDw8vAVens5OxrBOMfIoUM7W8fDw8Iq83qGrr3PMPJC83AcPDw9vzMvbSL3j5kXe3p43Z8PDw8Nb4FUxvdZUtUmWhId8HAEPDw9vgzcvLuQ7JG2tSZJ9oAyBh4eHF1Q15+XafOAggfXKtb/sjIeHh7fAq17Wk6S5V8g4hcfDw8N7Jy85XFIamIxwTVp0eHh4eHu8Xtp6dvQqH/8qVFnw8PDwjvLyYkTSoEoO2gsGzceBh4eHt8brFSCqh64WHXr7v5wpw8PDwzvEq7a7eunvqeZWUsi4+S48PDy8MS8psFaLp73gUQ1C0W54eHh4a7ykrFAtQxTGoQYp9U2qjYeHh7fGq7adJsh8aKDXzWvGPTw8PLxDvHl5ImmtJQ2z6kBDOcfHw8PDK+a0z8uVHC4vSeSFjzz5vjkVHh4e3jIvbzjl6fWk7Dt/cHh4eHhneXkyPU+1q+EkSb5vPsXDw8Nb5hWS1EHwqAJ6peHsYzw8PLwOb1JoyEegqs2tPMmu/knw8PDw5rxnceXJ9Kk0fRSK8PDw8BZ4+eoNEOThIR8vmDTM8PDw8E7x8mCQD2ZVG1e9ABD9M4CHh4e3xqteyvlI1nwA6zFZeHh4eB/l5W2tJJDMSVF4wMPDw/sDvCR1zgcFqo20cpqOh4eHt8abX/1nMTng5hvx8PDwFniTBlj+IKqfVt8/XLDAw8PD+533BQ6bfYKCp8KVAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
