@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>浏览器和nodejs的事件循环机制 | 小七快跑 | 沈小祺技术博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="nodejs,js,基础">
+    <meta name="description" content="事件循环，画个圈圈……">
+<meta name="keywords" content="nodejs,js,基础">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浏览器和nodejs的事件循环机制">
+<meta property="og:url" content="https://luckyjq.github.io/2019/04/21/浏览器和nodejs的事件循环机制/index.html">
+<meta property="og:site_name" content="小七快跑">
+<meta property="og:description" content="事件循环，画个圈圈……">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://gitblog.luckyq.cn/1e7b48b68e4388149a47ecdb57761ba0.jpg">
+<meta property="og:updated_time" content="2019-07-02T13:45:32.369Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="浏览器和nodejs的事件循环机制">
+<meta name="twitter:description" content="事件循环，画个圈圈……">
+<meta name="twitter:image" content="http://gitblog.luckyq.cn/1e7b48b68e4388149a47ecdb57761ba0.jpg">
+    
+        <link rel="alternate" type="application/atom+xml" title="小七快跑" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">LuckyQ</h5>
+          <a href="mailto:439286657@qq.com" title="439286657@qq.com" class="mail">439286657@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/luckyjq" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">浏览器和nodejs的事件循环机制</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">浏览器和nodejs的事件循环机制</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-04-20T16:00:00.000Z" itemprop="datePublished" class="page-time">
+  2019-04-21
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/js/">js</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#浏览器的事件循环机制"><span class="post-toc-number">1.</span> <span class="post-toc-text">浏览器的事件循环机制</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#宏任务微任务"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">宏任务微任务</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#从面试题理解运行机制"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">从面试题理解运行机制</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#nodejs的事件循环机制"><span class="post-toc-number">2.</span> <span class="post-toc-text">nodejs的事件循环机制</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-浏览器和nodejs的事件循环机制"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">浏览器和nodejs的事件循环机制</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-04-21 00:00:00" datetime="2019-04-20T16:00:00.000Z"  itemprop="datePublished">2019-04-21</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/js/">js</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>事件循环，画个圈圈……</p>
+<a id="more"></a>
+
+<h2 id="浏览器的事件循环机制"><a href="#浏览器的事件循环机制" class="headerlink" title="浏览器的事件循环机制"></a>浏览器的事件循环机制</h2><p>浏览器事件循环图（摘自《javascript忍者秘籍第二版》13章）：</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://gitblog.luckyq.cn/1e7b48b68e4388149a47ecdb57761ba0.jpg" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+
+<h3 id="宏任务微任务"><a href="#宏任务微任务" class="headerlink" title="宏任务微任务"></a>宏任务微任务</h3><p><strong>宏任务：从浏览器角度，代表一个离散的，独立的工作单元</strong><br>比如：创建主文档对象，解析HTML，执行主线（全局）js代码<br>更改当前URL和各种事件（页面加载，网络事件，定时器等）</p>
+<p><strong>微任务：是更小的任务，微任务要尽可能快的，通过异步方式执行</strong><br>比如：DOM变化（MutationObserver），Promise回调函数<br>由于因为async await 本身就是promise+generator的语法糖，所以await后面的也是</p>
+<h3 id="从面试题理解运行机制"><a href="#从面试题理解运行机制" class="headerlink" title="从面试题理解运行机制"></a>从面试题理解运行机制</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 写出输出</span></span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">1</span>);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve,reject</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">2</span>)</span><br><span class="line">    resolve(<span class="number">3</span>)</span><br><span class="line">&#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params">val</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(val);</span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">4</span>);</span><br></pre></td></tr></table></figure>
+
+<p>上面的代码执行结果为：2，4，3，1<br>我们结合上面的事件循环图来理解下输出结果</p>
+<ol>
+<li>首先执行主线（全局js代码），碰到定时器代码，定时器时间为0表示尽快执行<br>定时器是宏任务，于是把定时器任务放入宏任务队列<br>现在宏任务队列中是（主线，定时器）</li>
+<li>接着往下解析，开始执行promise的代码，遇到promise里的2直接输出</li>
+<li>promise中有一个异步方法，是微任务，于是把他放到微任务队列</li>
+<li>继续往下执行全局代码，输出4</li>
+<li>跑完上面的流程，js主线（全局）代码执行完成，同时也是第一个宏任务执行完成了</li>
+<li>按照事件循环图的流程，开始检查微任务队列是否有任务，有的话执行所有微任务，输出3</li>
+<li>第一轮循环结束，更新UI主线（全局）任务从宏任务中出队</li>
+<li>开始新的一轮事件循环，执行队首的宏任务即之前的定时器任务输出1</li>
+</ol>
+<p>通过上面的例子我们也可以知道，定时器的执行时间机制：<br>因为js单线程的本质，<strong>我们只能控制定时器何时被加入宏任务队列，而无法控制其何时执行</strong></p>
+<p>再看一个例子：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">//请写出输出内容</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">async1</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'async1 start'</span>);</span><br><span class="line">    <span class="keyword">await</span> async2();</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'async1 end'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">async2</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">'async2'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'script start'</span>);</span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'setTimeout'</span>);</span><br><span class="line">&#125;, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">async1();</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'promise1'</span>);</span><br><span class="line">    resolve();</span><br><span class="line">&#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'promise2'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'script end'</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">script start</span></span><br><span class="line"><span class="comment">async1 start</span></span><br><span class="line"><span class="comment">async2</span></span><br><span class="line"><span class="comment">promise1</span></span><br><span class="line"><span class="comment">script end</span></span><br><span class="line"><span class="comment">async1 end</span></span><br><span class="line"><span class="comment">promise2</span></span><br><span class="line"><span class="comment">setTimeout</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<p>上面这个例题可能会有一些地方难理解，主要是async和await</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">async1</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">'async1 start'</span>);</span><br><span class="line">	<span class="keyword">await</span> async2();</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">'async1 end'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>等价于：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">async1</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">'async1 start'</span>);</span><br><span class="line">	<span class="built_in">Promise</span>.resolve(async2()).then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">                <span class="built_in">console</span>.log(<span class="string">'async1 end'</span>);</span><br><span class="line">        &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="nodejs的事件循环机制"><a href="#nodejs的事件循环机制" class="headerlink" title="nodejs的事件循环机制"></a>nodejs的事件循环机制</h2>
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-07-02T13:45:32.369Z" itemprop="dateUpdated">2019-07-02 21:45:32</time>
+</span><br>
+
+
+        
+        <p style="font-size:16px;font-size:700"> 联系我:439286657(QQ),  17691203856(wechat)</P>
+        
+    </div>
+    
+    <footer>
+        <a href="https://luckyjq.github.io">
+            <img src="/img/avatar.jpg" alt="LuckyQ">
+            LuckyQ
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/基础/">基础</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://luckyjq.github.io/2019/04/21/浏览器和nodejs的事件循环机制/&title=《浏览器和nodejs的事件循环机制》 — 小七快跑&pic=https://luckyjq.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://luckyjq.github.io/2019/04/21/浏览器和nodejs的事件循环机制/&title=《浏览器和nodejs的事件循环机制》 — 小七快跑&source=事件循环，画个圈圈……" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://luckyjq.github.io/2019/04/21/浏览器和nodejs的事件循环机制/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《浏览器和nodejs的事件循环机制》 — 小七快跑&url=https://luckyjq.github.io/2019/04/21/浏览器和nodejs的事件循环机制/&via=https://luckyjq.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://luckyjq.github.io/2019/04/21/浏览器和nodejs的事件循环机制/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2019/06/24/使用七牛云一键上传博客图片（mac)/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">使用七牛云一键上传博客图片（mac）</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2019/04/17/理解typeof和instanceof/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">理解typeof和instanceof</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>LuckyQ &copy; 2018 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://luckyjq.github.io/2019/04/21/浏览器和nodejs的事件循环机制/&title=《浏览器和nodejs的事件循环机制》 — 小七快跑&pic=https://luckyjq.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://luckyjq.github.io/2019/04/21/浏览器和nodejs的事件循环机制/&title=《浏览器和nodejs的事件循环机制》 — 小七快跑&source=事件循环，画个圈圈……" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://luckyjq.github.io/2019/04/21/浏览器和nodejs的事件循环机制/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《浏览器和nodejs的事件循环机制》 — 小七快跑&url=https://luckyjq.github.io/2019/04/21/浏览器和nodejs的事件循环机制/&via=https://luckyjq.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://luckyjq.github.io/2019/04/21/浏览器和nodejs的事件循环机制/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACr0lEQVR42u3a0W7jMAwEwP7/T/deCxzq7JJSkALjp8JJLY0CiDTFr6/4+v5x/byTfPr8tFPPXF14eHh4i6k/D5wP8P83n58/W4jomXh4eHjXeM9TfN6g8+FnQSiZw6/38fDw8D6e94zZhwc8PDy8v8trE+5ksb6DCw8PD+9zeO3jigGCkJAHlYu1Fjw8PLyY15ZlP+HvK+d7eHh4eOtT9dkmnhdz88DzPbrw8PDwbvDyDXfWIHUqNd8UfPHw8PDO8maH9G1qmxyYzb7/Ymnw8PDwLvA2hYA87Y6i06Jp4MXT8PDw8C7zZuWGfPtu2bP2LDw8PLz38GZtVZutv23VGqb1eHh4eEd5p467kvvtYs0O2PDw8PBu85LEOi9AJIn17GCsLVsU7w14eHh4I96+IeDUAuXLcaxKjYeHh1fyEkw7WP6/bfCowwYeHh7eZd69UJEvYlt0iHrK8PDw8K7x2kP6/No0CuQHYEVKjYeHh3eZlxRbNylyW94t0ms8PDy8t/Bmp2ez7XtW2iiCDR4eHt4FXlt4bZsDknDSbvqz5jA8PDy8U7NqC6x5CTVJyvOx2pIHHh4e3j1ee9y137JngE26j4eHh3eWl08oL9G2pdtZcSH6SfDw8PAu8PIHtdNtGwhmASZfUDw8PLyzvBuFg1lJop1DdISGh4eHd42Xh4R96aGddNuGhYeHh/dOXp4cb8oN7Yjtz/OimIuHh4e34G1Kse0hWX6/aKt6ngkeHh7eBd5+882HaUPFplBy4K0CDw8P73FWsxLALCHeFDWSwFC8MeDh4eGtefnB2KadNG82bZes/hgPDw/vjbw2aU5aDTZze7GIeHh4eB/Ay0sD+9aBTQ8AHh4e3m3evpWqXZR8Pnn549fAgIeHh3eUN0tt8yVoD9XapV/B8PDw8DrePyNDnHHV9XF0AAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

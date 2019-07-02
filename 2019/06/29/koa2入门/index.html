@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>koa2入门 | 小七快跑 | 沈小祺技术博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="nodejs,koa2">
+    <meta name="description" content="大杂烩，记录贴。包含一个简版koa框架的核心实现">
+<meta name="keywords" content="nodejs,koa2">
+<meta property="og:type" content="article">
+<meta property="og:title" content="koa2入门">
+<meta property="og:url" content="https://luckyjq.github.io/2019/06/29/koa2入门/index.html">
+<meta property="og:site_name" content="小七快跑">
+<meta property="og:description" content="大杂烩，记录贴。包含一个简版koa框架的核心实现">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://gitblog.luckyq.cn/c25a5034d64bde05d67f38042b401d57.jpg">
+<meta property="og:image" content="http://gitblog.luckyq.cn/3cd5daadf1e308d2427851ebe6d8a691.jpg">
+<meta property="og:image" content="http://gitblog.luckyq.cn/74e4ca944f57360564990c5ffc36c401.jpg">
+<meta property="og:updated_time" content="2019-07-02T13:46:13.184Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="koa2入门">
+<meta name="twitter:description" content="大杂烩，记录贴。包含一个简版koa框架的核心实现">
+<meta name="twitter:image" content="http://gitblog.luckyq.cn/c25a5034d64bde05d67f38042b401d57.jpg">
+    
+        <link rel="alternate" type="application/atom+xml" title="小七快跑" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">LuckyQ</h5>
+          <a href="mailto:439286657@qq.com" title="439286657@qq.com" class="mail">439286657@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/luckyjq" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">koa2入门</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">koa2入门</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-06-28T16:00:00.000Z" itemprop="datePublished" class="page-time">
+  2019-06-29
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/框架/">框架</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#前置知识：关于async和await的理解"><span class="post-toc-number">1.</span> <span class="post-toc-text">前置知识：关于async和await的理解</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#koa2原理（use和next）"><span class="post-toc-number">2.</span> <span class="post-toc-text">koa2原理（use和next）</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#koa2的ctx对象"><span class="post-toc-number">3.</span> <span class="post-toc-text">koa2的ctx对象</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#利用cookie和session进行鉴权"><span class="post-toc-number">4.</span> <span class="post-toc-text">利用cookie和session进行鉴权</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#koa2常用插件"><span class="post-toc-number">5.</span> <span class="post-toc-text">koa2常用插件</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#登陆鉴权相关"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">登陆鉴权相关</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#异常处理"><span class="post-toc-number">6.</span> <span class="post-toc-text">异常处理</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#js中try-catch只能捕捉同步错误"><span class="post-toc-number">6.1.</span> <span class="post-toc-text">js中try catch只能捕捉同步错误</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#AOP思想"><span class="post-toc-number">6.2.</span> <span class="post-toc-text">AOP思想</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#封装错误对象"><span class="post-toc-number">6.3.</span> <span class="post-toc-text">封装错误对象</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-koa2入门"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">koa2入门</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-06-29 00:00:00" datetime="2019-06-28T16:00:00.000Z"  itemprop="datePublished">2019-06-29</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/框架/">框架</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>大杂烩，记录贴。包含一个简版koa框架的核心实现</p>
+<a id="more"></a>
+
+<h2 id="前置知识：关于async和await的理解"><a href="#前置知识：关于async和await的理解" class="headerlink" title="前置知识：关于async和await的理解"></a>前置知识：关于async和await的理解</h2><p><a href="https://segmentfault.com/a/1190000007535316" target="_blank" rel="noopener">https://segmentfault.com/a/1190000007535316</a></p>
+<ul>
+<li>await必须包裹在async函数里</li>
+<li>async函数执行返回的是一个promise对象</li>
+<li>await在等什么？等一个promise，获取他的resolve的值</li>
+<li>如果await后面的promise返回的是reject的值，那么需要使用try，catch进行包裹</li>
+</ul>
+<h2 id="koa2原理（use和next）"><a href="#koa2原理（use和next）" class="headerlink" title="koa2原理（use和next）"></a>koa2原理（use和next）</h2><p>源码解读：<a href="https://zhuanlan.zhihu.com/p/34797505" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/34797505</a></p>
+<p>自己实现一个简版</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> http = <span class="built_in">require</span>(<span class="string">'http'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 组合中间件</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">compose</span>(<span class="params">middlewareList</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">ctx</span>) </span>&#123;</span><br><span class="line">        <span class="comment">//dispatch函数用于执行一个中间件</span></span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">dispatch</span>(<span class="params">i</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">const</span> fn = middlewareList[i]</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="built_in">Promise</span>.resolve(</span><br><span class="line"></span><br><span class="line">                <span class="comment">//这里fn的第二个参数就相当于next</span></span><br><span class="line">                fn(ctx, dispatch.bind(<span class="literal">null</span>, i + <span class="number">1</span>))  <span class="comment">// promise</span></span><br><span class="line">            )</span><br><span class="line">            &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="built_in">Promise</span>.reject(err)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dispatch(<span class="number">0</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LikeKoa2</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>() &#123;</span><br><span class="line">        <span class="keyword">this</span>.middlewareList = []</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    use(fn) &#123;</span><br><span class="line">        <span class="keyword">this</span>.middlewareList.push(fn)</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    createContext(req, res) &#123;</span><br><span class="line">        <span class="keyword">const</span> ctx = &#123;</span><br><span class="line">            req,</span><br><span class="line">            res</span><br><span class="line">        &#125;</span><br><span class="line">        ctx.query = req.query</span><br><span class="line">        <span class="keyword">return</span> ctx</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    handleRequest(ctx, fn) &#123;</span><br><span class="line">        <span class="keyword">return</span> fn(ctx)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    callback() &#123;</span><br><span class="line">        <span class="keyword">const</span> fn = compose(<span class="keyword">this</span>.middlewareList)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">const</span> ctx = <span class="keyword">this</span>.createContext(req, res)</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>.handleRequest(ctx, fn)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    listen(...args) &#123;</span><br><span class="line">        <span class="keyword">const</span> server = http.createServer(<span class="keyword">this</span>.callback())</span><br><span class="line">        server.listen(...args)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = LikeKoa2</span><br></pre></td></tr></table></figure>
+
+<h2 id="koa2的ctx对象"><a href="#koa2的ctx对象" class="headerlink" title="koa2的ctx对象"></a>koa2的ctx对象</h2><p>koa2的ctx封装了req和res，可以通过ctx直接取得，也可以通过ctx.request.xx的形式取得<br>常用的：</p>
+<ul>
+<li>ctx.params</li>
+<li>ctx.request.query</li>
+<li>ctx.request.header</li>
+<li>ctx.request.body( 需要使用body-parser插件)</li>
+</ul>
+<h2 id="利用cookie和session进行鉴权"><a href="#利用cookie和session进行鉴权" class="headerlink" title="利用cookie和session进行鉴权"></a>利用cookie和session进行鉴权</h2><p>作为一个网站有些资源需要登陆才能访问，有些不登陆也可以浏览。<br>如何实现鉴权？常用的方法是cookie和session</p>
+<p>这里假设session存储在服务端内存中，是一个数组SESSION[ ]</p>
+<ol>
+<li>用户访问某个url时，进行用户鉴权，有无cookie</li>
+<li>没有cookie，响应设置cookie,比如userid: xxx01，在服务端SESSION[ ]中添加一个session{xxx01:{ }}</li>
+<li>用户登陆，往SESSION中对应的session对象中写字段，比如username: xxx。此时SESSON数组中有一个session应该是这样的：ssession{xxx01:{username: xxx}}</li>
+<li>请求时携带cookie，服务端获取userid去SESSION中进行查询，看username是否有值，判断是否登陆了</li>
+</ol>
+<p>注意事项：</p>
+<ol>
+<li>设置 cookie时应当设置过期时间</li>
+<li>session存储在服务器中重启就没了，需要进行持久化。可以考虑存在redis中或者直接加密后返回到cookie也可以</li>
+</ol>
+<h2 id="koa2常用插件"><a href="#koa2常用插件" class="headerlink" title="koa2常用插件"></a>koa2常用插件</h2><h3 id="登陆鉴权相关"><a href="#登陆鉴权相关" class="headerlink" title="登陆鉴权相关"></a>登陆鉴权相关</h3><ol>
+<li><p>koa-session（把session加密后存在cookie中，支持外部数据库）<br>源码解读文章：<a href="https://segmentfault.com/a/1190000012412299" target="_blank" rel="noopener">https://segmentfault.com/a/1190000012412299</a></p>
+</li>
+<li><p>koa-generic-session，koa-redis（这两个配套可以存储session到redis）</p>
+</li>
+</ol>
+<h2 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h2><h3 id="js中try-catch只能捕捉同步错误"><a href="#js中try-catch只能捕捉同步错误" class="headerlink" title="js中try catch只能捕捉同步错误"></a>js中try catch只能捕捉同步错误</h3><p>异步代码的错误很难，通过使用promise和async和await可以简化异步的错误处理，使用try和catch<br>下面这样也是没用的，必须返回异步函数的promise包装</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://gitblog.luckyq.cn/c25a5034d64bde05d67f38042b401d57.jpg" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>这样才对</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://gitblog.luckyq.cn/3cd5daadf1e308d2427851ebe6d8a691.jpg" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+
+<h3 id="AOP思想"><a href="#AOP思想" class="headerlink" title="AOP思想"></a>AOP思想</h3><p>自定义全局异常处理函数，最先注册，try next()即可，相当于调用链条</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://gitblog.luckyq.cn/74e4ca944f57360564990c5ffc36c401.jpg" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+
+<h3 id="封装错误对象"><a href="#封装错误对象" class="headerlink" title="封装错误对象"></a>封装错误对象</h3><p>状态码<br>error code<br>error message<br>request url</p>
+<p>一个作业题</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>() &#123;</span><br><span class="line">        <span class="keyword">this</span>.nameA = <span class="string">'a'</span></span><br><span class="line">        <span class="keyword">this</span>.nameD = <span class="string">'d'</span></span><br><span class="line">    &#125;</span><br><span class="line">    validateA() &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"A"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span> <span class="keyword">extends</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>() &#123;</span><br><span class="line">        <span class="keyword">super</span>()</span><br><span class="line">        <span class="keyword">this</span>.nameB = <span class="string">'b'</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    validateB() &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"B"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> b = <span class="keyword">new</span> B()</span><br><span class="line"><span class="comment">// 编写一个函数findMembers,获取b的所有带前缀的属性和方法</span></span><br><span class="line"><span class="keyword">const</span> members = findMembers2(b, <span class="string">'name'</span>, <span class="string">'validate'</span>)</span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-07-02T13:46:13.184Z" itemprop="dateUpdated">2019-07-02 21:46:13</time>
+</span><br>
+
+
+        
+        <p style="font-size:16px;font-size:700"> 联系我:439286657(QQ),  17691203856(wechat)</P>
+        
+    </div>
+    
+    <footer>
+        <a href="https://luckyjq.github.io">
+            <img src="/img/avatar.jpg" alt="LuckyQ">
+            LuckyQ
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/koa2/">koa2</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://luckyjq.github.io/2019/06/29/koa2入门/&title=《koa2入门》 — 小七快跑&pic=https://luckyjq.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://luckyjq.github.io/2019/06/29/koa2入门/&title=《koa2入门》 — 小七快跑&source=大杂烩，记录贴。包含一个简版koa框架的核心实现" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://luckyjq.github.io/2019/06/29/koa2入门/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《koa2入门》 — 小七快跑&url=https://luckyjq.github.io/2019/06/29/koa2入门/&via=https://luckyjq.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://luckyjq.github.io/2019/06/29/koa2入门/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2019/07/02/实现一个类似vue的双向绑定/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">实现一个类似vue的双向绑定</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2019/06/24/使用七牛云一键上传博客图片（mac)/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">使用七牛云一键上传博客图片（mac）</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>LuckyQ &copy; 2018 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://luckyjq.github.io/2019/06/29/koa2入门/&title=《koa2入门》 — 小七快跑&pic=https://luckyjq.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://luckyjq.github.io/2019/06/29/koa2入门/&title=《koa2入门》 — 小七快跑&source=大杂烩，记录贴。包含一个简版koa框架的核心实现" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://luckyjq.github.io/2019/06/29/koa2入门/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《koa2入门》 — 小七快跑&url=https://luckyjq.github.io/2019/06/29/koa2入门/&via=https://luckyjq.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://luckyjq.github.io/2019/06/29/koa2入门/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACKElEQVR42u3aUZLrIAwEwL3/pfMusCYzaPOqAu0vV2Jjmg8VQvr5ia9XcD09n4yZvzW6MDAwvpaRTC4H5JNej1x/FwMD4wLG04fX9594cj3C4+8YGBgYweZvPc464ObfxcDAwNgbbh0u11u9ydJgYGDcxkiSyflhWY78YC6OgYHxhYz8sOz/33+kvoGBgfFVjFd57SWok5AazQoDA+NoRh7g8uHarWGyHFFBFAMD41DGvMFrEqzbhozHXzAwMI5mtNNtj/snT+YBGgMD4wbGXsBtiwd7gXhUwsTAwDiC0W4E8+nmS1Cs91MIxsDAuIAxKQ/kAXQvQY2O8zAwMC5gJElje5S//nzeZhHNEAMD4xpGW5Jsj+f2SgJRIMbAwDiaMd+i5Slo0gqWJ7FvSpgYGBgHMdomrTy93EtrWxIGBsY9jL3mrSR0tm0WeQj+ZYeLgYFxKCNPLNst4F4ZIA+yGBgY9zDatomEuteK0abHGBgY9zAmATfZ0u29NVlWDAyMUxmFbFwkmLdWPI6AgYFxDaNt/GoT2va4rSg8YGBgXMBIXsuLl3mYboP+4+JiYGAcyniV117T2F6CWuTfGBgYRzMmiWv7bxua26CPgYFxNmN+xD9pHfuDIiUGBsY1jEngmxzVtdN9s8/FwMDA2HpmPd32eA4DAwNjMsW2DDAJsm8qsRgYGIcyJi0ReRL7V4k0BgbGbYxJyNub+nqbmLSXbRY1MTAwvo/xD8vCiYcgEumaAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>实现一个类似vue的双向绑定 | 小七快跑 | 沈小祺技术博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="vue,源码">
+    <meta name="description" content="vue用了有段时间了，参考了github的文章，写了个简化版">
+<meta name="keywords" content="vue,源码">
+<meta property="og:type" content="article">
+<meta property="og:title" content="实现一个类似vue的双向绑定">
+<meta property="og:url" content="https://luckyjq.github.io/2019/07/02/实现一个类似vue的双向绑定/index.html">
+<meta property="og:site_name" content="小七快跑">
+<meta property="og:description" content="vue用了有段时间了，参考了github的文章，写了个简化版">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-07-02T13:47:02.261Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="实现一个类似vue的双向绑定">
+<meta name="twitter:description" content="vue用了有段时间了，参考了github的文章，写了个简化版">
+    
+        <link rel="alternate" type="application/atom+xml" title="小七快跑" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">LuckyQ</h5>
+          <a href="mailto:439286657@qq.com" title="439286657@qq.com" class="mail">439286657@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/luckyjq" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">实现一个类似vue的双向绑定</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">实现一个类似vue的双向绑定</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-07-01T16:00:00.000Z" itemprop="datePublished" class="page-time">
+  2019-07-02
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/框架/">框架</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#前言"><span class="post-toc-number">1.</span> <span class="post-toc-text">前言</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Object-defineProperty的使用"><span class="post-toc-number">2.</span> <span class="post-toc-text">Object.defineProperty的使用</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#观察者模式"><span class="post-toc-number">3.</span> <span class="post-toc-text">观察者模式</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#实现原理"><span class="post-toc-number">4.</span> <span class="post-toc-text">实现原理</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#实现单向数据流（数据-gt-视图）"><span class="post-toc-number">5.</span> <span class="post-toc-text">实现单向数据流（数据=&gt;视图）</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#实现双向绑定"><span class="post-toc-number">6.</span> <span class="post-toc-text">实现双向绑定</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-实现一个类似vue的双向绑定"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">实现一个类似vue的双向绑定</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-07-02 00:00:00" datetime="2019-07-01T16:00:00.000Z"  itemprop="datePublished">2019-07-02</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/框架/">框架</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>vue用了有段时间了，参考了github的文章，写了个简化版</p>
+<a id="more"></a>
+
+<p>github文章链接：<a href="https://github.com/DMQ/mvvm" target="_blank" rel="noopener">https://github.com/DMQ/mvvm</a><br>如果看不懂就看我的啊，嘿嘿嘿</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>使用Vue也有一段时间了，vue作为一个MVVM框架，最有名的就是双向绑定<br>一般来说当数据变化时，视图层跟着变化，这是单向的<br>当视图层变化时，数据也跟着变，这就是双向的<br>比如在vue中通过v-model绑定的输入框，当输入框内值变化时数据也跟着变化</p>
+<p>今天就来实现一个类似于vue的双向绑定，预期效果：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 视图层</span></span><br><span class="line">&lt;div id=<span class="string">"app"</span>&gt;</span><br><span class="line">    <span class="keyword">this</span> is &#123;&#123;name&#125;&#125;, &#123;&#123;age&#125;&#125; years old!</span><br><span class="line">    &lt;h1&gt;</span><br><span class="line">        &#123;&#123;name&#125;&#125;</span><br><span class="line">    &lt;<span class="regexp">/h1&gt;</span></span><br><span class="line"><span class="regexp">&lt;/</span>div&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 数据层</span></span><br><span class="line"><span class="keyword">var</span> vm = <span class="keyword">new</span> MVVM(&#123;</span><br><span class="line">    el: <span class="string">'#app'</span>,</span><br><span class="line">    data: &#123;</span><br><span class="line">        name: <span class="string">'jianqi'</span>,</span><br><span class="line">        age: <span class="number">3</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h2 id="Object-defineProperty的使用"><a href="#Object-defineProperty的使用" class="headerlink" title="Object.defineProperty的使用"></a>Object.defineProperty的使用</h2><p>Object.defineProperty() 方法会直接在一个对象上定义一个新属性，或者修改一个对象的现有属性， 并返回这个对象。<br>MDN:<a href="https://dwz.cn/umKlHoaq" target="_blank" rel="noopener">https://dwz.cn/umKlHoaq</a></p>
+<p>定义对象descriptor时注意事项：</p>
+<ol>
+<li>属性描述（configurable，enumerable）：<br>通过这个定义的属性默认不可被删除（delete obj.xxx），默认不可遍历（for in）</li>
+<li>值描述（value， writable）：<br>value和writable，value默认为undefined，writable默认为false值不能被改变</li>
+<li>存取描述：get，set函数</li>
+<li>值描述符和存取描述符不能同时存在</li>
+</ol>
+<h2 id="观察者模式"><a href="#观察者模式" class="headerlink" title="观察者模式"></a>观察者模式</h2><p>Subject是一个主题（网站）。Observer相当于一个个的观察者（网民），他们可以订阅Subject，当Subject更新时通知Observer，触发Observer之前定义的回调。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//es6实现</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Subject</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>()&#123;</span><br><span class="line">        <span class="keyword">this</span>.state = <span class="number">0</span></span><br><span class="line">        <span class="keyword">this</span>.observers = []</span><br><span class="line">    &#125;</span><br><span class="line">    getState() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.state</span><br><span class="line">    &#125;</span><br><span class="line">    setState(state)&#123;</span><br><span class="line">        <span class="keyword">this</span>.state = state</span><br><span class="line">        <span class="keyword">this</span>.notifyAllObservers()</span><br><span class="line">    &#125;</span><br><span class="line">    notifyAllObservers()&#123;</span><br><span class="line">        <span class="keyword">this</span>.observers.forEach(<span class="function"><span class="params">observer</span>=&gt;</span>&#123;</span><br><span class="line">            observer.update()</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    attach(observer) &#123;</span><br><span class="line">        <span class="keyword">this</span>.observers.push(observer)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Observer</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(name, subject)&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name</span><br><span class="line">        <span class="keyword">this</span>.subject = subject</span><br><span class="line">        <span class="keyword">this</span>.subject.attach(<span class="keyword">this</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    update() &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;<span class="keyword">this</span>.name&#125;</span> update,state:<span class="subst">$&#123;<span class="keyword">this</span>.subject.getState()&#125;</span>`</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> s = <span class="keyword">new</span> Subject()</span><br><span class="line"><span class="keyword">let</span> o = <span class="keyword">new</span> Observer(<span class="string">'o'</span>, s)</span><br><span class="line"><span class="keyword">let</span> o2 = <span class="keyword">new</span> Observer(<span class="string">'o2'</span>, s)</span><br><span class="line">s.setState(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h2><p>通过使用Object.defineProperty（数据拦截）和观察者模式实现双向绑定<br>原理图：</p>
+<ol>
+<li>主题是什么？  一个个key，比如name</li>
+<li>观察者是什么？  视图里面的，需要被替换成数据的地方</li>
+<li>观察者什么时候订阅？<br>一开始执行MVVM初始化时候根据el遍历dom节点，发现时候时订阅对应主题xxxx</li>
+<li>主题什么时候通知更新？<br>当xxxx改变时，通知观察者更新内容。可以在一开始就监控data通过Object.defineProperty()实现</li>
+</ol>
+<h2 id="实现单向数据流（数据-gt-视图）"><a href="#实现单向数据流（数据-gt-视图）" class="headerlink" title="实现单向数据流（数据=&gt;视图）"></a>实现单向数据流（数据=&gt;视图）</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 总入口</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MVVM</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(opts)&#123;</span><br><span class="line">    	<span class="comment">// 初始化，绑定数据到vm对象上</span></span><br><span class="line">        <span class="keyword">this</span>.init(opts)</span><br><span class="line">        <span class="comment">// 遍历所有data值，设置get和set方法</span></span><br><span class="line">        observe(<span class="keyword">this</span>.$data)</span><br><span class="line">        <span class="comment">// 遍历dom树，查找&#123;&#123;&#125;&#125;的特殊标记</span></span><br><span class="line">        <span class="keyword">this</span>.compile()</span><br><span class="line">    &#125;</span><br><span class="line">    init(opts)&#123;</span><br><span class="line">        <span class="keyword">this</span>.$el = <span class="built_in">document</span>.querySelector(opts.el)</span><br><span class="line">        <span class="keyword">this</span>.$data = opts.data</span><br><span class="line">    &#125;</span><br><span class="line">    compile()&#123;</span><br><span class="line">        <span class="keyword">this</span>.traverse(<span class="keyword">this</span>.$el)</span><br><span class="line">    &#125;</span><br><span class="line">    traverse(node)&#123;</span><br><span class="line">        <span class="keyword">if</span>(node.nodeType === <span class="number">1</span>)&#123;</span><br><span class="line">            node.childNodes.forEach(<span class="function"><span class="params">childNode</span>=&gt;</span>&#123;</span><br><span class="line">                <span class="keyword">this</span>.traverse(childNode)</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span>(node.nodeType === <span class="number">3</span>)&#123;</span><br><span class="line">            <span class="keyword">this</span>.renderText(node)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    renderText(node)&#123;</span><br><span class="line">        <span class="keyword">let</span> reg = <span class="regexp">/&#123;&#123;(.+?)&#125;&#125;/g</span></span><br><span class="line">        <span class="keyword">let</span> match</span><br><span class="line">        <span class="keyword">while</span> (match = reg.exec(node.nodeValue))&#123;</span><br><span class="line">            <span class="keyword">let</span> raw = match[<span class="number">0</span>]</span><br><span class="line">            <span class="keyword">let</span> key = match[<span class="number">1</span>].trim()</span><br><span class="line">            </span><br><span class="line">            <span class="comment">// 初始化时绑定data里的数据到视图对应节点</span></span><br><span class="line">            node.nodeValue = node.nodeValue.replace(raw, <span class="keyword">this</span>.$data[key])</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 对当前的key设置监听</span></span><br><span class="line">            <span class="keyword">new</span> Observer(<span class="keyword">this</span>, key, <span class="function"><span class="keyword">function</span> (<span class="params">val, oldVal</span>) </span>&#123;</span><br><span class="line">                node.nodeValue = node.nodeValue.replace(oldVal, val)</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> currentObserver = <span class="literal">null</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 遍历data，添加监听的observe方法</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">observe</span>(<span class="params">data</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(!data || <span class="keyword">typeof</span> data !== <span class="string">'object'</span>) <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> key <span class="keyword">in</span> data)&#123;</span><br><span class="line"></span><br><span class="line">    	<span class="comment">//如果下面的get方法直接返回data[key]会引起循环调用导致栈溢出</span></span><br><span class="line">        <span class="keyword">let</span> val = data[key]</span><br><span class="line"></span><br><span class="line">        <span class="comment">//每一个key都有一个自己的subject</span></span><br><span class="line">        <span class="keyword">let</span> subject = <span class="keyword">new</span> Subject()</span><br><span class="line">        <span class="built_in">Object</span>.defineProperty(data, key, &#123;</span><br><span class="line">            enumerable: <span class="literal">true</span>,</span><br><span class="line">            configurable: <span class="literal">true</span>,</span><br><span class="line">            <span class="keyword">get</span>: function () &#123;</span><br><span class="line">                <span class="built_in">console</span>.log(<span class="string">'run get'</span>)</span><br><span class="line"></span><br><span class="line">                <span class="comment">// currentObserver是一个全局的对象</span></span><br><span class="line">                <span class="keyword">if</span>(currentObserver)&#123;</span><br><span class="line"></span><br><span class="line">                	<span class="comment">// 订阅某一个subject（data中的某一个键值对的key）</span></span><br><span class="line">                    currentObserver.subscribeTo(subject)</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">return</span> val</span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="keyword">set</span>: function (newVal) &#123;</span><br><span class="line">                val = newVal</span><br><span class="line">                <span class="built_in">console</span>.log(<span class="string">'run set'</span>)</span><br><span class="line"></span><br><span class="line">                <span class="comment">// 更改了值，通知所有订阅者</span></span><br><span class="line">                subject.notify()</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">typeof</span> val === <span class="string">'object'</span>)&#123;</span><br><span class="line">            observe(val)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 主题Subject，data中的每一个key都是一个subject</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Subject</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>()&#123;</span><br><span class="line">        <span class="comment">// 一个主题会有多个订阅者，比如说在视图中会有多个地方有&#123;&#123;name&#125;&#125;</span></span><br><span class="line">        <span class="keyword">this</span>.observers = []</span><br><span class="line">    &#125;</span><br><span class="line">    addObserver(observer)&#123;</span><br><span class="line">        <span class="keyword">this</span>.observers.push(observer)</span><br><span class="line">    &#125;</span><br><span class="line">    notify()&#123;</span><br><span class="line">        <span class="keyword">this</span>.observers.forEach(<span class="function"><span class="params">observer</span>=&gt;</span>&#123;</span><br><span class="line">            observer.update()</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 订阅者Observer</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Observer</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(vm, key, cb)&#123;</span><br><span class="line">        <span class="keyword">this</span>.vm = vm</span><br><span class="line">        <span class="keyword">this</span>.key = key</span><br><span class="line">        <span class="keyword">this</span>.cb = cb</span><br><span class="line">        <span class="keyword">this</span>.value = <span class="keyword">this</span>.getValue()</span><br><span class="line">    &#125;</span><br><span class="line">    update()&#123;</span><br><span class="line">        <span class="keyword">let</span> oldVal = <span class="keyword">this</span>.value</span><br><span class="line">        <span class="keyword">let</span> value = <span class="keyword">this</span>.getValue()</span><br><span class="line">        <span class="keyword">if</span>(value !== oldVal)&#123;</span><br><span class="line">            <span class="keyword">this</span>.value = value</span><br><span class="line">            <span class="keyword">this</span>.cb.bind(<span class="keyword">this</span>.vm)(value, oldVal)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    subscribeTo(subject)&#123;</span><br><span class="line">        subject.addObserver(<span class="keyword">this</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    getValue()&#123;</span><br><span class="line"></span><br><span class="line">    	<span class="comment">// currentObserver是一个全局的变量，设置他有值</span></span><br><span class="line">    	<span class="comment">// 并执行下一行触发get方法，会运行observe方法中的订阅操作</span></span><br><span class="line">	    <span class="comment">// currentObserver.subscribeTo(subject)</span></span><br><span class="line">        currentObserver = <span class="keyword">this</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 这里会触发data中元素的get函数</span></span><br><span class="line">        <span class="keyword">let</span> value = <span class="keyword">this</span>.vm.$data[<span class="keyword">this</span>.key]</span><br><span class="line">        currentObserver = <span class="literal">null</span></span><br><span class="line">        <span class="keyword">return</span> value</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="string">`</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// 调用</span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"app"</span>&gt;</span></span><br><span class="line">    this is &#123;&#123;name&#125;&#125;, &#123;&#123;age&#125;&#125; years old!</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    </span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span></span><br><span class="line"><span class="javascript">    <span class="keyword">var</span> vm = <span class="keyword">new</span> MVVM(&#123;</span></span><br><span class="line"><span class="javascript">        el: <span class="string">'#app'</span>,</span></span><br><span class="line">        data: &#123;</span><br><span class="line"><span class="javascript">            name: <span class="string">'jianqi'</span>,</span></span><br><span class="line">            age: 3</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="实现双向绑定"><a href="#实现双向绑定" class="headerlink" title="实现双向绑定"></a>实现双向绑定</h2>
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-07-02T13:47:02.261Z" itemprop="dateUpdated">2019-07-02 21:47:02</time>
+</span><br>
+
+
+        
+        <p style="font-size:16px;font-size:700"> 联系我:439286657(QQ),  17691203856(wechat)</P>
+        
+    </div>
+    
+    <footer>
+        <a href="https://luckyjq.github.io">
+            <img src="/img/avatar.jpg" alt="LuckyQ">
+            LuckyQ
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vue/">vue</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/源码/">源码</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://luckyjq.github.io/2019/07/02/实现一个类似vue的双向绑定/&title=《实现一个类似vue的双向绑定》 — 小七快跑&pic=https://luckyjq.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://luckyjq.github.io/2019/07/02/实现一个类似vue的双向绑定/&title=《实现一个类似vue的双向绑定》 — 小七快跑&source=vue用了有段时间了，参考了github的文章，写了个简化版" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://luckyjq.github.io/2019/07/02/实现一个类似vue的双向绑定/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《实现一个类似vue的双向绑定》 — 小七快跑&url=https://luckyjq.github.io/2019/07/02/实现一个类似vue的双向绑定/&via=https://luckyjq.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://luckyjq.github.io/2019/07/02/实现一个类似vue的双向绑定/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2019/06/29/koa2入门/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">koa2入门</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>LuckyQ &copy; 2018 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://luckyjq.github.io/2019/07/02/实现一个类似vue的双向绑定/&title=《实现一个类似vue的双向绑定》 — 小七快跑&pic=https://luckyjq.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://luckyjq.github.io/2019/07/02/实现一个类似vue的双向绑定/&title=《实现一个类似vue的双向绑定》 — 小七快跑&source=vue用了有段时间了，参考了github的文章，写了个简化版" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://luckyjq.github.io/2019/07/02/实现一个类似vue的双向绑定/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《实现一个类似vue的双向绑定》 — 小七快跑&url=https://luckyjq.github.io/2019/07/02/实现一个类似vue的双向绑定/&via=https://luckyjq.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://luckyjq.github.io/2019/07/02/实现一个类似vue的双向绑定/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACuklEQVR42u3aQU7DQAwFUO5/aZBYVSpJv+1x6eJlhdLQ+A3SjLH99RVf37/X48+Pdyb3n59J7h++8PDw8FqhX13PodwHff/81acJ5p59GQ8eHh7eGi85DBJAvt33jo08Zjw8PLxP4E1CrIaVvBEPDw/v83lJ+lstJSSp/L+de3h4eHi3vOpr5qHPF/FwrQUPDw+vFkm5Afa/P6/39/Dw8PBaXfXJ5nt2jKAZIR4eHt4CLxkCyBv8SYhVZLJwLyLHw8PDO8q7J/VCTNLi3p3yiBgeHh7eAi/fS+etqY2hrvLxhoeHhzfm5WWFXjtqUrDIixovOnt4eHh4R3m9Btjk0+rAQb4Qox4gHh4eXsybtKPyVDvfvifPXNZa8PDw8NZ4SVkhf/6elP9u0ni7/GY8PDy8NV5eCJgUXifjAs3iLx4eHt4CL99286GBai2kd9gkfwA8PDy8bV41tZ2PGpwd24qWHg8PD+8oL09/q6NX1e85tavj4eHhbfAmpHyAoNce6w0r4OHh4b2HV23eT8qpyeHRmwv7Y5nw8PDwFnj5Fpw/U93ce4l7oRiBh4eHd5RXPQaqT/ZS57yO8qIsgoeHh7fAy8OqvqZ3qPQWtJlx4+Hh4Y1hvSJCvkHnTa9eAl2YhsDDw8Mb8/J2VzVRzhciL+Amb4zmI/Dw8PAO8eYF1mq7q5cbH/vvAQ8PD6/Fy4dNJwnuRiIeFVDw8PDw1nhJAaJaoq0WHSYtt8s7eHh4eEd538UrKbMm6W95cw8Ojz8WBQ8PD2+BN+m/Twqyp9L3STkYDw8Pb8LLD4NJMbd3VPRaX3h4eHjv4fW277xEO//OXocLDw8P7xN4p1pTvRQ8P8zw8PDwPoFXbXclgCjE1kAYHh4e3jav2vTqNbqqbbBkCV4sCh4eHt4Cr9cA6zXDJoBTRxceHh7egPcDKpoiFvGfNv4AAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
