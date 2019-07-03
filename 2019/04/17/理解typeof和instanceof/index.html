@@ -31,7 +31,7 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://gitblog.luckyq.cn/943056903a1e3c5bb07bc83a471fa457.jpg">
 <meta property="og:image" content="http://gitblog.luckyq.cn/1f5e2ac23cb0ea276d64256d63949f07.jpg">
-<meta property="og:updated_time" content="2019-07-02T13:44:58.381Z">
+<meta property="og:updated_time" content="2019-07-03T01:36:52.458Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="理解typeof和instanceof">
 <meta name="twitter:description" content="理解typeof和instanceof，从原型开始说起">
@@ -163,7 +163,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#typeof判断类型存在的问题"><span class="post-toc-number">1.</span> <span class="post-toc-text">typeof判断类型存在的问题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#instanceofd大法好"><span class="post-toc-number">2.</span> <span class="post-toc-text">instanceofd大法好</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#补充"><span class="post-toc-number">3.</span> <span class="post-toc-text">补充</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#typeof判断类型存在的问题"><span class="post-toc-number">1.</span> <span class="post-toc-text">typeof判断类型存在的问题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#instanceof大法好"><span class="post-toc-number">2.</span> <span class="post-toc-text">instanceof大法好</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#补充"><span class="post-toc-number">3.</span> <span class="post-toc-text">补充</span></a></li></ol>
         </nav>
     </aside>
 
@@ -209,7 +209,7 @@
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arr.toString()  <span class="comment">//"12,aaa"</span></span><br></pre></td></tr></table></figure>
 
 <p>但是使用上面这种方法判断也存在局限性，对于任何对象，返回都是相同的。我们现在的需求是有不同构造函数比如Student，Dog等等，我们new一个实例的时候想判断这个实例是一个Dog还是一个Student，这时候就需要用到instanceof。</p>
-<h2 id="instanceofd大法好"><a href="#instanceofd大法好" class="headerlink" title="instanceofd大法好"></a>instanceofd大法好</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Student = <span class="function"><span class="keyword">function</span> (<span class="params">name,age</span>) </span>&#123;</span><br><span class="line"><span class="keyword">this</span>.name = name</span><br><span class="line"><span class="keyword">this</span>.age = age</span><br><span class="line">&#125;</span><br><span class="line">Student.prototype.say = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">`i am <span class="subst">$&#123;name&#125;</span>,and i am <span class="subst">$&#123;age&#125;</span> years old!`</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> stu = <span class="keyword">new</span> Student(<span class="string">'Tom'</span>, <span class="number">20</span>)</span><br><span class="line">stu <span class="keyword">instanceof</span> Student   <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+<h2 id="instanceof大法好"><a href="#instanceof大法好" class="headerlink" title="instanceof大法好"></a>instanceof大法好</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Student = <span class="function"><span class="keyword">function</span> (<span class="params">name,age</span>) </span>&#123;</span><br><span class="line"><span class="keyword">this</span>.name = name</span><br><span class="line"><span class="keyword">this</span>.age = age</span><br><span class="line">&#125;</span><br><span class="line">Student.prototype.say = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">`i am <span class="subst">$&#123;name&#125;</span>,and i am <span class="subst">$&#123;age&#125;</span> years old!`</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> stu = <span class="keyword">new</span> Student(<span class="string">'Tom'</span>, <span class="number">20</span>)</span><br><span class="line">stu <span class="keyword">instanceof</span> Student   <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
 
 <p>要理解instanceof肯定逃不过原型链，祭出原型链大图<br>（如果还不理解原型链可以参考其他文章，要求能把下面图看懂）</p>
 <figure class="image-bubble">
@@ -240,7 +240,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2019-07-02T13:44:58.381Z" itemprop="dateUpdated">2019-07-02 21:44:58</time>
+    最后更新时间：<time datetime="2019-07-03T01:36:52.458Z" itemprop="dateUpdated">2019-07-03 09:36:52</time>
 </span><br>
 
 
