@@ -32,7 +32,7 @@
 <meta property="og:image" content="http://gitblog.luckyq.cn/c25a5034d64bde05d67f38042b401d57.jpg">
 <meta property="og:image" content="http://gitblog.luckyq.cn/3cd5daadf1e308d2427851ebe6d8a691.jpg">
 <meta property="og:image" content="http://gitblog.luckyq.cn/74e4ca944f57360564990c5ffc36c401.jpg">
-<meta property="og:updated_time" content="2019-07-02T13:46:13.184Z">
+<meta property="og:updated_time" content="2019-07-03T07:05:02.342Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="koa2入门">
 <meta name="twitter:description" content="大杂烩，记录贴。包含一个简版koa框架的核心实现">
@@ -164,7 +164,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#前置知识：关于async和await的理解"><span class="post-toc-number">1.</span> <span class="post-toc-text">前置知识：关于async和await的理解</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#koa2原理（use和next）"><span class="post-toc-number">2.</span> <span class="post-toc-text">koa2原理（use和next）</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#koa2的ctx对象"><span class="post-toc-number">3.</span> <span class="post-toc-text">koa2的ctx对象</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#利用cookie和session进行鉴权"><span class="post-toc-number">4.</span> <span class="post-toc-text">利用cookie和session进行鉴权</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#koa2常用插件"><span class="post-toc-number">5.</span> <span class="post-toc-text">koa2常用插件</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#登陆鉴权相关"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">登陆鉴权相关</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#异常处理"><span class="post-toc-number">6.</span> <span class="post-toc-text">异常处理</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#js中try-catch只能捕捉同步错误"><span class="post-toc-number">6.1.</span> <span class="post-toc-text">js中try catch只能捕捉同步错误</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#AOP思想"><span class="post-toc-number">6.2.</span> <span class="post-toc-text">AOP思想</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#封装错误对象"><span class="post-toc-number">6.3.</span> <span class="post-toc-text">封装错误对象</span></a></li></ol></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#前置知识：关于async和await的理解"><span class="post-toc-number">1.</span> <span class="post-toc-text">前置知识：关于async和await的理解</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#koa2原理（use和next）"><span class="post-toc-number">2.</span> <span class="post-toc-text">koa2原理（use和next）</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#koa2的ctx对象"><span class="post-toc-number">3.</span> <span class="post-toc-text">koa2的ctx对象</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#利用cookie和session进行鉴权"><span class="post-toc-number">4.</span> <span class="post-toc-text">利用cookie和session进行鉴权</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#koa2常用插件"><span class="post-toc-number">5.</span> <span class="post-toc-text">koa2常用插件</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#登陆鉴权相关"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">登陆鉴权相关</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#异常处理"><span class="post-toc-number">6.</span> <span class="post-toc-text">异常处理</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#js中try-catch只能捕捉同步错误"><span class="post-toc-number">6.1.</span> <span class="post-toc-text">js中try catch只能捕捉同步错误</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#AOP思想"><span class="post-toc-number">6.2.</span> <span class="post-toc-text">AOP思想</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#封装错误对象"><span class="post-toc-number">6.3.</span> <span class="post-toc-text">封装错误对象</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#开发环境和生产环境的异常配置"><span class="post-toc-number">6.4.</span> <span class="post-toc-text">开发环境和生产环境的异常配置</span></a></li></ol></li></ol>
         </nav>
     </aside>
 
@@ -229,6 +229,8 @@
 </li>
 <li><p>koa-generic-session，koa-redis（这两个配套可以存储session到redis）</p>
 </li>
+<li><p>Sequelize，操作mysql数据库（如果链接mysql需要安装mysql2驱动）</p>
+</li>
 </ol>
 <h2 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h2><h3 id="js中try-catch只能捕捉同步错误"><a href="#js中try-catch只能捕捉同步错误" class="headerlink" title="js中try catch只能捕捉同步错误"></a>js中try catch只能捕捉同步错误</h3><p>异步代码的错误很难，通过使用promise和async和await可以简化异步的错误处理，使用try和catch<br>下面这样也是没用的，必须返回异步函数的promise包装</p>
 <figure class="image-bubble">
@@ -257,6 +259,7 @@
             </figure>
 
 <h3 id="封装错误对象"><a href="#封装错误对象" class="headerlink" title="封装错误对象"></a>封装错误对象</h3><p>状态码<br>error code<br>error message<br>request url</p>
+<h3 id="开发环境和生产环境的异常配置"><a href="#开发环境和生产环境的异常配置" class="headerlink" title="开发环境和生产环境的异常配置"></a>开发环境和生产环境的异常配置</h3><p>开发环境下全局的非httpError捕捉需要再抛出去，方便开发时候调试<br>生产环境就不要抛了</p>
 <p>一个作业题</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>() &#123;</span><br><span class="line">        <span class="keyword">this</span>.nameA = <span class="string">'a'</span></span><br><span class="line">        <span class="keyword">this</span>.nameD = <span class="string">'d'</span></span><br><span class="line">    &#125;</span><br><span class="line">    validateA() &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"A"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span> <span class="keyword">extends</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>() &#123;</span><br><span class="line">        <span class="keyword">super</span>()</span><br><span class="line">        <span class="keyword">this</span>.nameB = <span class="string">'b'</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    validateB() &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"B"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> b = <span class="keyword">new</span> B()</span><br><span class="line"><span class="comment">// 编写一个函数findMembers,获取b的所有带前缀的属性和方法</span></span><br><span class="line"><span class="keyword">const</span> members = findMembers2(b, <span class="string">'name'</span>, <span class="string">'validate'</span>)</span><br></pre></td></tr></table></figure>
 
@@ -268,7 +271,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2019-07-02T13:46:13.184Z" itemprop="dateUpdated">2019-07-02 21:46:13</time>
+    最后更新时间：<time datetime="2019-07-03T07:05:02.342Z" itemprop="dateUpdated">2019-07-03 15:05:02</time>
 </span><br>
 
 
@@ -361,9 +364,9 @@
 
   
     <div class="waves-block waves-effect next">
-      <a href="/2019/06/24/使用七牛云一键上传博客图片（mac)/" id="post-next" class="post-nav-link">
+      <a href="/2019/06/24/nodejs/" id="post-next" class="post-nav-link">
         <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
-        <h4 class="title">使用七牛云一键上传博客图片（mac）</h4>
+        <h4 class="title">使用nodejs原生http开发api接口</h4>
       </a>
     </div>
   
