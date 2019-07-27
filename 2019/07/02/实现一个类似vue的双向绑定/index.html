@@ -342,6 +342,23 @@
 
 
 
+<section class="comments" id="comments">
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'luckyjq',
+            repo: 'luckyjq.github.io',
+            oauth: {
+                client_id: '1fedd9fd849963d2cd08',
+                client_secret: '81395a36c89b14476548e645c2cac11c01755ead',
+            },
+        })
+        gitment.render('comments')
+    </script>
+</section>
+
 
 
 

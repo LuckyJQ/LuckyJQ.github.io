@@ -200,50 +200,9 @@
 <img style="width:200px;" src="http://gitblog.luckyq.cn/027eda8474647fc2d0b59b5cf23494fb.jpg" alt="真棒" align="center">
 
 <h2 id="西电农贸小程序-管理后台"><a href="#西电农贸小程序-管理后台" class="headerlink" title="西电农贸小程序+管理后台"></a>西电农贸小程序+管理后台</h2><p>当时是一个导员推荐给学校一个专卖粮油的做小程序，想法就是前一天晚上可以预定，然后第二天他直接去送就可以了<br>页面很简单，当时学了点node，所以直接撸了一套全栈的，大概10天左右完成了，然后部署在自己的腾讯云服务器上了<br>不过当时没注意mongodb默认是空密码的，然后之前不懂腾讯云为了方便把所有端口都开了，晾凉了，数据库被清了<br>现在没部署在服务器上，不过有截图</p>
-<p><strong>小程序</strong></p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="http://gitblog.luckyq.cn/a00b421b7fb836b35486b496cdc1b8e6.jpg" alt title>
-                </div>
-                <div class="image-caption"></div>
-            </figure>
-
-<p><strong>h5客户端</strong></p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="http://gitblog.luckyq.cn/1d7a5e2dacb7824b72eeaf254e76bcd5.png" alt title>
-                </div>
-                <div class="image-caption"></div>
-            </figure>
-
-<p><strong>web后台</strong></p>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="http://gitblog.luckyq.cn/92fbbd6da857d8c28de9f06dc8d58bcc.png" alt title>
-                </div>
-                <div class="image-caption"></div>
-            </figure>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="http://gitblog.luckyq.cn/4069adeb529b9e10cae289bafab3bb16.png" alt title>
-                </div>
-                <div class="image-caption"></div>
-            </figure>
-<figure class="image-bubble">
-                <div class="img-lightbox">
-                    <div class="overlay"></div>
-                    <img src="http://gitblog.luckyq.cn/3d60c33a731909b751353a298f2b2612.png" alt title>
-                </div>
-                <div class="image-caption"></div>
-            </figure>
-
-
-
-
+<p><strong>小程序</strong><br><img src="http://gitblog.luckyq.cn/a00b421b7fb836b35486b496cdc1b8e6.jpg" alt></p>
+<p><strong>h5客户端</strong><br><img src="http://gitblog.luckyq.cn/1d7a5e2dacb7824b72eeaf254e76bcd5.png" alt></p>
+<p><strong>web后台</strong><br><img src="http://gitblog.luckyq.cn/92fbbd6da857d8c28de9f06dc8d58bcc.png" alt><br><img src="http://gitblog.luckyq.cn/4069adeb529b9e10cae289bafab3bb16.png" alt><br><img src="http://gitblog.luckyq.cn/3d60c33a731909b751353a298f2b2612.png" alt></p>
 
         </div>
 
@@ -356,6 +315,23 @@
 
 
 
+
+<section class="comments" id="comments">
+    <div id="gitment_thread"></div>
+    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'luckyjq',
+            repo: 'luckyjq.github.io',
+            oauth: {
+                client_id: '1fedd9fd849963d2cd08',
+                client_secret: '81395a36c89b14476548e645c2cac11c01755ead',
+            },
+        })
+        gitment.render('comments')
+    </script>
+</section>
 
 
 
