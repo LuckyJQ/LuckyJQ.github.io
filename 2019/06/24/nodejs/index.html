@@ -21,13 +21,13 @@
     
     
     <meta name="keywords" content="nodejs">
-    <meta name="description" content="总体架构 开发环境搭建使用webstorm进行开发，新建项目，发现没有nodejs智能提示安装node智能提示 通过npm init新建项目两个好用的插件：全局安装nodemon，支持热重载项目安装cross-env，兼容操作系统 配置package.json的script选项配置中的NODE_ENV=dev，当以npm run dev启动时，process.env.NODE_ENV的值就为dev">
+    <meta name="description" content="总体架构                                                                                                             开发环境搭建使用webstorm进行开发，新建项目，发现没有nodejs智能提示安装node智能提示">
 <meta name="keywords" content="nodejs">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用nodejs原生http开发api接口">
 <meta property="og:url" content="https://luckyjq.github.io/2019/06/24/nodejs/index.html">
 <meta property="og:site_name" content="小七快跑">
-<meta property="og:description" content="总体架构 开发环境搭建使用webstorm进行开发，新建项目，发现没有nodejs智能提示安装node智能提示 通过npm init新建项目两个好用的插件：全局安装nodemon，支持热重载项目安装cross-env，兼容操作系统 配置package.json的script选项配置中的NODE_ENV=dev，当以npm run dev启动时，process.env.NODE_ENV的值就为dev">
+<meta property="og:description" content="总体架构                                                                                                             开发环境搭建使用webstorm进行开发，新建项目，发现没有nodejs智能提示安装node智能提示">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://gitblog.luckyq.cn/11c864d28732342961f1effb6113e2a7.jpg">
 <meta property="og:image" content="http://gitblog.luckyq.cn/2110eec1a1bf50a7b86bada07987d3bd.jpg">
@@ -35,7 +35,7 @@
 <meta property="og:updated_time" content="2019-06-27T08:44:54.674Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用nodejs原生http开发api接口">
-<meta name="twitter:description" content="总体架构 开发环境搭建使用webstorm进行开发，新建项目，发现没有nodejs智能提示安装node智能提示 通过npm init新建项目两个好用的插件：全局安装nodemon，支持热重载项目安装cross-env，兼容操作系统 配置package.json的script选项配置中的NODE_ENV=dev，当以npm run dev启动时，process.env.NODE_ENV的值就为dev">
+<meta name="twitter:description" content="总体架构                                                                                                             开发环境搭建使用webstorm进行开发，新建项目，发现没有nodejs智能提示安装node智能提示">
 <meta name="twitter:image" content="http://gitblog.luckyq.cn/11c864d28732342961f1effb6113e2a7.jpg">
     
         <link rel="alternate" type="application/atom+xml" title="小七快跑" href="/atom.xml">
@@ -190,13 +190,38 @@
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
-            <h2 id="总体架构"><a href="#总体架构" class="headerlink" title="总体架构"></a>总体架构</h2><p><img src="http://gitblog.luckyq.cn/11c864d28732342961f1effb6113e2a7.jpg" alt></p>
-<h2 id="开发环境搭建"><a href="#开发环境搭建" class="headerlink" title="开发环境搭建"></a>开发环境搭建</h2><p>使用webstorm进行开发，新建项目，发现没有nodejs智能提示<br>安装node智能提示<br><img src="http://gitblog.luckyq.cn/2110eec1a1bf50a7b86bada07987d3bd.jpg" alt></p>
+            <h2 id="总体架构"><a href="#总体架构" class="headerlink" title="总体架构"></a>总体架构</h2><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://gitblog.luckyq.cn/11c864d28732342961f1effb6113e2a7.jpg" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+
+
+<h2 id="开发环境搭建"><a href="#开发环境搭建" class="headerlink" title="开发环境搭建"></a>开发环境搭建</h2><p>使用webstorm进行开发，新建项目，发现没有nodejs智能提示<br>安装node智能提示</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://gitblog.luckyq.cn/2110eec1a1bf50a7b86bada07987d3bd.jpg" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+
+
 <p>通过npm init新建项目<br>两个好用的插件：<br>全局安装nodemon，支持热重载<br>项目安装cross-env，兼容操作系统</p>
 <p>配置package.json的script选项<br>配置中的NODE_ENV=dev，当以npm run dev启动时，process.env.NODE_ENV的值就为dev</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"dev"</span>: <span class="string">"cross-env NODE_ENV=dev nodemon ./bin/www.js"</span>,</span><br><span class="line"><span class="string">"prd"</span>: <span class="string">"cross-env NODE_ENV=production nodemon ./bin/www.js"</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="设计接口"><a href="#设计接口" class="headerlink" title="设计接口"></a>设计接口</h2><p><img src="http://gitblog.luckyq.cn/69fbbfca44c776d80b9d9c62141f2919.jpg" alt></p>
+<h2 id="设计接口"><a href="#设计接口" class="headerlink" title="设计接口"></a>设计接口</h2><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://gitblog.luckyq.cn/69fbbfca44c776d80b9d9c62141f2919.jpg" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+
+
 <h2 id="响应结构设计"><a href="#响应结构设计" class="headerlink" title="响应结构设计"></a>响应结构设计</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//成功</span></span><br><span class="line">&#123;</span><br><span class="line">    errno: <span class="number">0</span>,</span><br><span class="line">    data: &#123;&#125;,</span><br><span class="line">    message: <span class="string">''</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//失败</span></span><br><span class="line">&#123;</span><br><span class="line">    errno: <span class="number">-1</span>,</span><br><span class="line">    message: <span class="string">''</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>通过es6的class新建响应模型</p>
@@ -330,31 +355,38 @@
 
 
 
+
+
+
+
+
+
+
+
+
 <section class="comments" id="comments">
-    <div id="gitment_thread"></div>
-    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
-    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
     <script>
-        var gitment = new Gitment({
-            owner: 'luckyjq',
-            repo: 'luckyjq.github.io',
-            oauth: {
-                client_id: '1fedd9fd849963d2cd08',
-                client_secret: '81395a36c89b14476548e645c2cac11c01755ead',
-            },
+        var id = location.pathname
+        if (location.pathname.length > 50) {
+          id = location.pathname.replace(/\/\d+\/\d+\/\d+\//, '').replace('/', '').substring(0, 50)
+        }
+        const gitalk = new Gitalk({
+          clientID: '1fedd9fd849963d2cd08',
+          clientSecret: '81395a36c89b14476548e645c2cac11c01755ead',
+          repo: 'luckyjq.github.io',
+          owner: 'luckyjq',
+          admin: ['luckyjq'],
+          id: id,      // Ensure uniqueness and length less than 50
+          title: document.title.split('|')[0],
+          distractionFreeMode: false  // Facebook-like distraction free mode
         })
-        gitment.render('comments')
+
+        gitalk.render('gitalk-container')
     </script>
 </section>
-
-
-
-
-
-
-
-
-
 
 
 

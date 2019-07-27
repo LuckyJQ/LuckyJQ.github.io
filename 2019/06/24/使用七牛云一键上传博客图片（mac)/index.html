@@ -201,12 +201,28 @@
 <h2 id="正式开干"><a href="#正式开干" class="headerlink" title="正式开干"></a>正式开干</h2><h3 id="1-下载Alfred，需要使用他的收费功能，下面会给出破解版。"><a href="#1-下载Alfred，需要使用他的收费功能，下面会给出破解版。" class="headerlink" title="1.下载Alfred，需要使用他的收费功能，下面会给出破解版。"></a>1.下载Alfred，需要使用他的收费功能，下面会给出破解版。</h3><p>下载地址：<a href="https://pan.baidu.com/s/1mir5F6K" target="_blank" rel="noopener">https://pan.baidu.com/s/1mir5F6K</a><br>提取码：jj7s</p>
 <h3 id="2-安装七牛云的SDK工具"><a href="#2-安装七牛云的SDK工具" class="headerlink" title="2.安装七牛云的SDK工具"></a>2.安装七牛云的SDK工具</h3><p>下载地址：<a href="https://developer.qiniu.com/kodo/tools/1302/qshell" target="_blank" rel="noopener">https://developer.qiniu.com/kodo/tools/1302/qshell</a><br>下载完后解压，把qshell_darwin_amd64文件重命名为qshell并移至usr/local/bin目录下即可。后面的脚本会引用这个SDK。</p>
 <h3 id="3-注册七牛云账号并实名认证"><a href="#3-注册七牛云账号并实名认证" class="headerlink" title="3.注册七牛云账号并实名认证"></a>3.注册七牛云账号并实名认证</h3><p>自己去注册。最好再准备一个独立域名，因为七牛的测试域名有效期只有一个月。</p>
-<h3 id="4-下载github脚本，运行qimage-alfredworkflow"><a href="#4-下载github脚本，运行qimage-alfredworkflow" class="headerlink" title="4.下载github脚本，运行qimage.alfredworkflow"></a>4.下载github脚本，运行<em>qimage.alfredworkflow</em></h3><p><img src="http://gitblog.luckyq.cn/0c049de0deb969fed678f02706238fc0.jpg" alt></p>
+<h3 id="4-下载github脚本，运行qimage-alfredworkflow"><a href="#4-下载github脚本，运行qimage-alfredworkflow" class="headerlink" title="4.下载github脚本，运行qimage.alfredworkflow"></a>4.下载github脚本，运行<em>qimage.alfredworkflow</em></h3><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://gitblog.luckyq.cn/0c049de0deb969fed678f02706238fc0.jpg" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+
 <p>修改中间的 <em>Run Script</em>，具体操作见下面链接。<br><a href="https://github.com/jiwenxing/qimage-mac/issues/16" target="_blank" rel="noopener">https://github.com/jiwenxing/qimage-mac/issues/16</a></p>
 <p>修改<em>Hotkey</em>进行自动化触发快捷键设置，推荐cmd+option+v。</p>
 <p>现在你可以试一试了，cmd+c复制一张图片到剪切板，在md文件里cmd+option+v<br>😯 他返回了md的图片引用格式，写博客效率又提升了呢！</p>
 <p>当然你可能会需要一些定制化的小变化，这时候你就要稍微读一下脚本然后进行修改了。</p>
-<p>传个小姐姐试试水！<br><img src="http://gitblog.luckyq.cn/21f8dcd2336c6dcc3e38938e769b75da.jpg" alt></p>
+<p>传个小姐姐试试水！</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://gitblog.luckyq.cn/21f8dcd2336c6dcc3e38938e769b75da.jpg" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+
+
 <p>喂！小妹妹！你跟谁撒娇呢！</p>
 
         </div>
@@ -329,31 +345,38 @@
 
 
 
+
+
+
+
+
+
+
+
+
 <section class="comments" id="comments">
-    <div id="gitment_thread"></div>
-    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
-    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
     <script>
-        var gitment = new Gitment({
-            owner: 'luckyjq',
-            repo: 'luckyjq.github.io',
-            oauth: {
-                client_id: '1fedd9fd849963d2cd08',
-                client_secret: '81395a36c89b14476548e645c2cac11c01755ead',
-            },
+        var id = location.pathname
+        if (location.pathname.length > 50) {
+          id = location.pathname.replace(/\/\d+\/\d+\/\d+\//, '').replace('/', '').substring(0, 50)
+        }
+        const gitalk = new Gitalk({
+          clientID: '1fedd9fd849963d2cd08',
+          clientSecret: '81395a36c89b14476548e645c2cac11c01755ead',
+          repo: 'luckyjq.github.io',
+          owner: 'luckyjq',
+          admin: ['luckyjq'],
+          id: id,      // Ensure uniqueness and length less than 50
+          title: document.title.split('|')[0],
+          distractionFreeMode: false  // Facebook-like distraction free mode
         })
-        gitment.render('comments')
+
+        gitalk.render('gitalk-container')
     </script>
 </section>
-
-
-
-
-
-
-
-
-
 
 
 

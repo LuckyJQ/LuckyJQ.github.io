@@ -232,8 +232,32 @@
 <li><p>Sequelize，操作mysql数据库（如果链接mysql需要安装mysql2驱动）</p>
 </li>
 </ol>
-<h2 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h2><h3 id="js中try-catch只能捕捉同步错误"><a href="#js中try-catch只能捕捉同步错误" class="headerlink" title="js中try catch只能捕捉同步错误"></a>js中try catch只能捕捉同步错误</h3><p>异步代码的错误很难，通过使用promise和async和await可以简化异步的错误处理，使用try和catch<br>下面这样也是没用的，必须返回异步函数的promise包装<br><img src="http://gitblog.luckyq.cn/c25a5034d64bde05d67f38042b401d57.jpg" alt><br>这样才对<br><img src="http://gitblog.luckyq.cn/3cd5daadf1e308d2427851ebe6d8a691.jpg" alt></p>
-<h3 id="AOP思想"><a href="#AOP思想" class="headerlink" title="AOP思想"></a>AOP思想</h3><p>自定义全局异常处理函数，最先注册，try next()即可，相当于调用链条<br><img src="http://gitblog.luckyq.cn/74e4ca944f57360564990c5ffc36c401.jpg" alt></p>
+<h2 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h2><h3 id="js中try-catch只能捕捉同步错误"><a href="#js中try-catch只能捕捉同步错误" class="headerlink" title="js中try catch只能捕捉同步错误"></a>js中try catch只能捕捉同步错误</h3><p>异步代码的错误很难，通过使用promise和async和await可以简化异步的错误处理，使用try和catch<br>下面这样也是没用的，必须返回异步函数的promise包装</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://gitblog.luckyq.cn/c25a5034d64bde05d67f38042b401d57.jpg" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>这样才对</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://gitblog.luckyq.cn/3cd5daadf1e308d2427851ebe6d8a691.jpg" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+
+<h3 id="AOP思想"><a href="#AOP思想" class="headerlink" title="AOP思想"></a>AOP思想</h3><p>自定义全局异常处理函数，最先注册，try next()即可，相当于调用链条</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://gitblog.luckyq.cn/74e4ca944f57360564990c5ffc36c401.jpg" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+
 <h3 id="封装错误对象"><a href="#封装错误对象" class="headerlink" title="封装错误对象"></a>封装错误对象</h3><p>状态码<br>error code<br>error message<br>request url</p>
 <h3 id="开发环境和生产环境的异常配置"><a href="#开发环境和生产环境的异常配置" class="headerlink" title="开发环境和生产环境的异常配置"></a>开发环境和生产环境的异常配置</h3><p>开发环境下全局的非httpError捕捉需要再抛出去，方便开发时候调试<br>生产环境就不要抛了</p>
 <p>一个作业题</p>
@@ -359,31 +383,38 @@
 
 
 
+
+
+
+
+
+
+
+
+
 <section class="comments" id="comments">
-    <div id="gitment_thread"></div>
-    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
-    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
     <script>
-        var gitment = new Gitment({
-            owner: 'luckyjq',
-            repo: 'luckyjq.github.io',
-            oauth: {
-                client_id: '1fedd9fd849963d2cd08',
-                client_secret: '81395a36c89b14476548e645c2cac11c01755ead',
-            },
+        var id = location.pathname
+        if (location.pathname.length > 50) {
+          id = location.pathname.replace(/\/\d+\/\d+\/\d+\//, '').replace('/', '').substring(0, 50)
+        }
+        const gitalk = new Gitalk({
+          clientID: '1fedd9fd849963d2cd08',
+          clientSecret: '81395a36c89b14476548e645c2cac11c01755ead',
+          repo: 'luckyjq.github.io',
+          owner: 'luckyjq',
+          admin: ['luckyjq'],
+          id: id,      // Ensure uniqueness and length less than 50
+          title: document.title.split('|')[0],
+          distractionFreeMode: false  // Facebook-like distraction free mode
         })
-        gitment.render('comments')
+
+        gitalk.render('gitalk-container')
     </script>
 </section>
-
-
-
-
-
-
-
-
-
 
 
 

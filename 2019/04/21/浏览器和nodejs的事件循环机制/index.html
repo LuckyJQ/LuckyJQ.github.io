@@ -191,7 +191,15 @@
             <p>事件循环，画个圈圈……</p>
 <a id="more"></a>
 
-<h2 id="浏览器的事件循环机制"><a href="#浏览器的事件循环机制" class="headerlink" title="浏览器的事件循环机制"></a>浏览器的事件循环机制</h2><p>浏览器事件循环图（摘自《javascript忍者秘籍第二版》13章）：<br><img src="http://gitblog.luckyq.cn/1e7b48b68e4388149a47ecdb57761ba0.jpg" alt></p>
+<h2 id="浏览器的事件循环机制"><a href="#浏览器的事件循环机制" class="headerlink" title="浏览器的事件循环机制"></a>浏览器的事件循环机制</h2><p>浏览器事件循环图（摘自《javascript忍者秘籍第二版》13章）：</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://gitblog.luckyq.cn/1e7b48b68e4388149a47ecdb57761ba0.jpg" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+
 <h3 id="宏任务微任务"><a href="#宏任务微任务" class="headerlink" title="宏任务微任务"></a>宏任务微任务</h3><p><strong>宏任务：从浏览器角度，代表一个离散的，独立的工作单元</strong><br>比如：创建主文档对象，解析HTML，执行主线（全局）js代码<br>更改当前URL和各种事件（页面加载，网络事件，定时器等）</p>
 <p><strong>微任务：是更小的任务，微任务要尽可能快的，通过异步方式执行</strong><br>比如：DOM变化（MutationObserver），Promise回调函数<br>由于因为async await 本身就是promise+generator的语法糖，所以await后面的也是</p>
 <h3 id="从面试题理解运行机制"><a href="#从面试题理解运行机制" class="headerlink" title="从面试题理解运行机制"></a>从面试题理解运行机制</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 写出输出</span></span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">1</span>);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve,reject</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">2</span>)</span><br><span class="line">    resolve(<span class="number">3</span>)</span><br><span class="line">&#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params">val</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(val);</span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">4</span>);</span><br></pre></td></tr></table></figure>
@@ -337,31 +345,38 @@
 
 
 
+
+
+
+
+
+
+
+
+
 <section class="comments" id="comments">
-    <div id="gitment_thread"></div>
-    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
-    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
     <script>
-        var gitment = new Gitment({
-            owner: 'luckyjq',
-            repo: 'luckyjq.github.io',
-            oauth: {
-                client_id: '1fedd9fd849963d2cd08',
-                client_secret: '81395a36c89b14476548e645c2cac11c01755ead',
-            },
+        var id = location.pathname
+        if (location.pathname.length > 50) {
+          id = location.pathname.replace(/\/\d+\/\d+\/\d+\//, '').replace('/', '').substring(0, 50)
+        }
+        const gitalk = new Gitalk({
+          clientID: '1fedd9fd849963d2cd08',
+          clientSecret: '81395a36c89b14476548e645c2cac11c01755ead',
+          repo: 'luckyjq.github.io',
+          owner: 'luckyjq',
+          admin: ['luckyjq'],
+          id: id,      // Ensure uniqueness and length less than 50
+          title: document.title.split('|')[0],
+          distractionFreeMode: false  // Facebook-like distraction free mode
         })
-        gitment.render('comments')
+
+        gitalk.render('gitalk-container')
     </script>
 </section>
-
-
-
-
-
-
-
-
-
 
 
 

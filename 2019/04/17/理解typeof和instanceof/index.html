@@ -193,7 +193,15 @@
 <a id="more"></a>
 
 <h2 id="typeof判断类型存在的问题"><a href="#typeof判断类型存在的问题" class="headerlink" title="typeof判断类型存在的问题"></a>typeof判断类型存在的问题</h2><p>对于这两个js关键词，一直停留在很浅显的理解上。<br>直到最近开始刷个大公司的面试题，发现这一知识点出场之高，决心总结一下。</p>
-<p>typeof判断类型，截图来自MDN。<br>问题出现了，当类型为Null和Array和Object时候，均返回“object”，如何区别？<br><img src="http://gitblog.luckyq.cn/943056903a1e3c5bb07bc83a471fa457.jpg" alt></p>
+<p>typeof判断类型，截图来自MDN。<br>问题出现了，当类型为Null和Array和Object时候，均返回“object”，如何区别？</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://gitblog.luckyq.cn/943056903a1e3c5bb07bc83a471fa457.jpg" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+
 <p>一种常用的检测方法是使用：<br>Object.prototype.toString.call(obj)</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="number">12</span>,<span class="string">'aaa'</span>]</span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(arr)  <span class="comment">//"[object Array]"</span></span><br></pre></td></tr></table></figure>
 
@@ -203,7 +211,16 @@
 <p>但是使用上面这种方法判断也存在局限性，对于任何对象，返回都是相同的。我们现在的需求是有不同构造函数比如Student，Dog等等，我们new一个实例的时候想判断这个实例是一个Dog还是一个Student，这时候就需要用到instanceof。</p>
 <h2 id="instanceof大法好"><a href="#instanceof大法好" class="headerlink" title="instanceof大法好"></a>instanceof大法好</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Student = <span class="function"><span class="keyword">function</span> (<span class="params">name,age</span>) </span>&#123;</span><br><span class="line"><span class="keyword">this</span>.name = name</span><br><span class="line"><span class="keyword">this</span>.age = age</span><br><span class="line">&#125;</span><br><span class="line">Student.prototype.say = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">`i am <span class="subst">$&#123;name&#125;</span>,and i am <span class="subst">$&#123;age&#125;</span> years old!`</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> stu = <span class="keyword">new</span> Student(<span class="string">'Tom'</span>, <span class="number">20</span>)</span><br><span class="line">stu <span class="keyword">instanceof</span> Student   <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
 
-<p>要理解instanceof肯定逃不过原型链，祭出原型链大图<br>（如果还不理解原型链可以参考其他文章，要求能把下面图看懂）<br><img src="http://gitblog.luckyq.cn/1f5e2ac23cb0ea276d64256d63949f07.jpg" alt></p>
+<p>要理解instanceof肯定逃不过原型链，祭出原型链大图<br>（如果还不理解原型链可以参考其他文章，要求能把下面图看懂）</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://gitblog.luckyq.cn/1f5e2ac23cb0ea276d64256d63949f07.jpg" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+
+
 <p>关键点：<br>首先，js中一切都是对象，函数也是对象<br>所有的函数都有prototype和<strong>proto</strong>属性<br>所有的对象都有<strong>proto</strong>属性<br>Object.prototype是所有对象的根<br>Function.prototype是所有函数的根<br>Object和Function都是构造函数</p>
 <p>instanceof的判断原理很简单，就是在实例的<strong>proto</strong>链条上寻找，如果有就返回true<br>通过上面的图也可以理解几个很奇怪的instanceof判断</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Function</span> <span class="keyword">instanceof</span> <span class="built_in">Function</span>  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">Object</span> <span class="keyword">instanceof</span> <span class="built_in">Function</span>  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">Object</span> <span class="keyword">instanceof</span> <span class="built_in">Object</span>  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">Function</span> <span class="keyword">instanceof</span> <span class="built_in">Object</span>  <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
@@ -328,31 +345,38 @@
 
 
 
+
+
+
+
+
+
+
+
+
 <section class="comments" id="comments">
-    <div id="gitment_thread"></div>
-    <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
-    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
     <script>
-        var gitment = new Gitment({
-            owner: 'luckyjq',
-            repo: 'luckyjq.github.io',
-            oauth: {
-                client_id: '1fedd9fd849963d2cd08',
-                client_secret: '81395a36c89b14476548e645c2cac11c01755ead',
-            },
+        var id = location.pathname
+        if (location.pathname.length > 50) {
+          id = location.pathname.replace(/\/\d+\/\d+\/\d+\//, '').replace('/', '').substring(0, 50)
+        }
+        const gitalk = new Gitalk({
+          clientID: '1fedd9fd849963d2cd08',
+          clientSecret: '81395a36c89b14476548e645c2cac11c01755ead',
+          repo: 'luckyjq.github.io',
+          owner: 'luckyjq',
+          admin: ['luckyjq'],
+          id: id,      // Ensure uniqueness and length less than 50
+          title: document.title.split('|')[0],
+          distractionFreeMode: false  // Facebook-like distraction free mode
         })
-        gitment.render('comments')
+
+        gitalk.render('gitalk-container')
     </script>
 </section>
-
-
-
-
-
-
-
-
-
 
 
 
