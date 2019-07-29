@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>【译】JavaScript执行上下文和执行上下文堆栈是什么 | 小七快跑 | 沈小祺技术博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="js,基础,翻译">
+    <meta name="description" content="在这篇文章中，我将深入探讨JavaScript的一个最基本的部分，即执行上下文。在本文结束时，您应该更清楚地了解js解释器尝试做什么，为什么某些函数/变量可以在他们声明前使用，以及它们的值是如何确定的。">
+<meta name="keywords" content="js,基础,翻译">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【译】JavaScript执行上下文和执行上下文堆栈是什么">
+<meta property="og:url" content="https://luckyjq.github.io/2019/07/29/javascript执行上下文和堆栈是什么/index.html">
+<meta property="og:site_name" content="小七快跑">
+<meta property="og:description" content="在这篇文章中，我将深入探讨JavaScript的一个最基本的部分，即执行上下文。在本文结束时，您应该更清楚地了解js解释器尝试做什么，为什么某些函数/变量可以在他们声明前使用，以及它们的值是如何确定的。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://gitblog.luckyq.cn/87794fd6938766f02a3bc07b3766ab9a.jpg">
+<meta property="og:image" content="http://gitblog.luckyq.cn/0bae0c84555b29ea029222e6bc6b909f.jpg">
+<meta property="og:image" content="http://davidshariff.com/blog/wp-content/uploads/2012/06/es1.gif">
+<meta property="og:updated_time" content="2019-07-29T08:16:57.816Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【译】JavaScript执行上下文和执行上下文堆栈是什么">
+<meta name="twitter:description" content="在这篇文章中，我将深入探讨JavaScript的一个最基本的部分，即执行上下文。在本文结束时，您应该更清楚地了解js解释器尝试做什么，为什么某些函数/变量可以在他们声明前使用，以及它们的值是如何确定的。">
+<meta name="twitter:image" content="http://gitblog.luckyq.cn/87794fd6938766f02a3bc07b3766ab9a.jpg">
+    
+        <link rel="alternate" type="application/atom+xml" title="小七快跑" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">LuckyQ</h5>
+          <a href="mailto:439286657@qq.com" title="439286657@qq.com" class="mail">439286657@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/luckyjq" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">【译】JavaScript执行上下文和执行上下文堆栈是什么</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">【译】JavaScript执行上下文和执行上下文堆栈是什么</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-07-28T16:00:00.000Z" itemprop="datePublished" class="page-time">
+  2019-07-29
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/js/">js</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#什么是执行上下文"><span class="post-toc-number">1.</span> <span class="post-toc-text">什么是执行上下文</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#执行上下文栈"><span class="post-toc-number">2.</span> <span class="post-toc-text">执行上下文栈</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#执行上下文的细节"><span class="post-toc-number">3.</span> <span class="post-toc-text">执行上下文的细节</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#变量对象-VO-激活对象-AO"><span class="post-toc-number">4.</span> <span class="post-toc-text">变量对象[VO] / 激活对象[AO]</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#关于变量提升"><span class="post-toc-number">5.</span> <span class="post-toc-text">关于变量提升</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#原文链接"><span class="post-toc-number">6.</span> <span class="post-toc-text">原文链接</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-javascript执行上下文和堆栈是什么"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">【译】JavaScript执行上下文和执行上下文堆栈是什么</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-07-29 00:00:00" datetime="2019-07-28T16:00:00.000Z"  itemprop="datePublished">2019-07-29</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/js/">js</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>在这篇文章中，我将深入探讨JavaScript的一个最基本的部分，即执行上下文。在本文结束时，您应该更清楚地了解js解释器尝试做什么，为什么某些函数/变量可以在他们声明前使用，以及它们的值是如何确定的。</p>
+<a id="more"></a>
+
+<h2 id="什么是执行上下文"><a href="#什么是执行上下文" class="headerlink" title="什么是执行上下文"></a>什么是执行上下文</h2><p>当js代码运行时，它的执行环境非常重要，并且为以下之一：</p>
+<ol>
+<li>全局代码：首次执行代码的默认环境。</li>
+<li>函数代码 - 每当执行流程进入函数体时。</li>
+<li>Eval代码 - 要在内部eval函数内执行的文本。</li>
+</ol>
+<p>你可能在网上读了很多文章关于作用域，这篇文章的目的是让你更容易的理解他们。让我们将执行上下文视为当前正在运行代码的环境/作用域。现在我们来看一个简单的例子，包含全局和函数（局部）环境下运行代码。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://gitblog.luckyq.cn/87794fd6938766f02a3bc07b3766ab9a.jpg" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+
+<p>这里没有什么特别之处，我们有一个由紫色边框表示的全局上下文和由绿色，蓝色和橙色边框表示的3个不同的函数上下文。只能有1个全局上下文，并且它可以被程序中的任何其他上下文访问。</p>
+<p>您可以拥有任意数量的函数上下文，并且每个函数调用都会创建一个新的上下文，从而创建一个私有作用域，在函数内部声明的任何内容都无法从当前函数作用域外直接访问。在上面的示例中，函数可以访问在其当前上下文之外声明的变量（全局上下文中的变量），但外部上下文无法访问person函数中的变量/函数。为什么会这样？这段代码究竟是如何评估的？</p>
+<h2 id="执行上下文栈"><a href="#执行上下文栈" class="headerlink" title="执行上下文栈"></a>执行上下文栈</h2><p>浏览器中的JavaScript解释器实现为单线程。这实际上意味着在浏览器中一次只能发生一件事，其他动作或事件在所谓的执行堆栈中排队。下图是单线程堆栈的抽象视图：</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://gitblog.luckyq.cn/0bae0c84555b29ea029222e6bc6b909f.jpg" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+
+<p>我们已经知道，当浏览器首次加载脚本时，它默认进入全局执行上下文。如果在全局代码中调用一个函数，程序的顺序流进入被调用的函数，创建一个新的执行上下文并将该上下文推送到执行堆栈的顶部。</p>
+<p>如果在当前函数中调用另一个函数，则会发生同样的事情。代码的执行流程进入内部函数，该函数创建一个新的执行上下文，该上下文被推送到现有堆栈的顶部。浏览器将始终执行位于堆栈顶部的当前执行上下文，并且一旦函数完成执行当前执行上下文，它将从堆栈顶部弹出，将控制权返回到当前堆栈中的下一个z上下文。下面的示例显示了递归函数和程序的执行堆栈：</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://davidshariff.com/blog/wp-content/uploads/2012/06/es1.gif" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+
+<p>代码只调用自身3次，将i的值递增1.每次调用函数foo时，都会创建一个新的执行上下文。一旦上下文完成执行，它就会弹出堆栈并且控制返回到它下面的上下文，直到再次达到全局上下文。</p>
+<p><strong>有五个关键点可以帮助你记忆执行上下文</strong></p>
+<ol>
+<li>单线程</li>
+<li>同步执行代码</li>
+<li>一个全局环境</li>
+<li>可以有很多个函数环境</li>
+<li>每个函数调用都会创建一个新的执行上下文，对自身的调用也是</li>
+</ol>
+<h2 id="执行上下文的细节"><a href="#执行上下文的细节" class="headerlink" title="执行上下文的细节"></a>执行上下文的细节</h2><p>现在我们知道每次调用一个函数时，都会创建一个新的执行上下文。但是，在JavaScript解释器中，对执行上下文的每次调用都有两个阶段：</p>
+<ol>
+<li><p><strong>创建（准备）阶段</strong>（函数被调用，但是函数内部代码还未执行）</p>
+<ul>
+<li>创建范围链</li>
+<li>创建变量，函数和函数参数</li>
+<li>确定“this”的值</li>
+</ul>
+</li>
+<li><p><strong>激活/代码执行阶段</strong>（
+分配值，引用函数，解释/执行代码</p>
+</li>
+</ol>
+<p>我们可以将每个执行上下文在概念上表示为具有3个属性的对象：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">executionContextObj = &#123;</span><br><span class="line">    <span class="string">'scopeChain'</span>: &#123;&#125;,</span><br><span class="line">    <span class="string">'variableObject'</span>: &#123;</span><br><span class="line">        <span class="comment">// 函数的参数/传入的参数</span></span><br><span class="line">        <span class="comment">// 内部函数</span></span><br><span class="line">        <span class="comment">// 内部变量</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">'this'</span>: &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="变量对象-VO-激活对象-AO"><a href="#变量对象-VO-激活对象-AO" class="headerlink" title="变量对象[VO] / 激活对象[AO]"></a>变量对象[VO] / 激活对象[AO]</h2><p>executionContextObj在函数调用时创建，但是在函数代码被执行之前。这就是我们之前说的第1阶段，即准备阶段。在这阶段，解释器通过扫描传入的参数或函数的参数，本地函数声明，局部变量声明来创建executionContextObj。此扫描的结果将成为executionContextObj中的variableObject。</p>
+<p><strong>以下是解释器如何评估代码的伪概述：</strong></p>
+<ol>
+<li><strong>发现某些代码调用了一个函数</strong></li>
+<li><strong>在执行这个函数的代码前，创建了这个函数的执行上下文（execution context）</strong></li>
+<li><strong>进入执行的第一阶段，准备阶段</strong><ul>
+<li>初始化作用域链（scope chain）</li>
+<li>创建名为arguments的对象。检查调用函数的参数，初始化参数名字和值<strong>（个人理解为把调用函数的实参复制一份放到VO中，都说js函数是值传递大概和这里关系很密切）</strong></li>
+<li>扫描函数内容寻找函数定义<ul>
+<li>对于找到的每个函数，在变量对象中创建一个属性，该属性是确切的函数名称，该属性具有指向内存中函数的引用指针</li>
+<li>如果函数名已存在，则将覆盖引用指针值</li>
+</ul>
+</li>
+<li>扫描函数寻找变量定义<ul>
+<li>对于找到的每个变量声明，在变量对象中创建一个属性，该属性是变量名称，并将值初始化为undefined</li>
+<li>如果变量名称已存在于变量对象中，则不执行任何操作并继续扫描</li>
+</ul>
+</li>
+<li>确定上下文中“this”的值</li>
+</ul>
+</li>
+<li><strong>激活对象 / 代码执行阶段</strong><br>执行函数代码，并在代码逐行执行时分配变量值</li>
+</ol>
+<p>举个例子：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">i</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> a = <span class="string">'hello'</span></span><br><span class="line">    <span class="keyword">var</span> b = <span class="function"><span class="keyword">function</span> <span class="title">privateB</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">c</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">foo(<span class="number">22</span>)</span><br></pre></td></tr></table></figure>
+
+<p>当执行foo(22)调用函数时，该函数的执行上下文在准备阶段应该是下面这样的：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">fooExecutionContext = &#123;</span><br><span class="line">    scopeChain: &#123; ... &#125;,</span><br><span class="line">    variableObject: &#123;</span><br><span class="line">        <span class="built_in">arguments</span>: &#123;</span><br><span class="line">            <span class="number">0</span>: <span class="number">22</span>,</span><br><span class="line">            length: <span class="number">1</span></span><br><span class="line">        &#125;,</span><br><span class="line">        i: <span class="number">22</span>,</span><br><span class="line">        c: pointer to <span class="function"><span class="keyword">function</span> <span class="title">c</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">        <span class="title">a</span>: <span class="title">undefined</span>,</span></span><br><span class="line"><span class="function">        <span class="title">b</span>: <span class="title">undefined</span></span></span><br><span class="line"><span class="function">    &#125;,</span></span><br><span class="line"><span class="function">    <span class="title">this</span>: </span>&#123; ... &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如你所见，创建阶段处理定义属性的名称，而不是为它们赋值，但正式参数（实参）除外。创建阶段完成后，执行流程进入函数内，激活/代码执行阶段在函数执行完毕后如下所示：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">fooExecutionContext = &#123;</span><br><span class="line">    scopeChain: &#123; ... &#125;,</span><br><span class="line">    variableObject: &#123;</span><br><span class="line">        <span class="built_in">arguments</span>: &#123;</span><br><span class="line">            <span class="number">0</span>: <span class="number">22</span>,</span><br><span class="line">            length: <span class="number">1</span></span><br><span class="line">        &#125;,</span><br><span class="line">        i: <span class="number">22</span>,</span><br><span class="line">        c: pointer to <span class="function"><span class="keyword">function</span> <span class="title">c</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">        <span class="title">a</span>: <span class="title">undefined</span>,</span></span><br><span class="line"><span class="function">        <span class="title">b</span>: <span class="title">undefined</span></span></span><br><span class="line"><span class="function">    &#125;,</span></span><br><span class="line"><span class="function">    <span class="title">this</span>: </span>&#123; ... &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="关于变量提升"><a href="#关于变量提升" class="headerlink" title="关于变量提升"></a>关于变量提升</h2><p>在掌握了关于js解释器如何创建激活对象的知识后，我们很容易解释变量，函数提升是怎么一回事。使用以下代码示例：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">typeof</span> foo); <span class="comment">// function pointer</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">typeof</span> bar); <span class="comment">// undefined</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> foo = <span class="string">'hello'</span>,</span><br><span class="line">    bar = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">'world'</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">'hello'</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;());</span><br></pre></td></tr></table></figure>
+
+<p>​<strong>为什么我们可以在声明foo之前访问他</strong><br>​这段代码是立即执行函数，执行时创建相应执行上下文。在执行代码前即准备阶段，进行参数扫描，函数扫描，变量扫描，此时foo函数已经出现在VO中，所以可以访问。<br>​
+​<br>​<strong>Foo被声明两次，为什么foo显示为函数而不是未定义或字符串</strong><br>​接上一问，在准备阶段进行完函数扫描开始进行变量扫描，发现foo变量，但是此时VO内已经有同名的变量名，按照规则将略过。准备阶段完成，开始逐行执行代码并赋值，由于foo定义在console语句下面，所以还是输出VO中之前定义的foo，即函数。</p>
+<p><strong>为什么bar的值是undefined</strong><br>接上一问，在准备阶段进行变量扫描时发现bar，VO中没有所以bar作为属性名，值为undefined。进入执行阶段bar赋值语句在console语句下面，所以还是输出undefined。</p>
+<h2 id="原文链接"><a href="#原文链接" class="headerlink" title="原文链接"></a>原文链接</h2><p>传送：<a href="http://davidshariff.com/blog/what-is-the-execution-context-in-javascript/" target="_blank" rel="noopener">http://davidshariff.com/blog/what-is-the-execution-context-in-javascript/</a></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-07-29T08:16:57.816Z" itemprop="dateUpdated">2019-07-29 16:16:57</time>
+</span><br>
+
+
+        
+        <p style="font-size:16px;font-size:700"> 联系我:439286657(QQ),  17691203856(wechat)</P>
+        
+    </div>
+    
+    <footer>
+        <a href="https://luckyjq.github.io">
+            <img src="/img/avatar.jpg" alt="LuckyQ">
+            LuckyQ
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/基础/">基础</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/翻译/">翻译</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://luckyjq.github.io/2019/07/29/javascript执行上下文和堆栈是什么/&title=《【译】JavaScript执行上下文和执行上下文堆栈是什么》 — 小七快跑&pic=https://luckyjq.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://luckyjq.github.io/2019/07/29/javascript执行上下文和堆栈是什么/&title=《【译】JavaScript执行上下文和执行上下文堆栈是什么》 — 小七快跑&source=在这篇文章中，我将深入探讨JavaScript的一个最基本的部分，即执行上下文。在本文结束时，您应该更清楚地了解js解释器尝试做什么，为什么某些函数/变量..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://luckyjq.github.io/2019/07/29/javascript执行上下文和堆栈是什么/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《【译】JavaScript执行上下文和执行上下文堆栈是什么》 — 小七快跑&url=https://luckyjq.github.io/2019/07/29/javascript执行上下文和堆栈是什么/&via=https://luckyjq.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://luckyjq.github.io/2019/07/29/javascript执行上下文和堆栈是什么/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2019/07/25/项目图/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">个人小项目截图</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+        var id = location.pathname
+        if (location.pathname.length > 50) {
+          id = location.pathname.replace(/\/\d+\/\d+\/\d+\//, '').replace('/', '').substring(0, 50)
+        }
+        const gitalk = new Gitalk({
+          clientID: '1fedd9fd849963d2cd08',
+          clientSecret: '81395a36c89b14476548e645c2cac11c01755ead',
+          repo: 'luckyjq.github.io',
+          owner: 'luckyjq',
+          admin: ['luckyjq'],
+          id: id,      // Ensure uniqueness and length less than 50
+          title: document.title.split('|')[0],
+          distractionFreeMode: false  // Facebook-like distraction free mode
+        })
+
+        gitalk.render('gitalk-container')
+    </script>
+</section>
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>LuckyQ &copy; 2018 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://luckyjq.github.io/2019/07/29/javascript执行上下文和堆栈是什么/&title=《【译】JavaScript执行上下文和执行上下文堆栈是什么》 — 小七快跑&pic=https://luckyjq.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://luckyjq.github.io/2019/07/29/javascript执行上下文和堆栈是什么/&title=《【译】JavaScript执行上下文和执行上下文堆栈是什么》 — 小七快跑&source=在这篇文章中，我将深入探讨JavaScript的一个最基本的部分，即执行上下文。在本文结束时，您应该更清楚地了解js解释器尝试做什么，为什么某些函数/变量..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://luckyjq.github.io/2019/07/29/javascript执行上下文和堆栈是什么/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《【译】JavaScript执行上下文和执行上下文堆栈是什么》 — 小七快跑&url=https://luckyjq.github.io/2019/07/29/javascript执行上下文和堆栈是什么/&via=https://luckyjq.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://luckyjq.github.io/2019/07/29/javascript执行上下文和堆栈是什么/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACtUlEQVR42u3aQW7CQAwFUO5/abrpohUlfNtjRKWXFYKQzBuk2Ni+3eLj/nD8fP/xzOtPnx3X13k859iBh4eHN176M0Zv6clG9LY12SY8PDy8Pd6zSyeP++T9ajipbu7T9/Hw8PA+gJeHgQRcPRMPDw/vP/LOptfJXfDw8PA+k9crJUzO6W3ZYq0FDw8PL+blXaTPeb3S38PDw8Mbd9WrxYLr8kFeaJiv8/tqeHh4eAu8SQs/Kdr2mlhJcErWiYeHh7fBmySy1cd6/t1JoPp1Rzw8PLxlXnVcIF9KFJ0O3THaVzw8PLwB7+wSt8NMPmSAh4eHt8fLh5yuL1TdlGpSnlMLN8PDw8Mb8CYl2mRIKy/g5lscrR8PDw9vjZeUCarhofd8LnTtkvYYHh4e3gIv+bi3lLz11aygFMMJHh4e3gYvLxzMxwjOjg7kW4+Hh4e3wauGgSSoTM45FZDw8PDw3smrjklN6gCTFLmQRuPh4eENeNUmU16WzVPtXvst2gg8PDy8ZV7esD/1T79avEgS6PJkBB4eHl6LlwwT3OJj3ubPW2Ivirl4eHh4b+SdXVw+TFBty0XFCDw8PLyjvF7poXezKqxXkvjjXnh4eHhHefnoUnWUaqNMnPxWL343PDw8vDFvstxqKtzjVcHRqvDw8PDGvGMTW8HWVINQntBHxQg8PDy8o7yzY1W9xlWeNBfSaDw8PLxlXu/G+XerqXlvcAEPDw9vj3cvHnmLazKEmhcdXvxIeHh4eAu86gO3R8qDTX79ctMLDw8P7ygvCQa9waxqmWOlpIuHh4e3xssf6KdKCdcbMRlEiBaBh4eH90ZeXiGuFoKTJL68NXh4eHgfwMtT7eqjvFqojQIJHh4e3hovbz7lV6gGlXmyHk1G4OHh4Y158z/81QJu70GfD3Xh4eHhrfG+AHeDDQEqiUsUAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
