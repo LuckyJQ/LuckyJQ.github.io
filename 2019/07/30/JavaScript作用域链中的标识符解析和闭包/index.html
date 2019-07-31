@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>【译】JavaScript作用域链中的标识符解析和闭包 | 小七快跑 | 沈小祺技术博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="js,基础,翻译">
+    <meta name="description" content="这篇翻译紧接上一篇，建议先阅读JavaScript作用域链中的标识符解析和闭包。">
+<meta name="keywords" content="js,基础,翻译">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【译】JavaScript作用域链中的标识符解析和闭包">
+<meta property="og:url" content="https://luckyjq.github.io/2019/07/30/JavaScript作用域链中的标识符解析和闭包/index.html">
+<meta property="og:site_name" content="小七快跑">
+<meta property="og:description" content="这篇翻译紧接上一篇，建议先阅读JavaScript作用域链中的标识符解析和闭包。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://gitblog.luckyq.cn/98ab0bff999457c76007c7a39c9ae635.jpg">
+<meta property="og:image" content="http://gitblog.luckyq.cn/7044601baa80d2ee950076dc17b1cb76.jpg">
+<meta property="og:updated_time" content="2019-07-31T05:46:43.681Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【译】JavaScript作用域链中的标识符解析和闭包">
+<meta name="twitter:description" content="这篇翻译紧接上一篇，建议先阅读JavaScript作用域链中的标识符解析和闭包。">
+<meta name="twitter:image" content="http://gitblog.luckyq.cn/98ab0bff999457c76007c7a39c9ae635.jpg">
+    
+        <link rel="alternate" type="application/atom+xml" title="小七快跑" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">LuckyQ</h5>
+          <a href="mailto:439286657@qq.com" title="439286657@qq.com" class="mail">439286657@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/luckyjq" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">【译】JavaScript作用域链中的标识符解析和闭包</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">【译】JavaScript作用域链中的标识符解析和闭包</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-07-29T16:00:00.000Z" itemprop="datePublished" class="page-time">
+  2019-07-30
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/js/">js</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#确定作用域链中的变量对象-VO"><span class="post-toc-number">1.</span> <span class="post-toc-text">确定作用域链中的变量对象[VO]</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#词法作用域"><span class="post-toc-number">2.</span> <span class="post-toc-text">词法作用域</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#确定变量的值"><span class="post-toc-number">3.</span> <span class="post-toc-text">确定变量的值</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#闭包是怎么工作的"><span class="post-toc-number">4.</span> <span class="post-toc-text">闭包是怎么工作的</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#原型链是如何影响变量的？"><span class="post-toc-number">5.</span> <span class="post-toc-text">原型链是如何影响变量的？</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#什么时候使用闭包"><span class="post-toc-number">6.</span> <span class="post-toc-text">什么时候使用闭包</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#什么时候不使用闭包"><span class="post-toc-number">7.</span> <span class="post-toc-text">什么时候不使用闭包</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#原文地址"><span class="post-toc-number">8.</span> <span class="post-toc-text">原文地址</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-JavaScript作用域链中的标识符解析和闭包"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">【译】JavaScript作用域链中的标识符解析和闭包</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-07-30 00:00:00" datetime="2019-07-29T16:00:00.000Z"  itemprop="datePublished">2019-07-30</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/js/">js</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>这篇翻译紧接上一篇，建议先阅读<a href="https://blog.luckyq.cn/2019/07/29/javascript%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E5%A0%86%E6%A0%88%E6%98%AF%E4%BB%80%E4%B9%88/" target="_blank" rel="noopener">JavaScript作用域链中的标识符解析和闭包</a>。</p>
+<a id="more"></a>
+
+<p>从我之前的文章中，我们知道每个函数调用时都有一个关联的执行上下文，其中包含一个变量对象[VO]，它由给定函数内部定义的所有变量，函数和参数组成。</p>
+<p><strong>每个执行上下文的作用域链属性只是当前上下文的[VO] +所有父级的[VO]的集合</strong>。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Scope = VO + All Parent VOs</span><br><span class="line">Eg: scopeChain = [ [VO] + [VO1] + [VO2] + [VO n+<span class="number">1</span>] ];</span><br></pre></td></tr></table></figure>
+
+<h2 id="确定作用域链中的变量对象-VO"><a href="#确定作用域链中的变量对象-VO" class="headerlink" title="确定作用域链中的变量对象[VO]"></a>确定作用域链中的变量对象[VO]</h2><p>我们现在知道作用域链的第一个[VO]属于当前执行上下文，我们可以通过查看他的父上下文的作用域链来找到剩余的父[VO]：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">one</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    two();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">two</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">        three();</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">three</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            alert(<span class="string">'I am at function three'</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">one();</span><br></pre></td></tr></table></figure>
+
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://gitblog.luckyq.cn/98ab0bff999457c76007c7a39c9ae635.jpg" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+
+<p>这个例子很简单，从全局上下文开始，我们调用one（），one（）调用two（），然后调用three（），three函数弹出一个alert。上面的图像显示了执行上下文堆栈的情况。我们可以看到此时的three作用域链如下所示：<br><strong>three() Scope Chain = [ [three() VO] + [two() VO] + [one() VO] + [Global VO] ];</strong></p>
+<h2 id="词法作用域"><a href="#词法作用域" class="headerlink" title="词法作用域"></a>词法作用域</h2><p>要注意的JavaScript的一个重要特性是，解释器使用词法作用域，而不是动态作用域。对所有内部函数来说，他们静态的绑定到父上下文中，即他们在代码中被定义的地方（个人理解为javascript的函数作用域在函数定义时确定，而非调用时）。</p>
+<p>在上面的上一个例子中，three将始终静态绑定到two，而two依次绑定到one，依此类推。这给出了链接效果，其中所有内部函数都可以通过静态绑定的作用域链访问外部函数VO。</p>
+<p>这个词法作用域是许多开发人员混淆的根源。我们知道每次调用函数都会创建一个新的执行上下文和相关的VO，它保存在当前上下文中计算的变量值。</p>
+<p>正是这种对VO的动态的，运行时的评估以及每个上下文的词法作用域，导致程序行为出现意外结果。采用以下经典示例：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> myAlerts = []</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) &#123;</span><br><span class="line">    myAlerts.push(</span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">inner</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            alert(i)</span><br><span class="line">        &#125;</span><br><span class="line">    )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">myAlerts[<span class="number">0</span>](); <span class="comment">// 5</span></span><br><span class="line">myAlerts[<span class="number">1</span>](); <span class="comment">// 5</span></span><br><span class="line">myAlerts[<span class="number">2</span>](); <span class="comment">// 5</span></span><br><span class="line">myAlerts[<span class="number">3</span>](); <span class="comment">// 5</span></span><br><span class="line">myAlerts[<span class="number">4</span>](); <span class="comment">// 5</span></span><br></pre></td></tr></table></figure>
+
+<p>乍一看，那些刚接触JavaScript的人会认为alert弹出的i是定义函数的每个增量的i的值，所以aleert将分别警告1,2,3,4和5。</p>
+<p>这是最常见的混淆点。函数inner是在全局上下文中创建的，因此其作用域链静态地绑定到全局上下文。</p>
+<p>第11~15行调用inner（），它将在inner.ScopeChain中查找解析i，而inner函数定义在全局上下文中。当for循环结束时，i已经增加到5，每次调用inner时都会得到相同的结果。静态绑定的作用域链，含有来自包含实时变量的每个上下文的[VOs]，通常会让开发人员感到意外。</p>
+<h2 id="确定变量的值"><a href="#确定变量的值" class="headerlink" title="确定变量的值"></a>确定变量的值</h2><p>以下示例alert变量a，b和c的和，它给出了6的结果。</p>
+<p>第14行很有趣，乍一看似乎a和b不在函数three内，所以这段代码怎么还能运行？要理解解释器如何评估此代码，我们需要在执行第14行时查看函数three的作用域链：</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://gitblog.luckyq.cn/7044601baa80d2ee950076dc17b1cb76.jpg" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+
+<p>当解释器执行第14行：alert（a + b + c）时，它通过查看作用域链并检查第一个变量对象，即[three( ) VO]。它会检查[three( ) VO]中是否存在a，但是找不到具有该名称的任何属性，因此继续检查下一个[VO]。</p>
+<p>解释器按顺序检查每个[VO]是否存在变量名，如果存在值将返回到原始计算代码，否则程序将抛出ReferenceError。因此，给定上面的示例，您可以看到在函数three的作用域链中，a，b和c都是可解析的。</p>
+<h2 id="闭包是怎么工作的"><a href="#闭包是怎么工作的" class="headerlink" title="闭包是怎么工作的"></a>闭包是怎么工作的</h2><p>在JavaScript中，闭包通常被认为是某种魔法，只有高级开发人员才能真正理解，但事实上，它只是对作用域链的简单理解。正如<strong>Douglas Crockford</strong>所说，闭包只是：</p>
+<blockquote>
+<p>An inner function always has access to the vars and parameters of its outer function, even after the outer function has returned…</p>
+</blockquote>
+<blockquote>
+<p>内部函数始终能够访问外部函数的变量和参数，即使外部函数已经被返回</p>
+</blockquote>
+<p>下面的代码是一个闭包的例子：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> a = <span class="string">'private variable'</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">bar</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        alert(a);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> callAlert = foo();</span><br><span class="line"></span><br><span class="line">callAlert(); <span class="comment">// private variable</span></span><br></pre></td></tr></table></figure>
+
+<p>全局上下文有一个名为foo的函数和一个名为callAlert的变量，它保存foo( )返回的值。开发人员常常感到惊讶和困惑的是，即使在foo完成执行后，foo的私有变量a仍然可以被callAlert访问。</p>
+<p>如果我们详细查看每个上下文，我们将看到以下内容：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Global Context when evaluated</span></span><br><span class="line">global.VO = &#123;</span><br><span class="line">    foo: pointer to foo(),</span><br><span class="line">    callAlert: returned value <span class="keyword">of</span> global.VO.foo</span><br><span class="line">    scopeChain: [global.VO]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Foo Context when evaluated</span></span><br><span class="line">foo.VO = &#123;</span><br><span class="line">    bar: pointer to bar(),</span><br><span class="line">    a: <span class="string">'private variable'</span>,</span><br><span class="line">    scopeChain: [foo.VO, global.VO]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Bar Context when evaluated</span></span><br><span class="line">bar.VO = &#123;</span><br><span class="line">    scopeChain: [bar.VO, foo.VO, global.VO]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在我们可以通过调用callAlert来看到，我们得到函数foo( )返回值，它返回指向bar函数的指针。在执行bar函数时，bar.VO.scopeChain是[bar.VO，foo.VO，global.VO]。</p>
+<p>alert(a)，解释器检查bar.VO.scopeChain中的第一个VO，查找名为a的属性但找不到匹配项，因此立即转到下一个VO，foo.VO。</p>
+<p>它检查属性的存在，这次找到一个匹配，将值返回到bar上下文，这解释了为什么即使foo已经完成执行，还是能访问’私有变量’a。</p>
+<p>到此为止，我们已经涵盖了作用域链及其词法作用域的细节，以及闭包和变量解析是如何工作。本文的其余部分将讨论与上述内容相关的一些有趣情况。</p>
+<h2 id="原型链是如何影响变量的？"><a href="#原型链是如何影响变量的？" class="headerlink" title="原型链是如何影响变量的？"></a>原型链是如何影响变量的？</h2><p>JavaScript本质上是基于原型链的，除了null和undefined之外，语言中的几乎所有内容都是对象。当试图访问对象上的属性时，解释器将尝试通过查找对象中的属性。如果它找不到属性，它将继续查找原型链，这是一个继承的对象链，直到它找到属性，或遍历到链的末尾。</p>
+<p>这导致了一个有趣的问题，解释器是先使用作用链还是原型链解析对象属性？两者都会使用。尝试解析属性或标识符时，将首先使用作用链来寻找对象。找到对象后，将遍历该对象的原型链，查找属性名称。我们来看一个例子：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> bar = &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    bar.a = <span class="string">'Set from foo()'</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">inner</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        alert(bar.a);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">foo()(); <span class="comment">// 'Set from foo()'</span></span><br></pre></td></tr></table></figure>
+
+<p>第5行在全局对象bar上创建属性a，并将其值设置为‘Set from foo()’。解释器查找作用域链，并按预期在全局上下文中查找bar.a。现在，让我们考虑以下内容：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> bar = &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">Object</span>.prototype.a = <span class="string">'Set from prototype'</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">inner</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        alert(bar.a);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">foo()(); <span class="comment">// 'Set from prototype()'</span></span><br></pre></td></tr></table></figure>
+
+<p>在运行时，我们调用inner函数，它试图通过在其作用域链中查找bar的存在来解析bar.a。它在全局上下文中找到bar，并进入搜索bar以查找名为a的属性。但是，a从未在bar上设置，因此解释器遍历bar对象的原型链并发现在Object.prototype上设置了一个。</p>
+<p>这种行为解释了标识符的解析：在作用链中找到对象，然后继续向上找对象的原型链，直到找到属性，或返回undefined。</p>
+<h2 id="什么时候使用闭包"><a href="#什么时候使用闭包" class="headerlink" title="什么时候使用闭包"></a>什么时候使用闭包</h2><p>闭包是一个强大的JavaScript概念，使用它们的一些最常见的情况是：</p>
+<p><strong>封装</strong><br>允许我们在暴露受控公共接口的同时，从外部作用域隐藏上下文的实现细节。这通常被称为模块模式或揭示模式。</p>
+<p><strong>回调</strong><br>也许闭包最强大的用途之一就是回调。浏览器中的JavaScript通常在单线程事件循环中运行，阻止其他事件直到当前事件执行完成。回调允许我们以非阻塞方式推迟对函数的调用，通常是为了响应事件的完成。这方面的一个例子是在对服务器进行AJAX调用时，使用回调来处理响应，同时仍然保持创建它的绑定。</p>
+<p><strong>闭包作为参数</strong><br>我们还可以将闭包作为参数传递给函数，这是一个强大的函数范例，用于为复杂代码创建更优雅的解决方案。以最小排序函数为例，通过将闭包作为参数传递，我们可以为不同类型的数据排序定义实现，同时仍然重用单个函数体作为原理图。</p>
+<h2 id="什么时候不使用闭包"><a href="#什么时候不使用闭包" class="headerlink" title="什么时候不使用闭包"></a>什么时候不使用闭包</h2><p>虽然闭包很强大，但由于某些性能问题，应该谨慎使用它们：</p>
+<p><strong>长作用域链</strong><br>多个嵌套函数是您可能遇到某些性能问题的典型信号。请记住，每次需要确定变量值时，必须遍历作用链以查找标识符，因此不言而喻，作用域链越长，查找时间越长。</p>
+<p><strong>垃圾收集</strong><br>JavaScript是一种自带垃圾收集的语言，这意味着与低级编程语言不同，开发人员通常不必担心内存管理。但是，这种自动垃圾收集通常会导致开发人员应用程序遭受性能不佳和内存泄漏的困扰。</p>
+<p>不同的JavaScript引擎实现垃圾收集略有不同，因为ECMAScript没有定义应该如何处理实现，但是当尝试创建高性能，无泄漏的JavaScript代码时，相同的理念可以应用于引擎。一般来说，当对象无法被程序中运行的任何其他活动对象引用或无法访问时，垃圾收集器将尝试释放该对象的内存。</p>
+<p><strong>循环引用</strong><br>不太喜欢原文的内容，后续找个好的例子</p>
+<h2 id="原文地址"><a href="#原文地址" class="headerlink" title="原文地址"></a>原文地址</h2><p>传送：<a href="http://davidshariff.com/blog/javascript-scope-chain-and-closures/" target="_blank" rel="noopener">http://davidshariff.com/blog/javascript-scope-chain-and-closures/</a></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-07-31T05:46:43.681Z" itemprop="dateUpdated">2019-07-31 13:46:43</time>
+</span><br>
+
+
+        
+        <p style="font-size:16px;font-size:700"> 联系我:439286657(QQ),  17691203856(wechat)</P>
+        
+    </div>
+    
+    <footer>
+        <a href="https://luckyjq.github.io">
+            <img src="/img/avatar.jpg" alt="LuckyQ">
+            LuckyQ
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/基础/">基础</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/翻译/">翻译</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://luckyjq.github.io/2019/07/30/JavaScript作用域链中的标识符解析和闭包/&title=《【译】JavaScript作用域链中的标识符解析和闭包》 — 小七快跑&pic=https://luckyjq.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://luckyjq.github.io/2019/07/30/JavaScript作用域链中的标识符解析和闭包/&title=《【译】JavaScript作用域链中的标识符解析和闭包》 — 小七快跑&source=这篇翻译紧接上一篇，建议先阅读JavaScript作用域链中的标识符解析和闭包。" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://luckyjq.github.io/2019/07/30/JavaScript作用域链中的标识符解析和闭包/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《【译】JavaScript作用域链中的标识符解析和闭包》 — 小七快跑&url=https://luckyjq.github.io/2019/07/30/JavaScript作用域链中的标识符解析和闭包/&via=https://luckyjq.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://luckyjq.github.io/2019/07/30/JavaScript作用域链中的标识符解析和闭包/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2019/07/29/javascript执行上下文和堆栈是什么/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">【译】JavaScript执行上下文和执行上下文堆栈是什么</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+        var id = location.pathname
+        if (location.pathname.length > 50) {
+          id = location.pathname.replace(/\/\d+\/\d+\/\d+\//, '').replace('/', '').substring(0, 50)
+        }
+        const gitalk = new Gitalk({
+          clientID: '1fedd9fd849963d2cd08',
+          clientSecret: '81395a36c89b14476548e645c2cac11c01755ead',
+          repo: 'luckyjq.github.io',
+          owner: 'luckyjq',
+          admin: ['luckyjq'],
+          id: id,      // Ensure uniqueness and length less than 50
+          title: document.title.split('|')[0],
+          distractionFreeMode: false  // Facebook-like distraction free mode
+        })
+
+        gitalk.render('gitalk-container')
+    </script>
+</section>
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>LuckyQ &copy; 2018 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://luckyjq.github.io/2019/07/30/JavaScript作用域链中的标识符解析和闭包/&title=《【译】JavaScript作用域链中的标识符解析和闭包》 — 小七快跑&pic=https://luckyjq.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://luckyjq.github.io/2019/07/30/JavaScript作用域链中的标识符解析和闭包/&title=《【译】JavaScript作用域链中的标识符解析和闭包》 — 小七快跑&source=这篇翻译紧接上一篇，建议先阅读JavaScript作用域链中的标识符解析和闭包。" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://luckyjq.github.io/2019/07/30/JavaScript作用域链中的标识符解析和闭包/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《【译】JavaScript作用域链中的标识符解析和闭包》 — 小七快跑&url=https://luckyjq.github.io/2019/07/30/JavaScript作用域链中的标识符解析和闭包/&via=https://luckyjq.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://luckyjq.github.io/2019/07/30/JavaScript作用域链中的标识符解析和闭包/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPYAAAD2CAAAAADAeSUUAAADLUlEQVR42u3aQW7jMAwFUN//0u5mdoU9n6RS2MrTKmgdW48BwpDUccTrvFhXV+b3Sd6V32fxwsbGxn4J+7xdv7f1+zH3V+bbun/61d3ur7zcAzY2NvZ27PtUdPWwJEA54x7W+0gu/46NjY399exe8phcf5/wsLGxsbFzUl6Q9ALXa1FhY2NjYyeJJC8V7h+ZFCFnsP6ol4aNjY39eHbeuH/+64/Mt7GxsbEfzD6LKx8ATMa3vURYUGBjY2NvxJ639fMWTw9WDXTyAWBjY2PvxM6bO6vw1aM5k+NBURcNGxsb++Xs5Es/H+L2ipZ8u/kHgI2Njf3N7CRFzQM3D1b1KVEFho2Njf1C9mQr1TIjLx6qRVH1iA82Njb2fuzqw+aD2FVHgqpjjNF4ABsbG/uR7CR15ddU21LVgcE8KEeVhI2Njf149rzJ/p/00Gr9fCJ1YWNjY+/Kzhv9+fA1H9muTZmTVhc2Njb2e9mTJnuSSPIATVpLR3VhY2Njb8TO5569UW6ervKgLDtIhI2Njb0Fe97cyVv51dZSL7lGu8XGxsbemj353T5JXdViJv/v5UklbGxs7E3Z1XnCqut7w4k8xNF4ABsbG/uF7GqjvzfKTRJMFT8ZSGBjY2Pvzc6Py/TaPTnvE6OF8ukkbGxs7Bey8xBUt1ItPHplRqHxhI2Njb0Ru3fSZ9LWn6fM6tAiH4RgY2Njv4tdTSFrj9esbUIlBRI2Njb23uxmk72Y9vKE1AtN9EFiY2Njb8TubatXqOTNpvyJ1XqricfGxsZ+Cbt3UOY+qUxKlOq4Ih/6YmNjY38Du3pApzoMSNpM8zFAlNiwsbGxt2Cv2tB8DFBNYPn+sbGxsb+NnSetVQVMr510TBY2Njb2FuyzuJL3Tsqb/MBQrzT69xobGxt7I3bvO7/X6O+NIvK75QHCxsbG3o9dHbuu+uU/KTl65c3RizE2Njb2S9i9W68d2SabrvKi8QA2Njb2l7F7KSoPYnVg0Et72NjY2NjV8fB9FZCEtdobKxzZwcbGxt6C3UtC1QIgHw+XGdWAYmNjY2/E7vXSey3+XvHQa2MtGG9gY2NjP539A9XDXyoJbg07AAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
