@@ -32,13 +32,13 @@ ga('send', 'pageview');
     
     
     <meta name="keywords" content="网络,面试">
-    <meta name="description" content="前言对于这个问题浏览器输入 url 到页面的展现发生了什么，经常可以在各大面试经验贴中看到，个人的理解也是和一般笼统的答案差不多：  在浏览器地址栏输入URL浏览器解析URL获取协议，主机，端口，path浏览器组装一个HTTP（GET）请求报文浏览器获取主机ip地址打开一个socket与目标IP地址，端口建立TCP链TCP链接建立后发送HTTP请求服务器将响应报文通过TCP连接发送回浏览器，浏览器">
+    <meta name="description" content="对前端相关的网络问题进行一次探究。这篇文章将按照DNS解析，TCP连接的建立，HTTP缓存和状态码，浏览器的渲染的顺序来探究。长文预警。">
 <meta name="keywords" content="网络,面试">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【深挖】浏览器输入 url 到页面的展现发生了什么（前端网络篇）">
 <meta property="og:url" content="https://luckyjq.github.io/2019/08/15/浏览器输入 url 到页面的展现发生了什么/index.html">
 <meta property="og:site_name" content="小七快跑">
-<meta property="og:description" content="前言对于这个问题浏览器输入 url 到页面的展现发生了什么，经常可以在各大面试经验贴中看到，个人的理解也是和一般笼统的答案差不多：  在浏览器地址栏输入URL浏览器解析URL获取协议，主机，端口，path浏览器组装一个HTTP（GET）请求报文浏览器获取主机ip地址打开一个socket与目标IP地址，端口建立TCP链TCP链接建立后发送HTTP请求服务器将响应报文通过TCP连接发送回浏览器，浏览器">
+<meta property="og:description" content="对前端相关的网络问题进行一次探究。这篇文章将按照DNS解析，TCP连接的建立，HTTP缓存和状态码，浏览器的渲染的顺序来探究。长文预警。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://gitblog.luckyq.cn/8b6d0cc4e6e718e3988062481796b089.png">
 <meta property="og:image" content="http://gitblog.luckyq.cn/5f4eee0a5f54b8b9e09cfae10d157264.jpg">
@@ -57,10 +57,10 @@ ga('send', 'pageview');
 <meta property="og:image" content="http://gitblog.luckyq.cn/e3027df80fd942b4f35739bbefe71048.jpg">
 <meta property="og:image" content="http://gitblog.luckyq.cn/3589b4ca98f3288807befed2e8fc5612.jpg">
 <meta property="og:image" content="http://gitblog.luckyq.cn/74bbb7b129e188892c7cfa73f8011a07.jpg">
-<meta property="og:updated_time" content="2019-08-28T01:25:35.627Z">
+<meta property="og:updated_time" content="2019-08-29T12:03:15.872Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【深挖】浏览器输入 url 到页面的展现发生了什么（前端网络篇）">
-<meta name="twitter:description" content="前言对于这个问题浏览器输入 url 到页面的展现发生了什么，经常可以在各大面试经验贴中看到，个人的理解也是和一般笼统的答案差不多：  在浏览器地址栏输入URL浏览器解析URL获取协议，主机，端口，path浏览器组装一个HTTP（GET）请求报文浏览器获取主机ip地址打开一个socket与目标IP地址，端口建立TCP链TCP链接建立后发送HTTP请求服务器将响应报文通过TCP连接发送回浏览器，浏览器">
+<meta name="twitter:description" content="对前端相关的网络问题进行一次探究。这篇文章将按照DNS解析，TCP连接的建立，HTTP缓存和状态码，浏览器的渲染的顺序来探究。长文预警。">
 <meta name="twitter:image" content="http://gitblog.luckyq.cn/8b6d0cc4e6e718e3988062481796b089.png">
     
         <link rel="alternate" type="application/atom+xml" title="小七快跑" href="/atom.xml">
@@ -222,7 +222,10 @@ ga('send', 'pageview');
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
-            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>对于这个问题<strong>浏览器输入 url 到页面的展现发生了什么</strong>，经常可以在各大面试经验贴中看到，个人的理解也是和一般笼统的答案差不多：</p>
+            <p>对前端相关的网络问题进行一次探究。这篇文章将按照DNS解析，TCP连接的建立，HTTP缓存和状态码，浏览器的渲染的顺序来探究。长文预警。</p>
+<a id="more"></a>
+
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>对于这个问题<strong>浏览器输入 url 到页面的展现发生了什么</strong>，经常可以在各大面试经验贴中看到，个人的理解也是和一般笼统的答案差不多：</p>
 <blockquote>
 <p>在浏览器地址栏输入URL<br>浏览器解析URL获取协议，主机，端口，path<br>浏览器组装一个HTTP（GET）请求报文<br>浏览器获取主机ip地址<br>打开一个socket与目标IP地址，端口建立TCP链<br>TCP链接建立后发送HTTP请求<br>服务器将响应报文通过TCP连接发送回浏览器，浏览器接收HTTP响应<br>根据资源类型决定如何处理（假设资源为HTML文档）<br>解析HTML文档，构件DOM树，下载资源，构造CSSOM树，执行js脚本<br>最后展现出来给用户</p>
 </blockquote>
@@ -529,7 +532,7 @@ ga('send', 'pageview');
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2019-08-28T01:25:35.627Z" itemprop="dateUpdated">2019-08-28 09:25:35</time>
+    最后更新时间：<time datetime="2019-08-29T12:03:15.872Z" itemprop="dateUpdated">2019-08-29 20:03:15</time>
 </span><br>
 
 
@@ -575,7 +578,7 @@ ga('send', 'pageview');
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://luckyjq.github.io/2019/08/15/浏览器输入 url 到页面的展现发生了什么/&title=《【深挖】浏览器输入 url 到页面的展现发生了什么（前端网络篇）》 — 小七快跑&source=" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://luckyjq.github.io/2019/08/15/浏览器输入 url 到页面的展现发生了什么/&title=《【深挖】浏览器输入 url 到页面的展现发生了什么（前端网络篇）》 — 小七快跑&source=对前端相关的网络问题进行一次探究。这篇文章将按照DNS解析，TCP连接的建立，HTTP缓存和状态码，浏览器的渲染的顺序来探究。长文预警。" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
@@ -741,7 +744,7 @@ ga('send', 'pageview');
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://luckyjq.github.io/2019/08/15/浏览器输入 url 到页面的展现发生了什么/&title=《【深挖】浏览器输入 url 到页面的展现发生了什么（前端网络篇）》 — 小七快跑&source=" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://luckyjq.github.io/2019/08/15/浏览器输入 url 到页面的展现发生了什么/&title=《【深挖】浏览器输入 url 到页面的展现发生了什么（前端网络篇）》 — 小七快跑&source=对前端相关的网络问题进行一次探究。这篇文章将按照DNS解析，TCP连接的建立，HTTP缓存和状态码，浏览器的渲染的顺序来探究。长文预警。" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>

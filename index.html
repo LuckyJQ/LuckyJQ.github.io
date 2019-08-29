@@ -194,9 +194,7 @@ ga('send', 'pageview');
     <div class="post-content" id="post-content" itemprop="postContent">
 
     
-        前言对于这个问题浏览器输入 url 到页面的展现发生了什么，经常可以在各大面试经验贴中看到，个人的理解也是和一般笼统的答案差不多：
-
-在浏览器地址栏输入URL浏览器解析URL获取协议，主机，端口，path浏览器组装一个HTTP（GET）请求报文浏览器获取主机ip地址打开一个socket与目标IP地址，端口建立TCP链TCP链接建立后发送HTTP请求服务器将响应报文通过TCP连接发送回浏览器，...
+        对前端相关的网络问题进行一次探究。这篇文章将按照DNS解析，TCP连接的建立，HTTP缓存和状态码，浏览器的渲染的顺序来探究。长文预警。
     
 
         <a href="/2019/08/15/浏览器输入 url 到页面的展现发生了什么/" class="post-more waves-effect waves-button">
