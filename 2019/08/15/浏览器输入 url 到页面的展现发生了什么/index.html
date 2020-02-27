@@ -57,7 +57,7 @@ ga('send', 'pageview');
 <meta property="og:image" content="http://gitblog.luckyq.cn/e3027df80fd942b4f35739bbefe71048.jpg">
 <meta property="og:image" content="http://gitblog.luckyq.cn/3589b4ca98f3288807befed2e8fc5612.jpg">
 <meta property="og:image" content="http://gitblog.luckyq.cn/74bbb7b129e188892c7cfa73f8011a07.jpg">
-<meta property="og:updated_time" content="2019-08-29T12:03:15.872Z">
+<meta property="og:updated_time" content="2019-09-04T00:12:47.086Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【深挖】浏览器输入 url 到页面的展现发生了什么（前端网络篇）">
 <meta name="twitter:description" content="对前端相关的网络问题进行一次探究。这篇文章将按照DNS解析，TCP连接的建立，HTTP缓存和状态码，浏览器的渲染的顺序来探究。长文预警。">
@@ -450,7 +450,7 @@ ga('send', 'pageview');
             </figure>
 
 <ol>
-<li><p><strong>client_hello</strong><br>客户端发起请求，以明文传输请求信息，包含版本信息，加密套件候选列表，压缩算法候选列表，随机数，扩展字段等信息。</p>
+<li><p><strong>client_hello</strong><br>客户端发起请求，以明文传输请求信息，包含版本信息，加密套件候选列表，压缩算法候选列表，<strong>随机数1</strong>，扩展字段等信息。</p>
 <figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
@@ -459,7 +459,7 @@ ga('send', 'pageview');
                 <div class="image-caption"></div>
             </figure>
 </li>
-<li><p><strong>server_hello+certificate+server_key_exchange+sever_hello_done</strong><br> <strong>server_hello</strong>。服务端返回协商的信息结果，包括选择使用的协议版本，选择的加密套件cipher suite，选择的压缩算法 compression method、随机数等，其中随机数用于后续的密钥协商.</p>
+<li><p><strong>server_hello+certificate+server_key_exchange+sever_hello_done</strong><br> <strong>server_hello</strong>。服务端返回协商的信息结果，包括选择使用的协议版本，选择的加密套件cipher suite，选择的压缩算法 compression method、<strong>随机数2</strong>等，其中随机数用于后续的密钥协商.</p>
 <figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
@@ -467,11 +467,11 @@ ga('send', 'pageview');
                 </div>
                 <div class="image-caption"></div>
             </figure>
-<p> <strong>certificate</strong>。发送服务器证书，将服务器配置的证书（链）发送到客户端（用户证书在前，上级证书在后）。<br> <strong>server_key_exchange</strong> 。对于使用DHE/ECDHE非对称密钥协商算法的SSL握手，将发送该类型握手(查阅的资料，后面打算g研究下各种加密算法的区别)。<br> <strong>server_hello_done</strong>。通知客户端 server_hello 信息发送结束。</p>
+<p> <strong>certificate</strong>。发送服务器证书，将服务器配置的证书（链）发送到客户端（用户证书在前，上级证书在后）。<br> <strong>server_key_exchange</strong> 。对于使用DHE/ECDHE非对称密钥协商算法的SSL握手，将发送该类型握手(查阅的资料，后面打算研究下各种加密算法的区别)。<br> <strong>server_hello_done</strong>。通知客户端 server_hello 信息发送结束。</p>
 </li>
 <li><p><strong>客户端进行证书校验</strong>。客户端验证证书的合法性，如果验证通过才会进行后续通信，否则根据错误情况不同做出提示和操作，合法性验证主要包括证书链的可信性，有效期，是否吊销，域名是否匹配等。</p>
 </li>
-<li><p><strong>client_key_exchange+change_cipher_spec+encrypted_handshake_message</strong></p>
+<li><p><strong>client_key_exchange+change_cipher_spec+encrypted_handshake_message</strong><br> <strong>client_key_exchange</strong>客户端生成随机数3，经过一系列操作变为pubKey，</p>
 </li>
 </ol>
 <h3 id="TCP四次挥手"><a href="#TCP四次挥手" class="headerlink" title="TCP四次挥手"></a>TCP四次挥手</h3><p>emm，关于四次挥手我抓包了很多网站，发现区别很大，下面以西电的官网为例讲解四次挥手的过程。</p>
@@ -532,7 +532,7 @@ ga('send', 'pageview');
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2019-08-29T12:03:15.872Z" itemprop="dateUpdated">2019-08-29 20:03:15</time>
+    最后更新时间：<time datetime="2019-09-04T00:12:47.086Z" itemprop="dateUpdated">2019-09-04 08:12:47</time>
 </span><br>
 
 
@@ -613,7 +613,14 @@ ga('send', 'pageview');
     </div>
 
     
-<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2020/01/15/【腾讯云AI小程序大赛】西安电子科技大学作品《丢小墙》/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">【腾讯云AI小程序大赛】西安电子科技大学作品《丢小墙》</h4>
+      </a>
+    </div>
   
 
   
@@ -716,7 +723,7 @@ ga('send', 'pageview');
         </p>
     </div>
     <div class="bottom">
-        <p><span>LuckyQ &copy; 2018 - 2019</span>
+        <p><span>LuckyQ &copy; 2018 - 2020</span>
             <span>
                 
                 Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
